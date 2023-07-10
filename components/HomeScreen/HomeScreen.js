@@ -12,31 +12,15 @@ import {
 import React, { useState, useEffect } from 'react';
 import styles from './style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Carousel from 'react-native-snap-carousel';
-import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from './CarouselCardItem';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import CarouselCardItem from './CarouselCardItem';
 
 const HomeScreen = () => {
   const [search, onChangeSearch] = useState('');
   const isCarousel = React.useRef(null);
-
-  //   const [sliderWidth, setSliderWidth] = useState(
-  //     Dimensions.get('window').width + 80
-  //   );
-  //   const ITEM_WIDTH = Math.round(sliderWidth * 0.7);
-
-  //   const isCarousel = React.useRef(null);
-
-  //   useEffect(() => {
-  //     const updateSliderWidth = () => {
-  //       setSliderWidth(Dimensions.get('window').width + 80);
-  //     };
-
-  //     Dimensions.addEventListener('change', updateSliderWidth);
-
-  //     return () => {
-  //       Dimensions.removeEventListener('change', updateSliderWidth);
-  //     };
-  //   }, []);
+  const SLIDER_WIDTH = Dimensions.get('window').width * 0.95;
+  const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
+  const [index, setIndex] = React.useState(0);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,86 +37,122 @@ const HomeScreen = () => {
           />
         </View>
       </View>
-      {/* <Image source={require('../../img/chim_sao.png')} /> */}
-      {/* -------------- carousel -------------- */}
-      {/* <View>
-        <Carousel
-          layout="stack"
-          layoutCardOffset={9}
-          ref={isCarousel}
-          data={data}
-          renderItem={({ item }) => <CarouselCardItem item={item} />}
-          sliderWidth={SLIDER_WIDTH}
-          itemWidth={ITEM_WIDTH}
-          inactiveSlideShift={0}
-          useScrollView={true}
-        />
-      </View> */}
-      {/* -------------- category -------------- */}
-      <View style={styles.categoryTextContainer}>
-        <Text style={styles.textLeft}>Category</Text>
-        <Text style={styles.textRight}>More Category</Text>
-      </View>
-      <View style={styles.categoriesContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity underlayColor="transparent" activeOpacity={0.4}>
-            <View style={styles.cateContainer}>
-              <View style={styles.categoryIconContainer}>
-                <Ionicons name="logo-twitter" style={styles.categoryIcon} />
-              </View>
-              <Text style={styles.categoryText}>Chim cảnh trong nước</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableHighlight underlayColor="gray" activeOpacity={0.8}>
-            <View style={styles.cateContainer}>
-              <View style={styles.categoryIconContainer}>
-                <Ionicons name="logo-twitter" style={styles.categoryIcon} />
-              </View>
-              <Text style={styles.categoryText}>Chim cảnh nước ngoài</Text>
-            </View>
-          </TouchableHighlight>
-        </ScrollView>
-      </View>
 
-      {/* -------------- item card -------------- */}
-      <View style={styles.categoryTextContainer}>
-        <Text style={styles.textLeft}>Flash Sale</Text>
-        <Text style={styles.textRight}>See More</Text>
-      </View>
-      <View style={styles.allItemsContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity underlayColor="transparent" activeOpacity={0.4}>
-            <View style={styles.cardContainer}>
-              <View style={styles.itemImageContainer}>
-                <Image
-                  source={require('../../img/chich_choe.png')}
-                  style={styles.itemImage}
-                />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* -------------- carousel -------------- */}
+        {/* <View style={styles.carouselContainer}>
+          <ScrollView
+            horizontal
+            pagingEnabled
+            // onScroll={handleScroll}
+            scrollEventThrottle={16}
+          >
+            <Image
+              source={require('../../img/lake.jpg')}
+              style={styles.carouselImage}
+            />
+            <Image
+              source={require('../../img/sunset.jpg')}
+              style={styles.carouselImage}
+            />
+          </ScrollView>
+        </View> */}
+
+        <View style={styles.carouselContainer}>
+          <Carousel
+            data={data}
+            renderItem={CarouselCardItem}
+            sliderWidth={SLIDER_WIDTH}
+            itemWidth={SLIDER_WIDTH}
+            autoplay={true}
+            autoplayInterval={3000}
+            ref={isCarousel}
+            onSnapToItem={(index) => setIndex(index)}
+            loop
+          />
+          <Pagination
+            dotsLength={data.length}
+            activeDotIndex={index}
+            carouselRef={isCarousel}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: 0,
+              backgroundColor: '#52D4D0',
+            }}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+            tappableDots={true}
+          />
+        </View>
+
+        {/* -------------- category -------------- */}
+        <View style={styles.categoryTextContainer}>
+          <Text style={styles.textLeft}>Category</Text>
+          <Text style={styles.textRight}>More Category</Text>
+        </View>
+        <View style={styles.categoriesContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <TouchableOpacity underlayColor="transparent" activeOpacity={0.4}>
+              <View style={styles.cateContainer}>
+                <View style={styles.categoryIconContainer}>
+                  <Ionicons name="logo-twitter" style={styles.categoryIcon} />
+                </View>
+                <Text style={styles.categoryText}>Chim cảnh trong nước</Text>
               </View>
-              <Text numberOfLines={2} style={styles.itemName}>
-                Chim chích chòe
-              </Text>
-              <Text style={styles.itemPrice}>$200</Text>
-              {/* <Text style={styles.initPrice}>Chim cảnh</Text> */}
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity underlayColor="transparent" activeOpacity={0.4}>
-            <View style={styles.cardContainer}>
-              <View style={styles.itemImageContainer}>
-                <Image
-                  source={require('../../img/chich_choe.png')}
-                  style={styles.itemImage}
-                />
+            </TouchableOpacity>
+            <TouchableHighlight underlayColor="gray" activeOpacity={0.8}>
+              <View style={styles.cateContainer}>
+                <View style={styles.categoryIconContainer}>
+                  <Ionicons name="logo-twitter" style={styles.categoryIcon} />
+                </View>
+                <Text style={styles.categoryText}>Chim cảnh nước ngoài</Text>
               </View>
-              <Text numberOfLines={2} style={styles.itemName}>
-                Chim cảnh ajsdjas dajnsdasljdaksjdlkajskasjldk
-              </Text>
-              <Text style={styles.itemPrice}>$200</Text>
-              {/* <Text style={styles.initPrice}>Chim cảnh</Text> */}
-            </View>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
+            </TouchableHighlight>
+          </ScrollView>
+        </View>
+
+        {/* -------------- item card -------------- */}
+        <View style={styles.saleTextContainer}>
+          <Text style={styles.textLeft}>Flash Sale</Text>
+          <Text style={styles.textRight}>See More</Text>
+        </View>
+        <View style={styles.allItemsContainer}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <TouchableOpacity underlayColor="transparent" activeOpacity={0.4}>
+              <View style={styles.cardContainer}>
+                <View style={styles.itemImageContainer}>
+                  <Image
+                    source={require('../../img/chich_choe.png')}
+                    style={styles.itemImage}
+                  />
+                </View>
+                <Text numberOfLines={2} style={styles.itemName}>
+                  Chim chích chòe
+                </Text>
+                <Text style={styles.itemPrice}>$200</Text>
+                {/* <Text style={styles.initPrice}>Chim cảnh</Text> */}
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity underlayColor="transparent" activeOpacity={0.4}>
+              <View style={styles.cardContainer}>
+                <View style={styles.itemImageContainer}>
+                  <Image
+                    source={require('../../img/chich_choe.png')}
+                    style={styles.itemImage}
+                  />
+                </View>
+                <Text numberOfLines={2} style={styles.itemName}>
+                  Chim cảnh ajsdjas dajnsdasljdaksjdlkajskasjldk
+                </Text>
+                <Text style={styles.itemPrice}>$200</Text>
+                {/* <Text style={styles.initPrice}>Chim cảnh</Text> */}
+              </View>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

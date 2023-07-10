@@ -6,8 +6,9 @@ import LoginScreen from './components/LoginScreen/LoginScreen';
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
-      {/* <HomeScreen/> */}
-      <LoginScreen />
+      <HomeScreen />
+      {/* <LoginScreen /> */}
+      {/* <Carousel /> */}
     </SafeAreaView>
   );
 }
@@ -16,6 +17,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 24,
+    padding: 10,
   },
 });

@@ -38,13 +38,9 @@ const styles = StyleSheet.create({
     left: 15,
     color: '#52D4D0',
   },
-  carouselContainer: {
-    // flex: 1,
-  },
 
   // category
   categoryTextContainer: {
-    paddingTop: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -59,7 +55,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   categoriesContainer: {
-    paddingTop: 10,
+    paddingVertical: 12,
   },
   categoryIconContainer: {
     flexDirection: 'column',
@@ -74,7 +70,7 @@ const styles = StyleSheet.create({
     color: '#52D4D0',
   },
   categoryText: {
-    paddingTop: 5,
+    paddingTop: 10,
     color: '#95a5a6',
     fontWeight: '500',
     textAlign: 'center',
@@ -84,8 +80,13 @@ const styles = StyleSheet.create({
   },
 
   // item sale (card)
+  saleTextContainer: {
+    // marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   allItemsContainer: {
-    paddingTop: 10,
+    paddingVertical: 12,
   },
   cardContainer: {
     height: height * 0.25,
@@ -122,6 +123,19 @@ const styles = StyleSheet.create({
     fontSize: 12,
     paddingTop: 5,
     textDecorationLine: 'line-through',
+  },
+
+  // carousel
+  carouselContainer: {
+    marginTop: 20,
+    height: 300,
+    width: '100%',
+    borderRadius: 10,
+  },
+  carouselImage: {
+    height: '100%',
+    resizeMode: 'stretch',
+    width: width * 0.95,
   },
 });
 
