@@ -1,15 +1,20 @@
+import { useNavigation } from "@react-navigation/native";
 import { Card, Icon, Image, Text, Button, Divider } from "@rneui/themed";
 import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 import { View } from "react-native";
 
 const Cart = () => {
+  const navigation = useNavigation();
+  const proceedToShipping = () => {
+    navigation.navigate("Ship To");
+  };
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.card_container}>
         <View style={{ flexDirection: "row" }}>
           <Image
-            source={require("../image/air-force-1.jpg")}
+            source={require("./image/air-force-1.jpg")}
             style={styles.img}
           />
           <View style={{ flex: 1 }}>
@@ -65,7 +70,7 @@ const Cart = () => {
       <Card containerStyle={styles.card_container}>
         <View style={{ flexDirection: "row" }}>
           <Image
-            source={require("../image/air-force-1.jpg")}
+            source={require("./image/air-force-1.jpg")}
             style={styles.img}
           />
           <View style={{ flex: 1 }}>
@@ -178,6 +183,7 @@ const Cart = () => {
         title="Check Out"
         buttonStyle={styles.checkout_button}
         titleStyle={{ fontWeight: "bold" }}
+        onPress={proceedToShipping}
       />
     </View>
   );
