@@ -1,14 +1,43 @@
 import { useNavigation } from "@react-navigation/native";
 import { Card, Icon, Image, Text, Button, Divider } from "@rneui/themed";
-import React from "react";
-import { StyleSheet, TextInput } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Keyboard, StyleSheet, TextInput } from "react-native";
 import { View } from "react-native";
 
 const Cart = () => {
   const navigation = useNavigation();
+  const [number, setNumber] = useState(1);
+  const textInputRef = useRef();
+
+  const increase = () => {
+    setNumber(number + 1);
+  };
+
+  const decrease = () => {
+    if (number > 0) {
+      setNumber(number - 1);
+    } else {
+      setNumber(0);
+    }
+  };
+
   const proceedToShipping = () => {
     navigation.navigate("Ship To");
   };
+
+  useEffect(() => {
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        textInputRef.current.blur();
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.card_container}>
@@ -51,15 +80,24 @@ const Cart = () => {
             >
               <Text style={styles.product_price}>$244,99</Text>
               <View style={{ flexDirection: "row" }}>
-                <Button buttonStyle={styles.button} type="solid">
+                <Button
+                  buttonStyle={styles.button}
+                  type="solid"
+                  onPress={decrease}
+                >
                   <Icon name="remove" color="#9098B1" />
                 </Button>
                 <TextInput
                   style={styles.input}
                   keyboardType="numeric"
-                  defaultValue="1"
+                  value={number.toString()}
+                  ref={textInputRef}
                 />
-                <Button buttonStyle={styles.button} type="solid">
+                <Button
+                  buttonStyle={styles.button}
+                  type="solid"
+                  onPress={increase}
+                >
                   <Icon name="add" color="#9098B1" />
                 </Button>
               </View>
@@ -107,15 +145,24 @@ const Cart = () => {
             >
               <Text style={styles.product_price}>$244,99</Text>
               <View style={{ flexDirection: "row" }}>
-                <Button buttonStyle={styles.button} type="solid">
+                <Button
+                  buttonStyle={styles.button}
+                  type="solid"
+                  onPress={decrease}
+                >
                   <Icon name="remove" color="#9098B1" />
                 </Button>
                 <TextInput
                   style={styles.input}
                   keyboardType="numeric"
-                  defaultValue="1"
+                  value={number.toString()}
+                  ref={textInputRef}
                 />
-                <Button buttonStyle={styles.button} type="solid">
+                <Button
+                  buttonStyle={styles.button}
+                  type="solid"
+                  onPress={increase}
+                >
                   <Icon name="add" color="#9098B1" />
                 </Button>
               </View>
@@ -128,6 +175,7 @@ const Cart = () => {
           <TextInput
             style={styles.coupon_input}
             placeholder="Enter Coupon Code"
+            ref={textInputRef}
           />
           <Button
             title="Apply"
@@ -200,6 +248,7 @@ const styles = StyleSheet.create({
   product_title: {
     marginLeft: 12,
     fontWeight: "bold",
+    color: "#192a56",
   },
   product_price: {
     marginLeft: 12,

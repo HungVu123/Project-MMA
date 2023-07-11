@@ -4,12 +4,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Cart from "./components/Cart/Cart";
-import History from "./components/History";
+import History from "./components/Order/History";
 import { Button, Icon } from "@rneui/themed";
 import ShipTo from "./components/Cart/ShipTo";
 import Payment from "./components/Cart/Payment";
 import ChooseCard from "./components/Cart/ChooseCard";
 import Success from "./components/Cart/Success";
+import OrderDetail from "./components/Order/OrderDetail";
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
@@ -88,15 +89,13 @@ export default function App() {
           component={Success}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="Order Detail" component={OrderDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "white",
   },
 });
