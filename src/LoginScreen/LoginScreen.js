@@ -90,9 +90,12 @@ const LoginScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Sign in</Text>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Sign in</Text>
+        </TouchableOpacity>
+      </View>
+
       <TouchableOpacity>
         <Text style={styles.text}>Forgot Password?</Text>
       </TouchableOpacity>

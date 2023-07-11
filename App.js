@@ -1,14 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import HomeScreen from './components/HomeScreen/HomeScreen';
-import LoginScreen from './components/LoginScreen/LoginScreen';
+import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
+import HomeScreen from './src/HomeScreen/HomeScreen';
+import LoginScreen from './src/LoginScreen/LoginScreen';
+import DetailScreen from './src/DetailScreen/DetailSrceen';
+import ProfileScreen from './src/ProfileScreen/ProfileScreen';
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
-      <HomeScreen />
+      {/* <HomeScreen /> */}
       {/* <LoginScreen /> */}
-      {/* <Carousel /> */}
+      <DetailScreen />
+      {/* <ProfileScreen /> */}
     </SafeAreaView>
   );
 }
@@ -16,7 +20,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: 10,
+    backgroundColor: '#FFF',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

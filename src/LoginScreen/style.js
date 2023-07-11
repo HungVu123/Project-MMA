@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   constainer: {
@@ -6,6 +8,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    padding: 15,
   },
   textInputContainer: {
     flexDirection: 'row',
@@ -40,12 +43,17 @@ const styles = StyleSheet.create({
 
   //Sign in button
 
+  buttonContainer: {
+    width: width * 0.95,
+    backgroundColor: 'green',
+  },
   button: {
     marginVertical: 10,
     backgroundColor: '#52D4D0',
-    width: '100%',
+
     paddingVertical: 18,
     borderRadius: 5,
+    width: width * 0.93,
   },
   buttonText: {
     textAlign: 'center',
