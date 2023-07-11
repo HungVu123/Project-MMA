@@ -1,11 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import DetailSrceen from './src/DetailScreen/DetailSrceen';
+import ProfileScreen from './src/ProfileScreen/ProfileScreen';
+import DetailScreen from './src/DetailScreen/DetailSrceen';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <DetailScreen/>
     </View>
   );
 }
@@ -13,7 +15,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF',
     alignItems: 'center',
     justifyContent: 'center',
   },
