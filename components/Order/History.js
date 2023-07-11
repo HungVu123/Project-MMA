@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   container_price: {
     fontWeight: "bold",
-    color: "#40BFFF",
+    color: "#52D4D0",
   },
 });
 

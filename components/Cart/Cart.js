@@ -224,7 +224,7 @@ const Cart = () => {
           }}
         >
           <Text style={{ fontWeight: "bold" }}>Total Price</Text>
-          <Text style={{ fontWeight: "bold", color: "#40BFFF" }}>$787</Text>
+          <Text style={styles.product_price}>$787</Text>
         </View>
       </Card>
       <Button
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   product_price: {
     marginLeft: 12,
     fontWeight: "bold",
-    color: "#40BFFF",
+    color: "#52D4D0",
   },
   card_container: {
     borderRadius: 5,

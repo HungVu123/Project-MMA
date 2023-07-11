@@ -6,6 +6,50 @@ const OrderDetail = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            marginTop: 16,
+          }}
+        >
+          <View style={{ flexDirection: "column" }}>
+            <Icon
+              name="check-circle"
+              type="material"
+              size={30}
+              color="#52D4D0"
+            />
+            <Text style={{ color: "#9098B1" }}>Packing</Text>
+          </View>
+          <View style={{ flexDirection: "column" }}>
+            <Icon
+              name="check-circle"
+              type="material"
+              size={30}
+              color="#52D4D0"
+            />
+            <Text style={{ color: "#9098B1" }}>Shipping</Text>
+          </View>
+          <View style={{ flexDirection: "column" }}>
+            <Icon
+              name="check-circle"
+              type="material"
+              size={30}
+              color="#52D4D0"
+            />
+            <Text style={{ color: "#9098B1" }}>Arriving</Text>
+          </View>
+          <View style={{ flexDirection: "column" }}>
+            <Icon
+              name="check-circle"
+              type="material"
+              size={30}
+              color="#9098B1"
+            />
+            <Text style={{ color: "#9098B1" }}>Success</Text>
+          </View>
+        </View>
         <Text style={styles.title}>Product</Text>
         <Card containerStyle={styles.card_container}>
           <View style={{ flexDirection: "row" }}>
@@ -145,7 +189,7 @@ const OrderDetail = () => {
             }}
           >
             <Text style={{ fontWeight: "bold" }}>Total Price</Text>
-            <Text style={{ fontWeight: "bold", color: "#40BFFF" }}>$787</Text>
+            <Text style={styles.product_price}>$787</Text>
           </View>
         </Card>
         <Button
@@ -175,12 +219,12 @@ const styles = StyleSheet.create({
   product_title: {
     marginLeft: 12,
     fontWeight: "bold",
-    color: "#192a56",
+    color: "#192a56 ",
   },
   product_price: {
     marginLeft: 12,
     fontWeight: "bold",
-    color: "#40BFFF",
+    color: "#52D4D0",
   },
   card_container: {
     borderRadius: 5,
