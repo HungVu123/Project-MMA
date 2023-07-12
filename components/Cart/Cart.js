@@ -1,13 +1,23 @@
 import { useNavigation } from "@react-navigation/native";
 import { Card, Icon, Image, Text, Button, Divider } from "@rneui/themed";
 import React, { useEffect, useRef, useState } from "react";
-import { Keyboard, StyleSheet, TextInput } from "react-native";
+import {
+  Keyboard,
+  StyleSheet,
+  TextInput,
+  TouchableHighlight,
+} from "react-native";
 import { View } from "react-native";
 
 const Cart = () => {
   const navigation = useNavigation();
   const [number, setNumber] = useState(1);
   const textInputRef = useRef();
+  const [like, setLike] = useState(false);
+
+  const likePress = () => {
+    return like ? "red" : "";
+  };
 
   const increase = () => {
     setNumber(number + 1);
@@ -56,12 +66,14 @@ const Cart = () => {
             >
               <Text style={styles.product_title}>Nike Air Force 1</Text>
               <View style={{ flexDirection: "row" }}>
-                <Icon
-                  style={styles.icon}
-                  name="favorite-border"
-                  type="material"
-                  color="#9098B1"
-                />
+                <TouchableHighlight onPress={() => setLike(!like)}>
+                  <Icon
+                    style={styles.icon}
+                    name="favorite-border"
+                    type="material"
+                    color={likePress}
+                  />
+                </TouchableHighlight>
                 <Icon
                   style={styles.icon}
                   name="delete-outline"
