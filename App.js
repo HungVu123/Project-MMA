@@ -1,26 +1,31 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Cart from "./components/Cart/Cart";
-import History from "./components/Order/History";
-import { Button, Icon } from "@rneui/themed";
-import ShipTo from "./components/Cart/ShipTo";
-import Payment from "./components/Cart/Payment";
-import ChooseCard from "./components/Cart/ChooseCard";
-import Success from "./components/Cart/Success";
-import OrderDetail from "./components/Order/OrderDetail";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Button, Icon } from '@rneui/themed';
+import { SafeAreaView } from 'react-native';
+import HomeScreen from './src/HomeScreen/HomeScreen';
+import LoginScreen from './src/LoginScreen/LoginScreen';
+import DetailScreen from './src/DetailScreen/DetailSrceen';
+import ProfileScreen from './src/ProfileScreen/ProfileScreen';
+import Cart from './src/CartScreen/Cart';
+import History from './src/OrderScreen/History';
+import ShipTo from './src/CartScreen/ShipTo';
+import Payment from './src/CartScreen/Payment';
+import ChooseCard from './src/CartScreen/ChooseCard';
+import Success from './src/CartScreen/Success';
+import OrderDetail from './src/OrderScreen/OrderDetail';
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
   return (
-    <Tab.Navigator initialRouteName="Cart">
+    <Tab.Navigator initialRouteName="Cart" screenOptions={{}}>
       <Tab.Screen
         name="Cart"
         component={Cart}
         options={{
-          title: "Your Cart",
+          title: 'Your Cart',
           tabBarIcon: ({ color, size }) => (
             <Icon
               type="feather"
@@ -35,7 +40,7 @@ const CartAndHistory = () => {
         name="History"
         component={History}
         options={{
-          title: "Order",
+          title: 'Order',
           tabBarIcon: ({ color, size }) => (
             <Icon
               type="feather"
@@ -64,9 +69,9 @@ export default function App() {
           name="Ship To"
           component={ShipTo}
           options={{
-            title: "Ship To",
+            title: 'Ship To',
             headerRight: () => (
-              <Button buttonStyle={{ backgroundColor: "white" }}>
+              <Button buttonStyle={{ backgroundColor: 'white' }}>
                 <Icon name="plus" type="feather" color="#52D4D0" />
               </Button>
             ),
@@ -78,7 +83,7 @@ export default function App() {
           component={ChooseCard}
           options={{
             headerRight: () => (
-              <Button buttonStyle={{ backgroundColor: "white" }}>
+              <Button buttonStyle={{ backgroundColor: 'white' }}>
                 <Icon name="plus" type="feather" color="#52D4D0" />
               </Button>
             ),
@@ -96,6 +101,9 @@ export default function App() {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
