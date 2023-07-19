@@ -16,6 +16,7 @@ import Payment from './src/CartScreen/Payment';
 import ChooseCard from './src/CartScreen/ChooseCard';
 import Success from './src/CartScreen/Success';
 import OrderDetail from './src/OrderScreen/OrderDetail';
+import ForgotPassword from './src/LoginScreen/ForgotPassword';
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
@@ -55,47 +56,77 @@ const CartAndHistory = () => {
   );
 };
 
+const HomeStack = () => {
+  const Stack = createNativeStackNavigator();
+  return (
+    <Stack.Navigator initialRouteName={LoginScreen}>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerTitleAlign: 'center',
+          headerBackVisible: false,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{ headerTitleAlign: 'center' }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
+    // <NavigationContainer>
+    //   <Stack.Navigator initialRouteName="Cart&History">
+    //     <Stack.Screen
+    //       name="Cart&History"
+    //       component={CartAndHistory}
+    //       options={{ headerShown: false }}
+    //     />
+    //     <Stack.Screen
+    //       name="Ship To"
+    //       component={ShipTo}
+    //       options={{
+    //         title: 'Ship To',
+    //         headerRight: () => (
+    //           <Button buttonStyle={{ backgroundColor: 'white' }}>
+    //             <Icon name="plus" type="feather" color="#52D4D0" />
+    //           </Button>
+    //         ),
+    //       }}
+    //     />
+    //     <Stack.Screen name="Payment" component={Payment} />
+    //     <Stack.Screen
+    //       name="Choose Card"
+    //       component={ChooseCard}
+    //       options={{
+    //         headerRight: () => (
+    //           <Button buttonStyle={{ backgroundColor: 'white' }}>
+    //             <Icon name="plus" type="feather" color="#52D4D0" />
+    //           </Button>
+    //         ),
+    //       }}
+    //     />
+    //     <Stack.Screen
+    //       name="Success Payment"
+    //       component={Success}
+    //       options={{ headerShown: false }}
+    //     />
+    //     <Stack.Screen name="Order Detail" component={OrderDetail} />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Cart&History">
-        <Stack.Screen
-          name="Cart&History"
-          component={CartAndHistory}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Ship To"
-          component={ShipTo}
-          options={{
-            title: 'Ship To',
-            headerRight: () => (
-              <Button buttonStyle={{ backgroundColor: 'white' }}>
-                <Icon name="plus" type="feather" color="#52D4D0" />
-              </Button>
-            ),
-          }}
-        />
-        <Stack.Screen name="Payment" component={Payment} />
-        <Stack.Screen
-          name="Choose Card"
-          component={ChooseCard}
-          options={{
-            headerRight: () => (
-              <Button buttonStyle={{ backgroundColor: 'white' }}>
-                <Icon name="plus" type="feather" color="#52D4D0" />
-              </Button>
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="Success Payment"
-          component={Success}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Order Detail" component={OrderDetail} />
-      </Stack.Navigator>
+      <HomeStack />
     </NavigationContainer>
   );
 }
