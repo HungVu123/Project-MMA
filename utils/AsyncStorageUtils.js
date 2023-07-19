@@ -1,34 +1,34 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import EventEmitter from "./EventEmitter";
 
-export const loadFavoriteProducts = async (userName) => {
+export const loadStorage = async (list, userName) => {
   try {
-    const favoritesString = await AsyncStorage.getItem('favorites');
+    const favoritesString = await AsyncStorage.getItem(list);
     const favorites = JSON.parse(favoritesString) || {};
-    return favorites[userId] || [];
+    return favorites[userName] || [];
   } catch (error) {
     console.error('Error loading favorites:', error);
     return [];
   }
 };
 
-export const removeFromFavorites = async (userName, productId) => {
+export const removeFromStorage = async (list, userName, product) => {
   try {
-    const storedFavorites = await AsyncStorage.getItem('favorites');
-    let favoritesData = [];
-    if (storedFavorites !== null) {
-      favoritesData = JSON.parse(storedFavorites[userName]);
+    const stored = await AsyncStorage.getItem(list);
+    let storedData = [];
+    if (stored !== null) {
+      storedData = JSON.parse(stored[userName]);
     }
-    const updatedFavorites = favoritesData[userName].filter(
-      (fav) => fav.id !== data.id
+    const updatedStorage = storedData[userName].filter(
+      (fav) => fav.id !== product.id
     );
-    await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+    await AsyncStorage.setItem(list, JSON.stringify(updatedStorage));
   } catch (error) {
     console.log('Error removing item from favorites:', error);
   }
 };
 
-export const removeAllFavorites = async () => {
+export const removeAllStorage = async () => {
   try {
     await AsyncStorage.clear();
     console.log('Clear Successfully');
@@ -38,22 +38,22 @@ export const removeAllFavorites = async () => {
   }
 };
 
-export const saveFavoriteProduct = async (userName, productId) => {
+export const saveToStorage = async (list, userName, product) => {
   try {
     // Get the current favorites from AsyncStorage
-    const favoritesString = await AsyncStorage.getItem('favorites');
-    const favorites = JSON.parse(favoritesString) || {};
+    const storedString = await AsyncStorage.getItem(list);
+    const storage = JSON.parse(storedString) || {};
 
     // Add the product ID to the user's favorites
-    if (!favorites[userName]) {
-      favorites[userName] = [];
+    if (!storage[userName]) {
+      storage[userName] = [];
     }
-    if (!favorites[userName].includes(productId)) {
-      favorites[userName].push(productId);
+    if (!storage[userName].includes(product)) {
+      storage[userName].push(product);
     }
 
     // Save the updated favorites back to AsyncStorage
-    await AsyncStorage.setItem('favorites', JSON.stringify(favorites));
+    await AsyncStorage.setItem('favorites', JSON.stringify(storage));
   } catch (error) {
     console.error('Error saving favorites:', error);
   }
