@@ -2,40 +2,25 @@ import { Button, Card, Divider, Icon, Image, Text } from '@rneui/themed';
 import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {
+  loadStorage,
+  removeAllStorage,
+  removeFromStorage,
+  saveToStorage,
+} from '../../utils/AsyncStorageUtils';
+import { useFocusEffect } from '@react-navigation/native';
 
 const OrderDetail = ({ route }) => {
   const order = route.params.order;
-  const [userName, setUserName] = useState();
-
-  const login = async () => {
-    try {
-      const response = await axios.post('http://10.86.4.48:4000/api/v1/login', {
-        email: 'vonglaucac123@gmail.com',
-        password: 'vonglaucac123',
-      });
-      setUserName(response.data.user.name);
-    } catch (err) {
-      console.log('error at login:' + err);
-    }
-  };
-
-  const handleAdd = async (name, productId) => {
-    Alert.alert('Confirmation', 'Do you want to add this?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: async () => {
-          await addToFavorites(data);
-          loadFavorites();
-        },
-      },
-    ]);
-  };
+  const userName = route.params.username;
+  const [favList, setFavList] = useState();
 
   const itemsPrice = order.orderItems
     .map(function (a) {
@@ -45,9 +30,59 @@ const OrderDetail = ({ route }) => {
 
   const totalPrice = itemsPrice + order.taxPrice + order.shippingPrice;
 
+  const handleAdd = (name, item) => {
+    Alert.alert('Confirmation', 'Do you want to add this?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: async () => {
+          await saveToStorage('favorites', name, item);
+          loadFavorites(userName);
+        },
+      },
+    ]);
+  };
+
+  const handleRemove = (name, item) => {
+    Alert.alert('Confirmation', 'Do you want to remove this?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: async () => {
+          await removeFromStorage('favorites', name, item);
+          loadFavorites(userName);
+        },
+      },
+    ]);
+  };
+
+  const handleRemoveAllFromFavorites = async () => {
+    await removeAllStorage();
+    setFavList();
+  };
+
+  const loadFavorites = async (name) => {
+    const storedFavorites = await loadStorage('favorites', name);
+    setFavList(storedFavorites);
+  };
+
   useEffect(() => {
-    login();
+    loadFavorites(userName);
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadFavorites(userName);
+    }, [])
+  );
 
   return (
     <ScrollView>
@@ -69,12 +104,27 @@ const OrderDetail = ({ route }) => {
                   }}
                 >
                   <Text style={styles.product_title}>{item.name}</Text>
-                  <Icon
-                    style={styles.icon}
-                    name="favorite-border"
-                    type="material"
-                    color="#9098B1"
-                  />
+                  {favList && favList.some((fav) => fav._id === item._id) ? (
+                    <TouchableOpacity
+                      onPress={() => handleRemove(userName, item)}
+                    >
+                      <Icon
+                        style={styles.icon}
+                        name="favorite"
+                        type="material"
+                        color="#52D4D0"
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={() => handleAdd(userName, item)}>
+                      <Icon
+                        style={styles.icon}
+                        name="favorite-border"
+                        type="material"
+                        color="#9098B1"
+                      />
+                    </TouchableOpacity>
+                  )}
                 </View>
                 <Text style={styles.product_quantity}>x{item.quantity}</Text>
                 <Text style={styles.product_price}>
@@ -130,7 +180,9 @@ const OrderDetail = ({ route }) => {
             }}
           >
             <Text style={{ color: '#9098B1' }}>Address</Text>
-            <Text style={{ flex: 0.6 }}>{order.shippingInfo.address}</Text>
+            <Text style={{ flex: 0, textAlign: 'right' }}>
+              {order.shippingInfo.address}
+            </Text>
           </View>
         </Card>
         <Text style={styles.title}>Payment Details</Text>

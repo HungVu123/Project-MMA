@@ -3,9 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const loadStorage = async (list, userName) => {
   try {
-    const favoritesString = await AsyncStorage.getItem(list);
-    const favorites = JSON.parse(favoritesString) || {};
-    return favorites[userName] || [];
+    const storedData = await AsyncStorage.getItem(list);
+    const storage = JSON.parse(storedData) || {};
+    return storage[userName] || [];
   } catch (error) {
     console.error('Error loading favorites:', error);
     return [];
@@ -17,12 +17,13 @@ export const removeFromStorage = async (list, userName, product) => {
     const stored = await AsyncStorage.getItem(list);
     let storedData = [];
     if (stored !== null) {
-      storedData = JSON.parse(stored[userName]);
+      storedData = JSON.parse(stored);
     }
     const updatedStorage = storedData[userName].filter(
-      (fav) => fav.id !== product.id
+      (data) => data._id !== product._id
     );
-    await AsyncStorage.setItem(list, JSON.stringify(updatedStorage));
+    storedData[userName] = updatedStorage;
+    await AsyncStorage.setItem(list, JSON.stringify(storedData));
   } catch (error) {
     console.log('Error removing item from favorites:', error);
   }
