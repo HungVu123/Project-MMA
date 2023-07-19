@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,31 +8,31 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
-} from "react-native";
-import Carousel from "react-native-snap-carousel";
-import dataCarousel from "./dataCarousel";
-import styles from "./style";
+} from 'react-native';
+import Carousel from 'react-native-snap-carousel';
+import dataCarousel from './dataCarousel';
+import styles from './style';
 
 export default function DetailScreen() {
   const [currentPage, setCurrentPage] = useState(0);
 
   const [windowWidth, setWindowWidth] = useState(
-    Dimensions.get("window").width
+    Dimensions.get('window').width
   );
   const [windowHeight, setWindowHeight] = useState(
-    Dimensions.get("window").height
+    Dimensions.get('window').height
   );
 
   useEffect(() => {
     const handleWindowResize = () => {
-      setWindowWidth(Dimensions.get("window").width);
-      setWindowHeight(Dimensions.get("window").height);
+      setWindowWidth(Dimensions.get('window').width);
+      setWindowHeight(Dimensions.get('window').height);
     };
 
-    Dimensions.addEventListener("change", handleWindowResize);
+    Dimensions.addEventListener('change', handleWindowResize);
 
     return () => {
-      Dimensions.removeEventListener("change", handleWindowResize);
+      Dimensions.removeEventListener('change', handleWindowResize);
     };
   }, []);
   const renderCaroulsel = ({ item }) => {
@@ -70,38 +70,38 @@ export default function DetailScreen() {
             <TouchableOpacity style={styles.containButtonLike}>
               <Image
                 style={styles.buttonLike}
-                source={require("../../assets/liked.png")}
+                source={require('../../assets/liked.png')}
               />
             </TouchableOpacity>
           </View>
           <View style={styles.containRating}>
             <TouchableOpacity>
               <Image
-                source={require("../../assets/start.png")}
+                source={require('../../assets/start.png')}
                 style={styles.rating}
               />
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
-                source={require("../../assets/start.png")}
+                source={require('../../assets/start.png')}
                 style={styles.rating}
               />
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
-                source={require("../../assets/start.png")}
+                source={require('../../assets/start.png')}
                 style={styles.rating}
               />
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
-                source={require("../../assets/start.png")}
+                source={require('../../assets/start.png')}
                 style={styles.rating}
               />
             </TouchableOpacity>
             <TouchableOpacity>
               <Image
-                source={require("../../assets/start.png")}
+                source={require('../../assets/start.png')}
                 style={styles.rating}
               />
             </TouchableOpacity>
