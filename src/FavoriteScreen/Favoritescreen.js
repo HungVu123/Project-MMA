@@ -59,6 +59,7 @@ const FavoriteScreen = () => {
   const [favList, setFavList] = useState([{}]);
   const [userName, setUserName] = useState();
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     login();
@@ -73,6 +74,23 @@ const FavoriteScreen = () => {
       loadFavorites(userName);
     }, [])
   );
+
+  if (!user) {
+    return (
+      <View style={styles.container_nouser}>
+        <View style={styles.content_nouser}>
+          <Text style={styles.title_nouser}>Please login to continue</Text>
+          <Button
+            buttonStyle={styles.button_nouser}
+            title="Login"
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
+          />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <ScrollView>
