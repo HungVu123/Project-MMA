@@ -75,7 +75,7 @@ const OrderDetail = ({ route }) => {
 
   useEffect(() => {
     loadFavorites(userName);
-  }, []);
+  }, [userName]);
 
   useFocusEffect(
     React.useCallback(() => {

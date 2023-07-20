@@ -23,7 +23,7 @@ export default function ProfileScreen() {
         const token =
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzFjNDA2N2E3NzU5ODhhM2ExNWExZSIsImlhdCI6MTY4OTYxMzQ3MywiZXhwIjoxNjkwMDQ1NDczfQ.86ahRKEdQGGQVo41hshJzOx_FpLzp-W5zxNhfbgB-0Y';
         axios.defaults.headers.common['Cookie'] = `token=${token}`;
-        const res = await axios.get('http://192.168.1.68:4000/api/v1/me');
+        const res = await axios.get('http://192.168.1.15:4000/api/v1/me');
         console.log(res['data']['user']);
         setData(res['data']['user']);
       } catch (e) {

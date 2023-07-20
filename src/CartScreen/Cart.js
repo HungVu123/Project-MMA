@@ -10,6 +10,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { View } from 'react-native';
+import { loadStorage } from '../../utils/AsyncStorageUtils';
 
 const Cart = () => {
   const navigation = useNavigation();
@@ -32,6 +33,12 @@ const Cart = () => {
       setNumber(0);
     }
   };
+
+  const loadCart = async (name) => {
+    const storedCart = await loadStorage('cart', name);
+    console.log(storedCart);
+  };
+
 
   const proceedToShipping = () => {
     navigation.navigate('Ship To');

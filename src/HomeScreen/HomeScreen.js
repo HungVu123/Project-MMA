@@ -21,12 +21,17 @@ import {
   fetchProductSuplements,
   searchProduct,
 } from './api';
+import { Icon } from '@rneui/themed';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   const isCarousel = React.useRef(null);
   const SLIDER_WIDTH = Dimensions.get('window').width * 0.95;
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
   const [index, setIndex] = React.useState(0);
+
+  const moveToFavorite = () => {
+    navigation.navigate('Favorite');
+  };
 
   // fetchProductBirds
 
@@ -122,7 +127,14 @@ const HomeScreen = ({navigation}) => {
           onBlur={handleBlurSearch}
         />
         <View style={styles.iconContainer}>
-          <Ionicons name="heart-outline" size={35} style={styles.iconHeart} />
+          <TouchableOpacity onPress={() => moveToFavorite()}>
+            <Icon
+              name="favorite-border"
+              type="material"
+              size={35}
+              style={styles.iconHeart}
+            />
+          </TouchableOpacity>
           {/* <Ionicons
             name="notifications-outline"
             size={35}
@@ -133,14 +145,19 @@ const HomeScreen = ({navigation}) => {
       {isSearching ? (
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.searchResulContainer}>
-            {listSearch.map((item) => (
-              <TouchableOpacity underlayColor="transparent" activeOpacity={0.4}>
+            {listSearch.map((item, i) => (
+              <TouchableOpacity
+                underlayColor="transparent"
+                activeOpacity={0.4}
+                key={i}
+              >
                 <View style={styles.cardSearchResultContainer} key={item._id}>
                   <View style={styles.itemImageContainer}>
-                    {item.images.map((img) => (
+                    {item.images.map((img, i) => (
                       <Image
                         source={{ uri: img.url }}
                         style={styles.itemImage}
+                        key={i}
                       />
                     ))}
                   </View>
@@ -211,18 +228,20 @@ const HomeScreen = ({navigation}) => {
           </View>
           <View style={styles.allItemsContainer}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {products.slice(0, 5).map((product) => (
+              {products.slice(0, 5).map((product, i) => (
                 <TouchableOpacity
                   underlayColor="transparent"
                   activeOpacity={0.4}
-                  onPress={() => navigation.navigate("DetailScreen", product)}
+                  onPress={() => navigation.navigate('DetailScreen', product)}
+                  key={i}
                 >
                   <View style={styles.cardContainer} key={product._id}>
                     <View style={styles.itemImageContainer}>
-                      {product.images.map((img) => (
+                      {product.images.map((img, i) => (
                         <Image
                           source={{ uri: img.url }}
                           style={styles.itemImage}
+                          key={i}
                         />
                       ))}
                     </View>
@@ -245,17 +264,19 @@ const HomeScreen = ({navigation}) => {
           </View>
           <View style={styles.allItemsContainer}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {listCages.slice(0, 5).map((cage) => (
+              {listCages.slice(0, 5).map((cage, i) => (
                 <TouchableOpacity
                   underlayColor="transparent"
                   activeOpacity={0.4}
+                  key={i}
                 >
                   <View style={styles.cardContainer} key={cage._id}>
                     <View style={styles.itemImageContainer}>
-                      {cage.images.map((img) => (
+                      {cage.images.map((img, i) => (
                         <Image
                           source={{ uri: img.url }}
                           style={styles.itemImage}
+                          key={i}
                         />
                       ))}
                     </View>
@@ -272,22 +293,24 @@ const HomeScreen = ({navigation}) => {
           {/* -------------- item card Supplements -------------- */}
 
           <View style={styles.saleTextContainer}>
-            <Text style={styles.textLeft}>Cages</Text>
+            <Text style={styles.textLeft}>Supplements</Text>
             <Text style={styles.textRight}>See More</Text>
           </View>
           <View style={styles.allItemsContainer}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {listSuplements.slice(0, 5).map((sup) => (
+              {listSuplements.slice(0, 5).map((sup, i) => (
                 <TouchableOpacity
                   underlayColor="transparent"
                   activeOpacity={0.4}
+                  key={i}
                 >
                   <View style={styles.cardContainer} key={sup._id}>
                     <View style={styles.itemImageContainer}>
-                      {sup.images.map((img) => (
+                      {sup.images.map((img, i) => (
                         <Image
                           source={{ uri: img.url }}
                           style={styles.itemImage}
+                          key={i}
                         />
                       ))}
                     </View>
