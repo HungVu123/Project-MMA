@@ -73,9 +73,18 @@ export default function DetailScreen(prop) {
             <Text style={styles.descDetail}>{data.des}</Text>
             <View style={styles.containHeaderReview}>
               <Text style={styles.headerReview}>Review Product</Text>
-              <TouchableOpacity style={styles.clickHeaderMore}>
-                <Text style={styles.headerMore}>See More</Text>
-              </TouchableOpacity>
+              {review.length > 0 ? (
+                <TouchableOpacity
+                  style={styles.clickHeaderMore}
+                  onPress={() => {
+                    prop.navigation.navigate('ReviewScreen', review);
+                  }}
+                >
+                  <Text style={styles.headerMore}>See More</Text>
+                </TouchableOpacity>
+              ) : (
+                <Text></Text>
+              )}
             </View>
             <View style={styles.containRating}>
               {[...Array(Math.round(data.ratings))].map((_, index) => (
@@ -130,9 +139,9 @@ export default function DetailScreen(prop) {
                         (_, index) => (
                           <TouchableOpacity key={index}>
                             <Image
-                             source={require('../../assets/unstart.png')}
-                             style={styles.rating}
-                           />
+                              source={require('../../assets/unstart.png')}
+                              style={styles.rating}
+                            />
                           </TouchableOpacity>
                         )
                       )}
