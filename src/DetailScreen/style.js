@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     marginTop: windowHeight * 0.02,
     paddingLeft: 18,
     justifyContent: "space-between",
-    alignContent: "space-evenly",
+   
     flexDirection: "row",
   },
   headerReview: {
