@@ -20,12 +20,27 @@ import OrderDetail from './src/OrderScreen/OrderDetail';
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
   return (
-    <Tab.Navigator initialRouteName="Cart" screenOptions={{}}>
+    <Tab.Navigator initialRouteName="Home" screenOptions={{}}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'Your Cart',
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              type="feather"
+              name="home"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Cart"
         component={Cart}
         options={{
-          title: 'Your Cart',
+          title: 'Cart',
           tabBarIcon: ({ color, size }) => (
             <Icon
               type="feather"
@@ -41,6 +56,21 @@ const CartAndHistory = () => {
         component={History}
         options={{
           title: 'Order',
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              type="feather"
+              name="shopping-bag"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: 'Profile',
           tabBarIcon: ({ color, size }) => (
             <Icon
               type="feather"
