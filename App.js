@@ -22,12 +22,22 @@ import Register from './src/LoginScreen/Register';
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
   return (
-    <Tab.Navigator initialRouteName="Cart" screenOptions={{}}>
+    <Tab.Navigator initialRouteName="Home" screenOptions={{}}>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'Your Cart',
+          tabBarIcon: ({ color, size }) => (
+            <Icon type="feather" name="home" color={color} size={size} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Cart"
         component={Cart}
         options={{
-          title: 'Your Cart',
+          title: 'Cart',
           tabBarIcon: ({ color, size }) => (
             <Icon
               type="feather"
@@ -43,6 +53,21 @@ const CartAndHistory = () => {
         component={History}
         options={{
           title: 'Order',
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              type="feather"
+              name="shopping-bag"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: 'Profile',
           tabBarIcon: ({ color, size }) => (
             <Icon
               type="feather"
@@ -92,47 +117,44 @@ const HomeStack = () => {
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
-    // <NavigationContainer>
-    //   <Stack.Navigator initialRouteName="Cart&History">
-    //     <Stack.Screen
-    //       name="Cart&History"
-    //       component={CartAndHistory}
-    //       options={{ headerShown: false }}
-    //     />
-    //     <Stack.Screen
-    //       name="Ship To"
-    //       component={ShipTo}
-    //       options={{
-    //         title: 'Ship To',
-    //         headerRight: () => (
-    //           <Button buttonStyle={{ backgroundColor: 'white' }}>
-    //             <Icon name="plus" type="feather" color="#52D4D0" />
-    //           </Button>
-    //         ),
-    //       }}
-    //     />
-    //     <Stack.Screen name="Payment" component={Payment} />
-    //     <Stack.Screen
-    //       name="Choose Card"
-    //       component={ChooseCard}
-    //       options={{
-    //         headerRight: () => (
-    //           <Button buttonStyle={{ backgroundColor: 'white' }}>
-    //             <Icon name="plus" type="feather" color="#52D4D0" />
-    //           </Button>
-    //         ),
-    //       }}
-    //     />
-    //     <Stack.Screen
-    //       name="Success Payment"
-    //       component={Success}
-    //       options={{ headerShown: false }}
-    //     />
-    //     <Stack.Screen name="Order Detail" component={OrderDetail} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
     <NavigationContainer>
-      <HomeStack />
+      <Stack.Navigator initialRouteName="Cart&History">
+        <Stack.Screen
+          name="Cart&History"
+          component={CartAndHistory}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Ship To"
+          component={ShipTo}
+          options={{
+            title: 'Ship To',
+            headerRight: () => (
+              <Button buttonStyle={{ backgroundColor: 'white' }}>
+                <Icon name="plus" type="feather" color="#52D4D0" />
+              </Button>
+            ),
+          }}
+        />
+        <Stack.Screen name="Payment" component={Payment} />
+        <Stack.Screen
+          name="Choose Card"
+          component={ChooseCard}
+          options={{
+            headerRight: () => (
+              <Button buttonStyle={{ backgroundColor: 'white' }}>
+                <Icon name="plus" type="feather" color="#52D4D0" />
+              </Button>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="Success Payment"
+          component={Success}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Order Detail" component={OrderDetail} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
