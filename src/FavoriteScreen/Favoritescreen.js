@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import { loadStorage, removeFromStorage } from '../../utils/AsyncStorageUtils';
-import { Card, Icon, Image, Skeleton, Text } from '@rneui/themed';
+import { Button, Card, Icon, Image, Skeleton, Text } from '@rneui/themed';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -22,6 +22,7 @@ const FavoriteScreen = () => {
           password: 'vonglaucac123',
         }
       );
+      setUser(response.data.user);
       setUserName(response.data.user.name);
     } catch (e) {
       console.log('error at login:' + e);
@@ -175,6 +176,26 @@ const styles = StyleSheet.create({
   },
   checkout_button: {
     margin: 16,
+    height: 57,
+    borderRadius: 5,
+    backgroundColor: '#52D4D0',
+  },
+  content_nouser: {
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  title_nouser: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 10,
+  },
+  subTitle_nouser: {
+    color: '#9098B1',
+  },
+  button_nouser: {
+    margin: 20,
+    width: 343,
     height: 57,
     borderRadius: 5,
     backgroundColor: '#52D4D0',
