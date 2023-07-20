@@ -22,7 +22,6 @@ const FavoriteScreen = () => {
           password: 'vonglaucac123',
         }
       );
-      setUser(response.data.user);
       setUserName(response.data.user.name);
     } catch (e) {
       console.log('error at login:' + e);
@@ -68,7 +67,7 @@ const FavoriteScreen = () => {
 
   useEffect(() => {
     loadFavorites(userName);
-  });
+  }, [userName]);
 
   useFocusEffect(
     React.useCallback(() => {
