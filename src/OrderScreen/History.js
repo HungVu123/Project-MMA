@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Card, Divider, Skeleton, Text } from '@rneui/themed';
+import { Button, Card, Divider, Skeleton, Text } from '@rneui/themed';
 import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
@@ -39,11 +39,29 @@ const History = () => {
   const [orderList, setOrderList] = useState([{}]);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState();
+  const [user, setUser] = useState();
 
   useEffect(() => {
     login();
     getOrderHistory();
   }, []);
+
+  if (!user) {
+    return (
+      <View style={styles.container_nouser}>
+        <View style={styles.content_nouser}>
+          <Text style={styles.title_nouser}>Please login to continue</Text>
+          <Button
+            buttonStyle={styles.button_nouser}
+            title="Login"
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
+          />
+        </View>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView>
@@ -113,49 +131,43 @@ const History = () => {
                     </Text>
                   </View>
                 </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Text style={styles.container_subtitles}>Items</Text>
+                  <Text>{order.orderItems.length} Items purchasing</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Text style={styles.container_subtitles}>Price</Text>
+                  <Text style={styles.container_price}>
+                    ${order.totalPrice}
+                  </Text>
+                </View>
+              </View>
+            </Card>
+          </TouchableOpacity>
+        ))
+      ) : (
+        <Text>failed to get lists</Text>
+      )}
+
               </Card>
             </TouchableOpacity>
           ))
         ) : (
           <Text>failed to get lists</Text>
         )}
-        {/* <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Order Detail');
-        }}
-      >
-        <Card containerStyle={styles.card_container}>
-          <View style={styles.container}>
-            <Text style={styles.container_title}>HDSIE456</Text>
-            <View style={{ flexDirection: 'row' }}>
-              <Text style={styles.container_subtitles}>Order at: </Text>
-              <Text style={styles.container_subtitles}>August 1,2023</Text>
-            </View>
-            <Divider style={{ marginBottom: 16 }} />
-
-            <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-            >
-              <Text style={styles.container_subtitles}>Order Status</Text>
-              <Text>Shipping</Text>
-            </View>
-            <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-            >
-              <Text style={styles.container_subtitles}>Items</Text>
-              <Text>2 Items purchasing</Text>
-            </View>
-            <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}
-            >
-              <Text style={styles.container_subtitles}>Price</Text>
-              <Text style={styles.container_price}>$245,99 </Text>
-            </View>
-          </View>
-        </Card>
-      </TouchableOpacity>*/}
       </View>
     </SafeAreaView>
+
   );
 };
 
@@ -181,6 +193,31 @@ const styles = StyleSheet.create({
   container_price: {
     fontWeight: 'bold',
     color: '#40BFFF',
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  content_nouser: {
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  title_nouser: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 10,
+  },
+  subTitle_nouser: {
+    color: '#9098B1',
+  },
+  button_nouser: {
+    margin: 20,
+    width: 343,
+    height: 57,
+    borderRadius: 5,
+    backgroundColor: '#52D4D0',
   },
 });
 
