@@ -16,6 +16,8 @@ import Payment from './src/CartScreen/Payment';
 import ChooseCard from './src/CartScreen/ChooseCard';
 import Success from './src/CartScreen/Success';
 import OrderDetail from './src/OrderScreen/OrderDetail';
+import ForgotPassword from './src/LoginScreen/ForgotPassword';
+import Register from './src/LoginScreen/Register';
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
@@ -27,12 +29,7 @@ const CartAndHistory = () => {
         options={{
           title: 'Your Cart',
           tabBarIcon: ({ color, size }) => (
-            <Icon
-              type="feather"
-              name="home"
-              color={color}
-              size={size}
-            />
+            <Icon type="feather" name="home" color={color} size={size} />
           ),
         }}
       />
@@ -82,6 +79,38 @@ const CartAndHistory = () => {
         }}
       />
     </Tab.Navigator>
+  );
+};
+
+const HomeStack = () => {
+  const Stack = createNativeStackNavigator();
+  return (
+    <Stack.Navigator initialRouteName={LoginScreen}>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerTitleAlign: 'center',
+          headerBackVisible: false,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{ headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{ headerTitleAlign: 'center' }}
+      />
+    </Stack.Navigator>
   );
 };
 
