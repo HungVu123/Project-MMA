@@ -1,7 +1,7 @@
-import { useNavigation } from "@react-navigation/native";
-import { Icon, ListItem, Text } from "@rneui/themed";
-import React from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import { Icon, ListItem, Text } from '@rneui/themed';
+import React from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 const Payment = () => {
   const navigation = useNavigation();
@@ -9,11 +9,11 @@ const Payment = () => {
     <View>
       <Pressable
         onPress={() => {
-          navigation.navigate("Choose Card");
+          navigation.navigate('Choose Card');
         }}
       >
         <ListItem>
-          <Icon name="credit-card" type="feather" color="#52D4D0" />
+          <Icon name="credit-card" type="feather" color="#40BFFF" />
           <ListItem.Content>
             <ListItem.Title style={styles.listitem_title}>
               Credit Card Or Debit
@@ -22,13 +22,13 @@ const Payment = () => {
         </ListItem>
       </Pressable>
       <ListItem>
-        <Icon name="paypal" type="font-awesome" color="#52D4D0" />
+        <Icon name="paypal" type="font-awesome" color="#40BFFF" />
         <ListItem.Content>
           <ListItem.Title style={styles.listitem_title}>Paypal</ListItem.Title>
         </ListItem.Content>
       </ListItem>
       <ListItem>
-        <Icon name="account-balance" type="material" color="#52D4D0" />
+        <Icon name="account-balance" type="material" color="#40BFFF" />
         <ListItem.Content>
           <ListItem.Title style={styles.listitem_title}>
             Bank Transfer
@@ -41,7 +41,7 @@ const Payment = () => {
 
 const styles = StyleSheet.create({
   listitem_title: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 12,
   },
 });

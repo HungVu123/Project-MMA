@@ -6,14 +6,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 24,
+    padding: 12,
+    paddingTop: 20,
   },
   searchBoxContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    // backgroundColor: 'green',
   },
   searchBox: {
-    flex: 2,
+    flex: 5,
     borderWidth: 1,
     borderRadius: 5,
     paddingTop: 10,
@@ -36,7 +39,7 @@ const styles = StyleSheet.create({
   iconSearch: {
     position: 'absolute',
     left: 15,
-    color: '#52D4D0',
+    color: '#40BFFF',
   },
 
   // category
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   textRight: {
-    color: '#52D4D0',
+    color: '#40BFFF',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -67,7 +70,7 @@ const styles = StyleSheet.create({
   },
   categoryIcon: {
     fontSize: 25,
-    color: '#52D4D0',
+    color: '#40BFFF',
   },
   categoryText: {
     paddingTop: 10,
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   itemPrice: {
-    color: '#52D4D0',
+    color: '#40BFFF',
     fontWeight: 'bold',
     fontSize: 18,
     paddingTop: 5,
@@ -136,6 +139,25 @@ const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'stretch',
     width: width * 0.95,
+  },
+
+  // search result
+  searchResulContainer: {
+    paddingVertical: 15,
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  cardSearchResultContainer: {
+    height: height * 0.25,
+    width: width * 0.35,
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 5,
+    borderColor: '#bdc3c7',
+    marginHorizontal: 20,
+    paddingVertical: 10,
+    marginVertical: 10,
   },
 });
 

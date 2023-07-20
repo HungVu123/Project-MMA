@@ -1,14 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
-import { Card, Icon, Text } from "@rneui/themed";
-import React from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import { Card, Icon, Text } from '@rneui/themed';
+import React from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 const ChooseCard = () => {
   const navigation = useNavigation();
   return (
     <Pressable
       onPress={() => {
-        navigation.navigate("Success Payment");
+        navigation.navigate('Success Payment');
       }}
     >
       <Card containerStyle={styles.container}>
@@ -32,43 +32,43 @@ const ChooseCard = () => {
 const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
-    backgroundColor: "#52D4D0",
-    color: "white",
+    backgroundColor: '#40BFFF',
+    color: 'white',
   },
   card: {
-    backgroundColor: "lightgray",
+    backgroundColor: 'lightgray',
     borderRadius: 10,
     padding: 20,
-    width: "80%",
+    width: '80%',
     height: 200,
   },
   cardLogo: {
     marginBottom: 30,
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
   },
   cardNumber: {
     fontSize: 28,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 30,
-    color: "white",
-    textAlign: "center",
+    color: 'white',
+    textAlign: 'center',
   },
   cardHolder: {
     fontSize: 20,
     marginBottom: 20,
-    color: "white",
+    color: 'white',
   },
   cardRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   cardLabel: {
     fontSize: 14,
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: 'bold',
+    color: 'white',
   },
   cardExpiration: {
     fontSize: 14,
-    color: "white",
+    color: 'white',
     marginLeft: 10,
   },
 });

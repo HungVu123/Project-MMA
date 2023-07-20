@@ -111,7 +111,7 @@ const OrderDetail = ({ route }) => {
                         style={styles.icon}
                         name="favorite"
                         type="material"
-                        color="#52D4D0"
+                        color="#40BFFF"
                       />
                     </TouchableOpacity>
                   ) : (
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
   product_price: {
     marginLeft: 12,
     fontWeight: 'bold',
-    color: '#52D4D0',
+    color: '#40BFFF',
   },
   card_container: {
     borderRadius: 5,
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     margin: 16,
     height: 57,
     borderRadius: 5,
-    backgroundColor: '#52D4D0',
+    backgroundColor: '#40BFFF',
   },
 });
 

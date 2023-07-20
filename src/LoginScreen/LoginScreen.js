@@ -1,10 +1,15 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import styles from './style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { login } from './api';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -31,6 +36,31 @@ const LoginScreen = () => {
     setIsFocusedPass(false);
   };
 
+  // post login
+  const handleLogin = async () => {
+    try {
+      const response = await login(email, password);
+      console.log('response', response.success);
+      if (response.success === true) {
+        navigation.navigate('Home');
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        Alert.alert('Error', 'Invalid Email or Password');
+      } else {
+        console.error('Error fetching product data:', error);
+      }
+    }
+  };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword');
+  };
+
+  const hangleRegister = () => {
+    navigation.navigate('Register');
+  };
+
   return (
     <View style={styles.constainer}>
       <Text style={{ fontSize: 20, color: '#192a56', fontWeight: 'bold' }}>
@@ -55,6 +85,7 @@ const LoginScreen = () => {
           placeholder="Your Email"
           onFocus={handleFocusMail}
           onBlur={handleBlurMail}
+          onChangeText={setEmail}
         />
       </View>
       <View
@@ -74,6 +105,7 @@ const LoginScreen = () => {
           secureTextEntry={!showPassword}
           onFocus={handleFocusPass}
           onBlur={handleBlurPass}
+          onChangeText={setPassword}
         />
         <TouchableOpacity
           style={styles.showPasswordButton}
@@ -91,17 +123,17 @@ const LoginScreen = () => {
       </View>
 
       <View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Sign in</Text>
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.text}>Forgot Password?</Text>
       </TouchableOpacity>
       <View style={styles.registerContainer}>
         <Text style={{ fontSize: 18 }}>Don't have a account? </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={hangleRegister}>
           <Text style={styles.text}> Register</Text>
         </TouchableOpacity>
       </View>

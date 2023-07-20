@@ -16,16 +16,32 @@ import Payment from './src/CartScreen/Payment';
 import ChooseCard from './src/CartScreen/ChooseCard';
 import Success from './src/CartScreen/Success';
 import OrderDetail from './src/OrderScreen/OrderDetail';
+import ForgotPassword from './src/LoginScreen/ForgotPassword';
+import Register from './src/LoginScreen/Register';
+import ReviewScreen from './src/ReviewScreen/ReviewScreen';
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
   return (
-    <Tab.Navigator initialRouteName="Cart" screenOptions={{}}>
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{ headerShown: false }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <Icon type="feather" name="home" color={color} size={size} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Cart"
         component={Cart}
         options={{
-          title: 'Your Cart',
+          title: 'Cart',
           tabBarIcon: ({ color, size }) => (
             <Icon
               type="feather"
@@ -51,7 +67,54 @@ const CartAndHistory = () => {
           ),
         }}
       />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Icon
+              type="feather"
+              name="shopping-bag"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
+  );
+};
+
+const HomeStack = () => {
+  const Stack = createNativeStackNavigator();
+  return (
+    <Stack.Navigator initialRouteName={LoginScreen}>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          headerTitleAlign: 'center',
+          headerBackVisible: false,
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{ headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{ headerTitleAlign: 'center' }}
+      />
+    </Stack.Navigator>
   );
 };
 
@@ -72,7 +135,7 @@ export default function App() {
             title: 'Ship To',
             headerRight: () => (
               <Button buttonStyle={{ backgroundColor: 'white' }}>
-                <Icon name="plus" type="feather" color="#52D4D0" />
+                <Icon name="plus" type="feather" color="#40BFFF" />
               </Button>
             ),
           }}
@@ -84,7 +147,7 @@ export default function App() {
           options={{
             headerRight: () => (
               <Button buttonStyle={{ backgroundColor: 'white' }}>
-                <Icon name="plus" type="feather" color="#52D4D0" />
+                <Icon name="plus" type="feather" color="#40BFFF" />
               </Button>
             ),
           }}
@@ -92,6 +155,16 @@ export default function App() {
         <Stack.Screen
           name="Success Payment"
           component={Success}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailScreen"
+          component={DetailScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ReviewScreen"
+          component={ReviewScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Order Detail" component={OrderDetail} />
