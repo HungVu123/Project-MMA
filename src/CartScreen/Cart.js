@@ -6,6 +6,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableHighlight,
+  SafeAreaView,
+  StatusBar,
 } from 'react-native';
 import { View } from 'react-native';
 
@@ -50,187 +52,190 @@ const Cart = () => {
 
   return (
     <View style={styles.container}>
-      <Card containerStyle={styles.card_container}>
-        <View style={{ flexDirection: 'row' }}>
-          <Image
-            source={require('./image/air-force-1.jpg')}
-            style={styles.img}
-          />
-          <View style={{ flex: 1 }}>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flex: 1,
-                flexDirection: 'row',
-              }}
-            >
-              <Text style={styles.product_title}>Nike Air Force 1</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <TouchableHighlight onPress={() => setLike(!like)}>
+      <SafeAreaView>
+        <StatusBar barStyle="dark-content" />
+        <Card containerStyle={styles.card_container}>
+          <View style={{ flexDirection: 'row' }}>
+            <Image
+              source={require('./image/air-force-1.jpg')}
+              style={styles.img}
+            />
+            <View style={{ flex: 1 }}>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flex: 1,
+                  flexDirection: 'row',
+                }}
+              >
+                <Text style={styles.product_title}>Nike Air Force 1</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <TouchableHighlight onPress={() => setLike(!like)}>
+                    <Icon
+                      style={styles.icon}
+                      name="favorite-border"
+                      type="material"
+                      color={likePress}
+                    />
+                  </TouchableHighlight>
+                  <Icon
+                    style={styles.icon}
+                    name="delete-outline"
+                    type="material"
+                    color="#9098B1"
+                  />
+                </View>
+              </View>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flex: 1,
+                  flexDirection: 'row',
+                  marginTop: 25,
+                }}
+              >
+                <Text style={styles.product_price}>$244,99</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Button
+                    buttonStyle={styles.button}
+                    type="solid"
+                    onPress={decrease}
+                  >
+                    <Icon name="remove" color="#9098B1" />
+                  </Button>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={number.toString()}
+                    ref={textInputRef}
+                  />
+                  <Button
+                    buttonStyle={styles.button}
+                    type="solid"
+                    onPress={increase}
+                  >
+                    <Icon name="add" color="#9098B1" />
+                  </Button>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Card>
+        <Card containerStyle={styles.card_container}>
+          <View style={{ flexDirection: 'row' }}>
+            <Image
+              source={require('./image/air-force-1.jpg')}
+              style={styles.img}
+            />
+            <View style={{ flex: 1 }}>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flex: 1,
+                  flexDirection: 'row',
+                }}
+              >
+                <Text style={styles.product_title}>Nike Air Force 1</Text>
+                <View style={{ flexDirection: 'row' }}>
                   <Icon
                     style={styles.icon}
                     name="favorite-border"
                     type="material"
-                    color={likePress}
+                    color="#9098B1"
                   />
-                </TouchableHighlight>
-                <Icon
-                  style={styles.icon}
-                  name="delete-outline"
-                  type="material"
-                  color="#9098B1"
-                />
+                  <Icon
+                    style={styles.icon}
+                    name="delete-outline"
+                    type="material"
+                    color="#9098B1"
+                  />
+                </View>
               </View>
-            </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flex: 1,
-                flexDirection: 'row',
-                marginTop: 25,
-              }}
-            >
-              <Text style={styles.product_price}>$244,99</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Button
-                  buttonStyle={styles.button}
-                  type="solid"
-                  onPress={decrease}
-                >
-                  <Icon name="remove" color="#9098B1" />
-                </Button>
-                <TextInput
-                  style={styles.input}
-                  keyboardType="numeric"
-                  value={number.toString()}
-                  ref={textInputRef}
-                />
-                <Button
-                  buttonStyle={styles.button}
-                  type="solid"
-                  onPress={increase}
-                >
-                  <Icon name="add" color="#9098B1" />
-                </Button>
-              </View>
-            </View>
-          </View>
-        </View>
-      </Card>
-      <Card containerStyle={styles.card_container}>
-        <View style={{ flexDirection: 'row' }}>
-          <Image
-            source={require('./image/air-force-1.jpg')}
-            style={styles.img}
-          />
-          <View style={{ flex: 1 }}>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flex: 1,
-                flexDirection: 'row',
-              }}
-            >
-              <Text style={styles.product_title}>Nike Air Force 1</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Icon
-                  style={styles.icon}
-                  name="favorite-border"
-                  type="material"
-                  color="#9098B1"
-                />
-                <Icon
-                  style={styles.icon}
-                  name="delete-outline"
-                  type="material"
-                  color="#9098B1"
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flex: 1,
-                flexDirection: 'row',
-                marginTop: 25,
-              }}
-            >
-              <Text style={styles.product_price}>$244,99</Text>
-              <View style={{ flexDirection: 'row' }}>
-                <Button
-                  buttonStyle={styles.button}
-                  type="solid"
-                  onPress={decrease}
-                >
-                  <Icon name="remove" color="#9098B1" />
-                </Button>
-                <TextInput
-                  style={styles.input}
-                  keyboardType="numeric"
-                  value={number.toString()}
-                  ref={textInputRef}
-                />
-                <Button
-                  buttonStyle={styles.button}
-                  type="solid"
-                  onPress={increase}
-                >
-                  <Icon name="add" color="#9098B1" />
-                </Button>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flex: 1,
+                  flexDirection: 'row',
+                  marginTop: 25,
+                }}
+              >
+                <Text style={styles.product_price}>$244,99</Text>
+                <View style={{ flexDirection: 'row' }}>
+                  <Button
+                    buttonStyle={styles.button}
+                    type="solid"
+                    onPress={decrease}
+                  >
+                    <Icon name="remove" color="#9098B1" />
+                  </Button>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={number.toString()}
+                    ref={textInputRef}
+                  />
+                  <Button
+                    buttonStyle={styles.button}
+                    type="solid"
+                    onPress={increase}
+                  >
+                    <Icon name="add" color="#9098B1" />
+                  </Button>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-      </Card>
-      <Card containerStyle={styles.card_container}>
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            padding: 16,
-          }}
-        >
-          <Text style={{ color: '#9098B1' }}>Items (2)</Text>
-          <Text style={{}}>$599</Text>
-        </View>
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            padding: 16,
-          }}
-        >
-          <Text style={{ color: '#9098B1' }}>Shipping</Text>
-          <Text style={{}}>$40</Text>
-        </View>
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            padding: 16,
-          }}
-        >
-          <Text style={{ color: '#9098B1' }}>Import charges</Text>
-          <Text style={{}}>$128</Text>
-        </View>
-        <Divider />
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            padding: 16,
-          }}
-        >
-          <Text style={{ fontWeight: 'bold' }}>Total Price</Text>
-          <Text style={styles.product_price}>$787</Text>
-        </View>
-      </Card>
-      <Button
-        title="Check Out"
-        buttonStyle={styles.checkout_button}
-        titleStyle={{ fontWeight: 'bold' }}
-        onPress={proceedToShipping}
-      />
+        </Card>
+        <Card containerStyle={styles.card_container}>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              padding: 16,
+            }}
+          >
+            <Text style={{ color: '#9098B1' }}>Items (2)</Text>
+            <Text style={{}}>$599</Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              padding: 16,
+            }}
+          >
+            <Text style={{ color: '#9098B1' }}>Shipping</Text>
+            <Text style={{}}>$40</Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              padding: 16,
+            }}
+          >
+            <Text style={{ color: '#9098B1' }}>Import charges</Text>
+            <Text style={{}}>$128</Text>
+          </View>
+          <Divider />
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              padding: 16,
+            }}
+          >
+            <Text style={{ fontWeight: 'bold' }}>Total Price</Text>
+            <Text style={styles.product_price}>$787</Text>
+          </View>
+        </Card>
+        <Button
+          title="Check Out"
+          buttonStyle={styles.checkout_button}
+          titleStyle={{ fontWeight: 'bold' }}
+          onPress={proceedToShipping}
+        />
+      </SafeAreaView>
     </View>
   );
 };
@@ -251,7 +256,7 @@ const styles = StyleSheet.create({
   product_price: {
     marginLeft: 12,
     fontWeight: 'bold',
-    color: '#52D4D0',
+    color: '#40BFFF',
   },
   card_container: {
     borderRadius: 5,
@@ -303,13 +308,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 5,
     borderBottomLeftRadius: 0,
     borderTopLeftRadius: 0,
-    backgroundColor: '#52D4D0',
+    backgroundColor: '#40BFFF',
   },
   checkout_button: {
     margin: 16,
     height: 57,
     borderRadius: 5,
-    backgroundColor: '#52D4D0',
+    backgroundColor: '#40BFFF',
   },
 });
 

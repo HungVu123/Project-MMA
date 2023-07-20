@@ -22,12 +22,15 @@ import Register from './src/LoginScreen/Register';
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
   return (
-    <Tab.Navigator initialRouteName="Home" screenOptions={{}}>
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{ headerShown: false }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Your Cart',
+          title: 'Home',
           tabBarIcon: ({ color, size }) => (
             <Icon type="feather" name="home" color={color} size={size} />
           ),
@@ -131,7 +134,7 @@ export default function App() {
             title: 'Ship To',
             headerRight: () => (
               <Button buttonStyle={{ backgroundColor: 'white' }}>
-                <Icon name="plus" type="feather" color="#52D4D0" />
+                <Icon name="plus" type="feather" color="#40BFFF" />
               </Button>
             ),
           }}
@@ -143,7 +146,7 @@ export default function App() {
           options={{
             headerRight: () => (
               <Button buttonStyle={{ backgroundColor: 'white' }}>
-                <Icon name="plus" type="feather" color="#52D4D0" />
+                <Icon name="plus" type="feather" color="#40BFFF" />
               </Button>
             ),
           }}
@@ -151,6 +154,11 @@ export default function App() {
         <Stack.Screen
           name="Success Payment"
           component={Success}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailScreen"
+          component={DetailScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Order Detail" component={OrderDetail} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Alert,
   Image,
@@ -8,16 +8,16 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import styles from "./style";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import axios from "axios";
+} from 'react-native';
+import styles from './style';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
 
 export default function RegisterScreen() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [rePassword, setRePassword] = useState('');
 
   //State chứa value của ô nào sẽ đổi màu khi focus
   const [focusStates, setFocusStates] = useState({
@@ -45,7 +45,7 @@ export default function RegisterScreen() {
 
   // Màu sắc của onFocus và not onFocus
   const getFocusColor = (inputName) => {
-    return focusStates[inputName] ? "#52D4D0" : "#ccc";
+    return focusStates[inputName] ? '#40BFFF' : '#ccc';
   };
 
   //Password Part
@@ -59,27 +59,27 @@ export default function RegisterScreen() {
   };
 
   const getPasswordIconName = () => {
-    return isPasswordVisible ? "eye-outline" : "eye-off-outline";
+    return isPasswordVisible ? 'eye-outline' : 'eye-off-outline';
   };
 
   const getRePasswordIconName = () => {
-    return isRePasswordVisible ? "eye-outline" : "eye-off-outline";
+    return isRePasswordVisible ? 'eye-outline' : 'eye-off-outline';
   };
 
   const handleSubmit = async () => {
     if (password !== rePassword) {
-      Alert.alert("Error", "Password must match rePassword", [
+      Alert.alert('Error', 'Password must match rePassword', [
         {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
         },
-        { text: "OK", onPress: () => console.log("OK Pressed") },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
       ]);
     } else {
       try {
         const response = await axios.post(
-          "http://192.168.1.9:4000/api/v1/register",
+          'http://192.168.1.9:4000/api/v1/register',
           {
             // Request body data
             name: username,
@@ -88,15 +88,15 @@ export default function RegisterScreen() {
           }
         );
 
-        console.log("Response:", response.data);
+        console.log('Response:', response.data);
       } catch (error) {
-        Alert.alert("Error", error.response.data.message, [
+        Alert.alert('Error', error.response.data.message, [
           {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel",
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
           },
-          { text: "OK", onPress: () => console.log("OK Pressed") },
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
         ]);
       }
     }
@@ -106,7 +106,7 @@ export default function RegisterScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={require("../../assets/AvaProfile.png")}
+          source={require('../../assets/AvaProfile.png')}
           resizeMode="stretch"
           style={styles.images}
         />
@@ -119,19 +119,19 @@ export default function RegisterScreen() {
         <View
           style={[
             styles.textInputContainer,
-            { borderColor: getFocusColor("username") },
+            { borderColor: getFocusColor('username') },
           ]}
         >
           <Ionicons
             name="person-outline"
             size={35}
-            style={[styles.icon, { color: getFocusColor("username") }]}
+            style={[styles.icon, { color: getFocusColor('username') }]}
           />
           <TextInput
             style={styles.input}
             placeholder="User Name"
-            onFocus={() => handleFocus("username")}
-            onBlur={() => handleBlur("username")}
+            onFocus={() => handleFocus('username')}
+            onBlur={() => handleBlur('username')}
             onChangeText={(text) => handleInputChange(text, setUsername)}
           />
         </View>
@@ -140,19 +140,19 @@ export default function RegisterScreen() {
         <View
           style={[
             styles.textInputContainer,
-            { borderColor: getFocusColor("email") },
+            { borderColor: getFocusColor('email') },
           ]}
         >
           <Ionicons
             name="mail-outline"
             size={35}
-            style={[styles.icon, { color: getFocusColor("email") }]}
+            style={[styles.icon, { color: getFocusColor('email') }]}
           />
           <TextInput
             style={styles.input}
             placeholder="Your Email"
-            onFocus={() => handleFocus("email")}
-            onBlur={() => handleBlur("email")}
+            onFocus={() => handleFocus('email')}
+            onBlur={() => handleBlur('email')}
             onChangeText={(text) => handleInputChange(text, setEmail)}
           />
         </View>
@@ -161,20 +161,20 @@ export default function RegisterScreen() {
         <View
           style={[
             styles.textInputContainer,
-            { borderColor: getFocusColor("password") },
+            { borderColor: getFocusColor('password') },
           ]}
         >
           <Ionicons
             name="lock-closed-outline"
             size={35}
-            style={[styles.icon, { color: getFocusColor("password") }]}
+            style={[styles.icon, { color: getFocusColor('password') }]}
           />
           <TextInput
             style={styles.input}
             placeholder="Password"
             secureTextEntry={!isPasswordVisible}
-            onFocus={() => handleFocus("password")}
-            onBlur={() => handleBlur("password")}
+            onFocus={() => handleFocus('password')}
+            onBlur={() => handleBlur('password')}
             value={password}
             onChangeText={(text) => handleInputChange(text, setPassword)}
           />
@@ -186,7 +186,7 @@ export default function RegisterScreen() {
               name={getPasswordIconName()}
               style={[
                 styles.iconPassword,
-                { color: getFocusColor("password") },
+                { color: getFocusColor('password') },
               ]}
             />
           </TouchableOpacity>
@@ -196,20 +196,20 @@ export default function RegisterScreen() {
         <View
           style={[
             styles.textInputContainer,
-            { borderColor: getFocusColor("rePassword") },
+            { borderColor: getFocusColor('rePassword') },
           ]}
         >
           <Ionicons
             name="lock-closed-outline"
             size={35}
-            style={[styles.icon, { color: getFocusColor("rePassword") }]}
+            style={[styles.icon, { color: getFocusColor('rePassword') }]}
           />
           <TextInput
             style={styles.input}
             placeholder="Confirm Password"
             secureTextEntry={!isRePasswordVisible}
-            onFocus={() => handleFocus("rePassword")}
-            onBlur={() => handleBlur("rePassword")}
+            onFocus={() => handleFocus('rePassword')}
+            onBlur={() => handleBlur('rePassword')}
             value={rePassword}
             onChangeText={(text) => handleInputChange(text, setRePassword)}
           />
@@ -221,7 +221,7 @@ export default function RegisterScreen() {
               name={getRePasswordIconName()}
               style={[
                 styles.iconPassword,
-                { color: getFocusColor("rePassword") },
+                { color: getFocusColor('rePassword') },
               ]}
             />
           </TouchableOpacity>
@@ -233,8 +233,8 @@ export default function RegisterScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.registerContainer}>
-          <Text style={{ fontSize: 12, color: "#9098B1" }}>
-            Have a account?{" "}
+          <Text style={{ fontSize: 12, color: '#9098B1' }}>
+            Have a account?{' '}
           </Text>
           <TouchableOpacity>
             <Text style={styles.text}>Sign in</Text>

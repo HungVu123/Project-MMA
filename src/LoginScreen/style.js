@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
     color: '#888',
   },
   focusedContainer: {
-    borderColor: '#52D4D0',
+    borderColor: '#40BFFF',
   },
   focusedIcon: {
-    color: '#52D4D0',
+    color: '#40BFFF',
   },
 
   //Sign in button
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 10,
-    backgroundColor: '#52D4D0',
+    backgroundColor: '#40BFFF',
 
     paddingVertical: 18,
     borderRadius: 5,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   text: {
-    color: '#52D4D0',
+    color: '#40BFFF',
     fontSize: 18,
   },
 });

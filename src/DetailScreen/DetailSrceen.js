@@ -7,23 +7,18 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
-} from "react-native";
-import moment from "moment";
-import styles from "./style";
-import axios from "axios";
-export default function DetailScreen() {
+} from 'react-native';
+import moment from 'moment';
+import styles from './style';
+import axios from 'axios';
+export default function DetailScreen(prop) {
   const [data, setData] = useState(null);
   const [review, setReview] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      console.log("=========================");
       try {
-        const res = await axios.get(
-          "http://192.168.1.68:4000/api/v1/product/64ad3ab5342961feeccd56c5"
-        );
-        console.log("Test   ", res["data"]["product"]);
-        setData(res["data"]["product"]);
-        setReview(res["data"]["product"]["reviews"]);
+        setData(prop.route.params);
+        setReview(prop.route.params['reviews']);
       } catch (e) {
         console.log(e);
       }
@@ -35,7 +30,7 @@ export default function DetailScreen() {
     <View style={styles.container}>
       <SafeAreaView>
         {console.log(review)}
-        {data && review.length > 0 ? (
+        {data ? (
           <ScrollView style={styles.scrollview}>
             <View style={styles.containImage}>
               <Image
@@ -51,7 +46,7 @@ export default function DetailScreen() {
               <TouchableOpacity style={styles.containButtonLike}>
                 <Image
                   style={styles.buttonLike}
-                  source={require("../../assets/liked.png")}
+                  source={require('../../assets/liked.png')}
                 />
               </TouchableOpacity>
             </View>
@@ -59,7 +54,7 @@ export default function DetailScreen() {
               {[...Array(Math.round(data.ratings))].map((_, index) => (
                 <TouchableOpacity key={index}>
                   <Image
-                    source={require("../../assets/start.png")}
+                    source={require('../../assets/start.png')}
                     style={styles.rating}
                   />
                 </TouchableOpacity>
@@ -67,12 +62,11 @@ export default function DetailScreen() {
               {[...Array(5 - Math.round(data.ratings))].map((_, index) => (
                 <TouchableOpacity key={index}>
                   <Image
-                    source={require("../../assets/unstart.png")}
+                    source={require('../../assets/unstart.png')}
                     style={styles.rating}
                   />
                 </TouchableOpacity>
               ))}
-              
             </View>
             <Text style={styles.price}>{data.price}$</Text>
             <Text style={styles.desc}>Description: </Text>
@@ -87,7 +81,7 @@ export default function DetailScreen() {
               {[...Array(Math.round(data.ratings))].map((_, index) => (
                 <TouchableOpacity key={index}>
                   <Image
-                    source={require("../../assets/start.png")}
+                    source={require('../../assets/start.png')}
                     style={styles.rating}
                   />
                 </TouchableOpacity>
@@ -95,55 +89,68 @@ export default function DetailScreen() {
               {[...Array(5 - Math.round(data.ratings))].map((_, index) => (
                 <TouchableOpacity key={index}>
                   <Image
-                    source={require("../../assets/unstart.png")}
+                    source={require('../../assets/unstart.png')}
                     style={styles.rating}
                   />
                 </TouchableOpacity>
               ))}
               <Text>{data.ratings}</Text>
-              <Text>  ({review.length} review)</Text>
+              {review.length > 0 ? (
+                <Text> ({review.length} review)</Text>
+              ) : (
+                <Text> (0 review)</Text>
+              )}
             </View>
-            <View style={styles.containDetailRating}>
-              <View style={styles.containHeaderDetailRating}>
-                <View style={styles.containAvaRating}>
-                  <Image
-                    source={{ uri: review[0].avatarUrl }}
-                    resizeMode="stretch"
-                    style={styles.avaRating}
-                  />
-                </View>
-                <View style={styles.containNameAndRating}>
-                  <Text style={styles.containNameRating}>{review[0].name}</Text>
-                  <View style={styles.containRating}>
-                    {[...Array(Math.round(review[0].rating))].map((_, index) => (
-                      <TouchableOpacity key={index}>
-                        <Image
-                          source={require("../../assets/start.png")}
-                          style={styles.rating}
-                        />
-                      </TouchableOpacity>
-                    ))}
-                    {[...Array(5 - Math.round(review[0].rating))].map(
-                      (_, index) => (
-                        <TouchableOpacity key={index}>
-                          <Image
-                            source={require("../../assets/unstart.png")}
-                            style={styles.rating}
-                          />
-                        </TouchableOpacity>
-                      )
-                    )}
-                    
+            {review.length > 0 ? (
+              <View style={styles.containDetailRating}>
+                <View style={styles.containHeaderDetailRating}>
+                  <View style={styles.containAvaRating}>
+                    <Image
+                      source={{ uri: review[0].avatarUrl }}
+                      resizeMode="stretch"
+                      style={styles.avaRating}
+                    />
+                  </View>
+                  <View style={styles.containNameAndRating}>
+                    <Text style={styles.containNameRating}>
+                      {review[0].name}
+                    </Text>
+                    <View style={styles.containRating}>
+                      {[...Array(Math.round(review[0].rating))].map(
+                        (_, index) => (
+                          <TouchableOpacity key={index}>
+                            <Image
+                              source={require('../../assets/start.png')}
+                              style={styles.rating}
+                            />
+                          </TouchableOpacity>
+                        )
+                      )}
+                      {[...Array(5 - Math.round(review[0].rating))].map(
+                        (_, index) => (
+                          <TouchableOpacity key={index}>
+                            <Image
+                             source={require('../../assets/unstart.png')}
+                             style={styles.rating}
+                           />
+                          </TouchableOpacity>
+                        )
+                      )}
+                    </View>
                   </View>
                 </View>
+                <View style={styles.containDescRating}>
+                  <Text style={styles.detailRating}>{review[0].comment}</Text>
+                  <Text style={styles.detailRating}>
+                    {moment(review[0].createReviewAt).format(
+                      'DD-MM-YY HH:mm:ss'
+                    )}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.containDescRating}>
-                <Text style={styles.detailRating}>{review[0].comment}</Text>
-                <Text style={styles.detailRating}>
-                  {moment(review[0].createReviewAt).format("DD-MM-YY HH:mm:ss")}
-                </Text>
-              </View>
-            </View>
+            ) : (
+              <Text></Text>
+            )}
             <TouchableOpacity style={styles.containButtonCart}>
               <Text style={styles.buttonCart}>Add to cart</Text>
             </TouchableOpacity>

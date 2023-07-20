@@ -8,6 +8,7 @@ import {
   TouchableHighlight,
   ScrollView,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import styles from './style';
@@ -21,7 +22,7 @@ import {
   searchProduct,
 } from './api';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const isCarousel = React.useRef(null);
   const SLIDER_WIDTH = Dimensions.get('window').width * 0.95;
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
@@ -108,6 +109,7 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
       {/* -------------- search box --------------*/}
       <View style={styles.searchBoxContainer}>
         <Ionicons name="search-outline" size={25} style={styles.iconSearch} />
@@ -176,7 +178,7 @@ const HomeScreen = () => {
                 height: 10,
                 borderRadius: 5,
                 marginHorizontal: 0,
-                backgroundColor: '#52D4D0',
+                backgroundColor: '#40BFFF',
               }}
               inactiveDotOpacity={0.4}
               inactiveDotScale={0.6}
@@ -213,6 +215,7 @@ const HomeScreen = () => {
                 <TouchableOpacity
                   underlayColor="transparent"
                   activeOpacity={0.4}
+                  onPress={() => navigation.navigate("DetailScreen", product)}
                 >
                   <View style={styles.cardContainer} key={product._id}>
                     <View style={styles.itemImageContainer}>

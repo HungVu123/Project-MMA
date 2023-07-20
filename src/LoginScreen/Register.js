@@ -254,14 +254,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   focusedContainer: {
-    borderColor: '#52D4D0',
+    borderColor: '#40BFFF',
   },
   focusedIcon: {
-    color: '#52D4D0',
+    color: '#40BFFF',
   },
   button: {
     marginVertical: 10,
-    backgroundColor: '#52D4D0',
+    backgroundColor: '#40BFFF',
     paddingVertical: 14,
     borderRadius: 5,
     width: width * 0.93,

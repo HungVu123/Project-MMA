@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   iconSearch: {
     position: 'absolute',
     left: 15,
-    color: '#52D4D0',
+    color: '#40BFFF',
   },
 
   // category
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   textRight: {
-    color: '#52D4D0',
+    color: '#40BFFF',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   categoryIcon: {
     fontSize: 25,
-    color: '#52D4D0',
+    color: '#40BFFF',
   },
   categoryText: {
     paddingTop: 10,
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   itemPrice: {
-    color: '#52D4D0',
+    color: '#40BFFF',
     fontWeight: 'bold',
     fontSize: 18,
     paddingTop: 5,
