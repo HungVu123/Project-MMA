@@ -1,13 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
-import { Card, Icon, Image, Text, Button, Divider } from "@rneui/themed";
-import React, { useEffect, useRef, useState } from "react";
+import { useNavigation } from '@react-navigation/native';
+import { Card, Icon, Image, Text, Button, Divider } from '@rneui/themed';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Keyboard,
   StyleSheet,
   TextInput,
   TouchableHighlight,
-} from "react-native";
-import { View } from "react-native";
+} from 'react-native';
+import { View } from 'react-native';
 
 const Cart = () => {
   const navigation = useNavigation();
@@ -16,7 +16,7 @@ const Cart = () => {
   const [like, setLike] = useState(false);
 
   const likePress = () => {
-    return like ? "red" : "";
+    return like ? 'red' : '';
   };
 
   const increase = () => {
@@ -32,12 +32,12 @@ const Cart = () => {
   };
 
   const proceedToShipping = () => {
-    navigation.navigate("Ship To");
+    navigation.navigate('Ship To');
   };
 
   useEffect(() => {
     const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
+      'keyboardDidHide',
       () => {
         textInputRef.current.blur();
       }
@@ -51,21 +51,21 @@ const Cart = () => {
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.card_container}>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: 'row' }}>
           <Image
-            source={require("./image/air-force-1.jpg")}
+            source={require('./image/air-force-1.jpg')}
             style={styles.img}
           />
           <View style={{ flex: 1 }}>
             <View
               style={{
-                justifyContent: "space-between",
+                justifyContent: 'space-between',
                 flex: 1,
-                flexDirection: "row",
+                flexDirection: 'row',
               }}
             >
               <Text style={styles.product_title}>Nike Air Force 1</Text>
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: 'row' }}>
                 <TouchableHighlight onPress={() => setLike(!like)}>
                   <Icon
                     style={styles.icon}
@@ -84,14 +84,14 @@ const Cart = () => {
             </View>
             <View
               style={{
-                justifyContent: "space-between",
+                justifyContent: 'space-between',
                 flex: 1,
-                flexDirection: "row",
+                flexDirection: 'row',
                 marginTop: 25,
               }}
             >
               <Text style={styles.product_price}>$244,99</Text>
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: 'row' }}>
                 <Button
                   buttonStyle={styles.button}
                   type="solid"
@@ -118,21 +118,21 @@ const Cart = () => {
         </View>
       </Card>
       <Card containerStyle={styles.card_container}>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: 'row' }}>
           <Image
-            source={require("./image/air-force-1.jpg")}
+            source={require('./image/air-force-1.jpg')}
             style={styles.img}
           />
           <View style={{ flex: 1 }}>
             <View
               style={{
-                justifyContent: "space-between",
+                justifyContent: 'space-between',
                 flex: 1,
-                flexDirection: "row",
+                flexDirection: 'row',
               }}
             >
               <Text style={styles.product_title}>Nike Air Force 1</Text>
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: 'row' }}>
                 <Icon
                   style={styles.icon}
                   name="favorite-border"
@@ -149,14 +149,14 @@ const Cart = () => {
             </View>
             <View
               style={{
-                justifyContent: "space-between",
+                justifyContent: 'space-between',
                 flex: 1,
-                flexDirection: "row",
+                flexDirection: 'row',
                 marginTop: 25,
               }}
             >
               <Text style={styles.product_price}>$244,99</Text>
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: 'row' }}>
                 <Button
                   buttonStyle={styles.button}
                   type="solid"
@@ -182,67 +182,53 @@ const Cart = () => {
           </View>
         </View>
       </Card>
-      <Card containerStyle={styles.coupon_container}>
-        <View style={styles.coupon_box}>
-          <TextInput
-            style={styles.coupon_input}
-            placeholder="Enter Coupon Code"
-            ref={textInputRef}
-          />
-          <Button
-            title="Apply"
-            buttonStyle={styles.coupon_button}
-            type="solid"
-          />
-        </View>
-      </Card>
       <Card containerStyle={styles.card_container}>
         <View
           style={{
-            justifyContent: "space-between",
-            flexDirection: "row",
+            justifyContent: 'space-between',
+            flexDirection: 'row',
             padding: 16,
           }}
         >
-          <Text style={{ color: "#9098B1" }}>Items (2)</Text>
+          <Text style={{ color: '#9098B1' }}>Items (2)</Text>
           <Text style={{}}>$599</Text>
         </View>
         <View
           style={{
-            justifyContent: "space-between",
-            flexDirection: "row",
+            justifyContent: 'space-between',
+            flexDirection: 'row',
             padding: 16,
           }}
         >
-          <Text style={{ color: "#9098B1" }}>Shipping</Text>
+          <Text style={{ color: '#9098B1' }}>Shipping</Text>
           <Text style={{}}>$40</Text>
         </View>
         <View
           style={{
-            justifyContent: "space-between",
-            flexDirection: "row",
+            justifyContent: 'space-between',
+            flexDirection: 'row',
             padding: 16,
           }}
         >
-          <Text style={{ color: "#9098B1" }}>Import charges</Text>
+          <Text style={{ color: '#9098B1' }}>Import charges</Text>
           <Text style={{}}>$128</Text>
         </View>
         <Divider />
         <View
           style={{
-            justifyContent: "space-between",
-            flexDirection: "row",
+            justifyContent: 'space-between',
+            flexDirection: 'row',
             padding: 16,
           }}
         >
-          <Text style={{ fontWeight: "bold" }}>Total Price</Text>
+          <Text style={{ fontWeight: 'bold' }}>Total Price</Text>
           <Text style={styles.product_price}>$787</Text>
         </View>
       </Card>
       <Button
         title="Check Out"
         buttonStyle={styles.checkout_button}
-        titleStyle={{ fontWeight: "bold" }}
+        titleStyle={{ fontWeight: 'bold' }}
         onPress={proceedToShipping}
       />
     </View>
@@ -259,13 +245,13 @@ const styles = StyleSheet.create({
   },
   product_title: {
     marginLeft: 12,
-    fontWeight: "bold",
-    color: "#192a56",
+    fontWeight: 'bold',
+    color: '#192a56',
   },
   product_price: {
     marginLeft: 12,
-    fontWeight: "bold",
-    color: "#52D4D0",
+    fontWeight: 'bold',
+    color: '#52D4D0',
   },
   card_container: {
     borderRadius: 5,
@@ -277,11 +263,11 @@ const styles = StyleSheet.create({
   input: {
     width: 40,
     height: 24,
-    textAlign: "center",
-    backgroundColor: "#EBF0FF",
+    textAlign: 'center',
+    backgroundColor: '#EBF0FF',
     padding: 2,
     fontSize: 12,
-    color: "#223263",
+    color: '#223263',
   },
   button: {
     width: 40,
@@ -289,9 +275,9 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     borderRadius: 0,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: "#EBF0FF",
+    borderColor: '#EBF0FF',
   },
   coupon_container: {
     borderRadius: 5,
@@ -299,11 +285,11 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   coupon_box: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderRadius: 5,
   },
   coupon_input: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     width: 275,
     height: 56,
     borderTopLeftRadius: 5,
@@ -317,13 +303,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 5,
     borderBottomLeftRadius: 0,
     borderTopLeftRadius: 0,
-    backgroundColor: "#52D4D0",
+    backgroundColor: '#52D4D0',
   },
   checkout_button: {
     margin: 16,
     height: 57,
     borderRadius: 5,
-    backgroundColor: "#52D4D0",
+    backgroundColor: '#52D4D0',
   },
 });
 
