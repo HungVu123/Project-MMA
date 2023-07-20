@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,8 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
-} from "react-native";
-import styles from "./style";
+} from 'react-native';
+import styles from './style';
 
 export default function ProfileScreen() {
   return (
@@ -19,7 +19,7 @@ export default function ProfileScreen() {
           <View style={styles.header}>
             <View style={styles.containImageAva}>
               <Image
-                source={require("../../assets/AvaProfile.png")}
+                source={require('../../assets/AvaProfile.png')}
                 resizeMode="stretch"
                 style={styles.imageAva}
               />
@@ -33,7 +33,7 @@ export default function ProfileScreen() {
             <View style={styles.containItem}>
               <View style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/GenderIcon.png")}
+                  source={require('../../assets/GenderIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconItemHeight}
                 />
@@ -46,7 +46,7 @@ export default function ProfileScreen() {
               </View>
               <TouchableOpacity style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/UpdateIcon.png")}
+                  source={require('../../assets/UpdateIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconUpdate}
                 />
@@ -55,7 +55,7 @@ export default function ProfileScreen() {
             <View style={styles.containItem}>
               <View style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/BirthdayIcon.png")}
+                  source={require('../../assets/BirthdayIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconItemWidth}
                 />
@@ -68,7 +68,7 @@ export default function ProfileScreen() {
               </View>
               <TouchableOpacity style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/UpdateIcon.png")}
+                  source={require('../../assets/UpdateIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconUpdate}
                 />
@@ -77,7 +77,7 @@ export default function ProfileScreen() {
             <View style={styles.containItem}>
               <View style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/MailIcon.png")}
+                  source={require('../../assets/MailIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconItemWidth}
                 />
@@ -90,7 +90,7 @@ export default function ProfileScreen() {
               </View>
               <TouchableOpacity style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/UpdateIcon.png")}
+                  source={require('../../assets/UpdateIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconUpdate}
                 />
@@ -99,7 +99,7 @@ export default function ProfileScreen() {
             <View style={styles.containItem}>
               <View style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/PhoneIcon.png")}
+                  source={require('../../assets/PhoneIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconItemHeight}
                 />
@@ -112,7 +112,7 @@ export default function ProfileScreen() {
               </View>
               <TouchableOpacity style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/UpdateIcon.png")}
+                  source={require('../../assets/UpdateIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconUpdate}
                 />
@@ -121,7 +121,7 @@ export default function ProfileScreen() {
             <View style={styles.containItem}>
               <View style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/PasswordIcon.png")}
+                  source={require('../../assets/PasswordIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconItemWidth}
                 />
@@ -134,7 +134,7 @@ export default function ProfileScreen() {
               </View>
               <TouchableOpacity style={styles.containIcon}>
                 <Image
-                  source={require("../../assets/UpdateIcon.png")}
+                  source={require('../../assets/UpdateIcon.png')}
                   resizeMode="stretch"
                   style={styles.iconUpdate}
                 />
