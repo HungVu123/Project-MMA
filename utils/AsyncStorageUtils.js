@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import EventEmitter from "./EventEmitter";
 
 export const loadStorage = async (list, userName) => {
   try {

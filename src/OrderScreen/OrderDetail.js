@@ -1,5 +1,4 @@
-import { Button, Card, Divider, Icon, Image, Text } from '@rneui/themed';
-import axios from 'axios';
+import { Card, Divider, Icon, Image, Text } from '@rneui/themed';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import {

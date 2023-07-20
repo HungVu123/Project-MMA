@@ -1,15 +1,9 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { Button, Card, Divider, Icon, Skeleton, Text } from '@rneui/themed';
+import { useNavigation } from '@react-navigation/native';
+import { Card, Divider, Skeleton, Text } from '@rneui/themed';
 import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 const History = () => {
   const navigation = useNavigation();
