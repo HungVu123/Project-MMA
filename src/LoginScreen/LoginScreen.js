@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from './style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -45,12 +45,20 @@ const LoginScreen = () => {
         navigation.navigate('Home');
       }
     } catch (error) {
-      console.error(error);
+      if (error.response && error.response.status === 401) {
+        Alert.alert('Error', 'Invalid Email or Password');
+      } else {
+        console.error('Error fetching product data:', error);
+      }
     }
   };
 
   const handleForgotPassword = () => {
     navigation.navigate('ForgotPassword');
+  };
+
+  const hangleRegister = () => {
+    navigation.navigate('Register');
   };
 
   return (
@@ -125,7 +133,7 @@ const LoginScreen = () => {
       </TouchableOpacity>
       <View style={styles.registerContainer}>
         <Text style={{ fontSize: 18 }}>Don't have a account? </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={hangleRegister}>
           <Text style={styles.text}> Register</Text>
         </TouchableOpacity>
       </View>

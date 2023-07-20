@@ -121,11 +121,11 @@ const HomeScreen = () => {
         />
         <View style={styles.iconContainer}>
           <Ionicons name="heart-outline" size={35} style={styles.iconHeart} />
-          <Ionicons
+          {/* <Ionicons
             name="notifications-outline"
             size={35}
             style={styles.iconNoti}
-          />
+          /> */}
         </View>
       </View>
       {isSearching ? (

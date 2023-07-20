@@ -13,9 +13,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    // backgroundColor: 'green',
   },
   searchBox: {
-    flex: 2,
+    flex: 5,
     borderWidth: 1,
     borderRadius: 5,
     paddingTop: 10,

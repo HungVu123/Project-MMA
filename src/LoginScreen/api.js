@@ -27,3 +27,16 @@ export const forgotPassword = async (email) => {
     console.error('Error fetching product data:', error);
   }
 };
+
+export const register = async (name, email, password) => {
+  try {
+    const response = await api.post(`${api.defaults.baseURL}/register`, {
+      name: name,
+      email: email,
+      password: password,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching product data:', error);
+  }
+};

@@ -17,6 +17,7 @@ import ChooseCard from './src/CartScreen/ChooseCard';
 import Success from './src/CartScreen/Success';
 import OrderDetail from './src/OrderScreen/OrderDetail';
 import ForgotPassword from './src/LoginScreen/ForgotPassword';
+import Register from './src/LoginScreen/Register';
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
@@ -77,6 +78,11 @@ const HomeStack = () => {
       <Stack.Screen
         name="ForgotPassword"
         component={ForgotPassword}
+        options={{ headerTitleAlign: 'center' }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
         options={{ headerTitleAlign: 'center' }}
       />
     </Stack.Navigator>
