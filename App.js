@@ -18,6 +18,7 @@ import Success from './src/CartScreen/Success';
 import OrderDetail from './src/OrderScreen/OrderDetail';
 import ForgotPassword from './src/LoginScreen/ForgotPassword';
 import Register from './src/LoginScreen/Register';
+import ReviewScreen from './src/ReviewScreen/ReviewScreen';
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
@@ -159,6 +160,11 @@ export default function App() {
         <Stack.Screen
           name="DetailScreen"
           component={DetailScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ReviewScreen"
+          component={ReviewScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Order Detail" component={OrderDetail} />
