@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   iconHeart: {
-    flex: 1,
     color: '#bdc3c7',
   },
   iconNoti: {

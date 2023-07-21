@@ -7,13 +7,28 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 import styles from './style';
 import axios from 'axios';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import {
+  loadStorage,
+  loadUserInfo,
+  removeAllStorage,
+  removeFromStorage,
+  saveToStorage,
+  saveUserInfo,
+} from '../../utils/AsyncStorageUtils';
+import { G } from 'react-native-svg';
 export default function DetailScreen(prop) {
   const [data, setData] = useState(null);
   const [review, setReview] = useState([]);
+  const navigation = useNavigation();
+  const [user, setUser] = useState();
+  const [userName, setUserName] = useState();
+  const [cartList, setCartList] = useState();
   useEffect(() => {
     async function fetchData() {
       try {
@@ -26,10 +41,77 @@ export default function DetailScreen(prop) {
     fetchData();
   }, []);
 
+  const login = async () => {
+    try {
+      const response = await axios.post(
+        'http://192.168.1.15:4000/api/v1/login',
+        {
+          email: 'vonglaucac123@gmail.com',
+          password: 'vonglaucac123',
+        }
+      );
+      setUserName(response.data.user.name);
+      await saveUserInfo(response.data.user);
+      await loadUserInfo();
+    } catch (e) {
+      console.log('error at login:' + e);
+    }
+  };
+  const loadCart = async (name) => {
+    const storedCart = await loadStorage('cart', name);
+    setCartList(storedCart);
+  };
+
+  //xử lí bỏ hàng vào cart
+  const handleAddToCart = (name, item) => {
+    Alert.alert('Confirmation', 'Do you want to add this?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: async () => {
+          await saveToStorage('cart', name, item);
+          loadCart(userName);
+        },
+      },
+    ]);
+  };
+  const handleRemoveFromCart = (name, item) => {
+    Alert.alert('Confirmation', 'Do you want to remove this?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: async () => {
+          await removeFromStorage('cart', name, item);
+          loadCart(userName);
+        },
+      },
+    ]);
+  };
+  useEffect(() => {
+    login();
+  }, []);
+
+  useEffect(() => {
+    loadCart(userName);
+  }, [userName]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadCart(userName);
+    }, [])
+  );
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
-        {console.log(review)}
         {data ? (
           <ScrollView style={styles.scrollview}>
             <View style={styles.containImage}>
@@ -160,8 +242,29 @@ export default function DetailScreen(prop) {
             ) : (
               <Text></Text>
             )}
-            <TouchableOpacity style={styles.containButtonCart}>
-              <Text style={styles.buttonCart}>Add to cart</Text>
+            {/* nút bỏ vào cart */}
+            <TouchableOpacity
+              style={styles.containButtonCart}
+              onPress={() => {
+                if (userName) {
+                  if (
+                    cartList &&
+                    !cartList.some((cart) => cart._id === data._id)
+                  ) {
+                    handleAddToCart(userName, data);
+                  } else {
+                    handleRemoveFromCart(userName, data);
+                  }
+                } else {
+                  navigation.navigate('Login');
+                }
+              }}
+            >
+              <Text style={styles.buttonCart}>
+                {cartList && cartList.some((cart) => cart._id === data._id)
+                  ? 'Remove From Cart'
+                  : 'Add To Cart'}
+              </Text>
             </TouchableOpacity>
           </ScrollView>
         ) : (

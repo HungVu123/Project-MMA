@@ -21,12 +21,17 @@ import {
   fetchProductSuplements,
   searchProduct,
 } from './api';
+import { Icon } from '@rneui/themed';
 
 const HomeScreen = ({ navigation }) => {
   const isCarousel = React.useRef(null);
   const SLIDER_WIDTH = Dimensions.get('window').width * 0.95;
   const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 1);
   const [index, setIndex] = React.useState(0);
+
+  const moveToFavorite = () => {
+    navigation.navigate('Favorite');
+  };
 
   // fetchProductBirds
 
