@@ -126,22 +126,22 @@ const StripeTest = () => {
     }
   };
 
-  const shippingInfo = {
-    address: user?.shippingInfos[index].address,
-    city: user?.shippingInfos[index].city,
-    state: user?.shippingInfos[index].state,
-    pinCode: user?.shippingInfos[index].pinCode,
-    country: user?.shippingInfos[index].country,
-    phoneNo: user?.shippingInfos[index].phoneNo,
-  };
+  // const shippingInfo = {
+  //   address: user?.shippingInfos[index].address,
+  //   city: user?.shippingInfos[index].city,
+  //   state: user?.shippingInfos[index].state,
+  //   pinCode: user?.shippingInfos[index].pinCode,
+  //   country: user?.shippingInfos[index].country,
+  //   phoneNo: user?.shippingInfos[index].phoneNo,
+  // };
 
-  const orderItems = cart.map((item) => ({
-    product: item._id,
-    name: `${item.name}`,
-    price: item.price,
-    image: `${item.images[0].url}`,
-    quantity: item.quantity,
-  }));
+  // const orderItems = cart.map((item) => ({
+  //   product: item._id,
+  //   name: `${item.name}`,
+  //   price: item.price,
+  //   image: `${item.images[0].url}`,
+  //   quantity: item.quantity,
+  // }));
 
   const order = {
     shippingInfo,
@@ -156,9 +156,9 @@ const StripeTest = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    loadCart(user?.name);
-  }, [user?.name]);
+  // useEffect(() => {
+  //   loadCart(user?.name);
+  // }, [user?.name]);
 
   const handleConfirmation = async () => {
     if (key) {

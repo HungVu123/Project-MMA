@@ -22,6 +22,7 @@ import {
   saveUserInfo,
 } from '../../utils/AsyncStorageUtils';
 import { G } from 'react-native-svg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function DetailScreen(prop) {
   const [data, setData] = useState(null);
   const [review, setReview] = useState([]);
@@ -109,6 +110,36 @@ export default function DetailScreen(prop) {
       loadCart(userName);
     }, [])
   );
+
+  // load user information từ asycn storage
+  const [userInformation, setUserInformation] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const getData = async () => {
+        try {
+          const userInformationString = await AsyncStorage.getItem(
+            'userInformation'
+          );
+          if (userInformationString) {
+            // Parse the JSON string back to an object
+            setUserInformation(JSON.parse(userInformationString));
+            console.log(
+              'User information history retrieved successfully:',
+              userInformation.token
+            );
+          } else {
+            setUserInformation([]);
+            console.log('User information history not found.', userInformation);
+          }
+        } catch (error) {
+          console.log('Error retrieving data:', error);
+        }
+      };
+      getData();
+    }, [])
+  );
+
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -259,7 +290,11 @@ export default function DetailScreen(prop) {
             <TouchableOpacity
               style={styles.containButtonCart}
               onPress={() => {
-                if (userName) {
+                if (
+                  userInformation &&
+                  userInformation.user &&
+                  userInformation.user.name
+                ) {
                   if (
                     cartList &&
                     !cartList.some((cart) => cart._id === data._id)
