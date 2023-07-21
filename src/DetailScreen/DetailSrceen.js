@@ -23,6 +23,7 @@ import {
 } from '../../utils/AsyncStorageUtils';
 import { G } from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Button } from '@rneui/themed';
 export default function DetailScreen(prop) {
   const [data, setData] = useState(null);
   const [review, setReview] = useState([]);
@@ -60,6 +61,7 @@ export default function DetailScreen(prop) {
   // };
   const loadCart = async (name) => {
     const storedCart = await loadStorage('cart', name);
+    console.log(name);
     setCartList(storedCart);
   };
 
@@ -75,8 +77,10 @@ export default function DetailScreen(prop) {
         text: 'OK',
         onPress: async () => {
           item.quantity = 1;
+          console.log('name:' + name);
+          console.log(item);
           await saveToStorage('cart', name, item);
-          loadCart(userName);
+          loadCart(name);
         },
       },
     ]);
@@ -92,19 +96,19 @@ export default function DetailScreen(prop) {
         text: 'OK',
         onPress: async () => {
           await removeFromStorage('cart', name, item);
-          loadCart(userName);
+          loadCart(name);
         },
       },
     ]);
   };
   useEffect(() => {
-    loadCart(userName);
-  }, [userName]);
+    loadCart(userInformation?.user?.name);
+  }, [userInformation?.user?.name]);
 
   useFocusEffect(
     React.useCallback(() => {
-      loadCart(userName);
-    }, [userName])
+      loadCart(userInformation?.user?.name);
+    }, [])
   );
 
   // load user information từ asycn storage
@@ -124,6 +128,8 @@ export default function DetailScreen(prop) {
               'User information history retrieved successfully:',
               userInformation.token
             );
+            const data = JSON.parse(userInformationString);
+            loadCart(data.user.name);
           } else {
             setUserInformation([]);
             console.log('User information history not found.', userInformation);
@@ -295,9 +301,9 @@ export default function DetailScreen(prop) {
                     cartList &&
                     !cartList.some((cart) => cart._id === data._id)
                   ) {
-                    handleAddToCart(userName, data);
+                    handleAddToCart(userInformation?.user?.name, data);
                   } else {
-                    handleRemoveFromCart(userName, data);
+                    handleRemoveFromCart(userInformation?.user?.name, data);
                   }
                 } else {
                   navigation.navigate('Login');
@@ -309,6 +315,12 @@ export default function DetailScreen(prop) {
                   ? 'Remove From Cart'
                   : 'Add To Cart'}
               </Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Button
+                title="Remove all cart"
+                onPress={() => removeAllStorage()}
+              />
             </TouchableOpacity>
           </ScrollView>
         ) : (

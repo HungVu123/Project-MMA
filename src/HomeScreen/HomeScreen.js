@@ -132,18 +132,14 @@ const HomeScreen = ({ navigation }) => {
               onFocus={handleFocusSearch}
               onBlur={handleBlurSearch}
             />
-            <View style={styles.iconContainer}>
-              <Ionicons
-                name="heart-outline"
+            <TouchableOpacity onPress={() => moveToFavorite()}>
+              <Icon
+                name="favorite-border"
+                type="material"
                 size={35}
                 style={styles.iconHeart}
               />
-              {/* <Ionicons
-            name="notifications-outline"
-            size={35}
-            style={styles.iconNoti}
-          /> */}
-            </View>
+            </TouchableOpacity>
           </View>
           {isSearching ? (
             <ScrollView showsVerticalScrollIndicator={false}>

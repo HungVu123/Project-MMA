@@ -90,10 +90,7 @@ const OrderDetail = ({ route }) => {
         {order.orderItems.map((item, i) => (
           <Card containerStyle={styles.card_container} key={i}>
             <View style={{ flexDirection: 'row' }}>
-              <Image
-                source={require('../CartScreen/image/air-force-1.jpg')}
-                style={styles.img}
-              />
+              <Image source={{ uri: item.image }} style={styles.img} />
               <View style={{ flex: 1 }}>
                 <View
                   style={{
