@@ -9,7 +9,7 @@ const Payment = () => {
     <View>
       <Pressable
         onPress={() => {
-          navigation.navigate('Choose Card');
+          navigation.navigate('Card');
         }}
       >
         <ListItem>

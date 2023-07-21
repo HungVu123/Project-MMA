@@ -9,11 +9,13 @@ import HomeScreen from './src/HomeScreen/HomeScreen';
 import LoginScreen from './src/LoginScreen/LoginScreen';
 import DetailScreen from './src/DetailScreen/DetailSrceen';
 import ProfileScreen from './src/ProfileScreen/ProfileScreen';
+import RegisterScreen from './src/RegisterScreen/RegisterScreen';
 import Cart from './src/CartScreen/Cart';
 import History from './src/OrderScreen/History';
 import ShipTo from './src/CartScreen/ShipTo';
 import Payment from './src/CartScreen/Payment';
-import ChooseCard from './src/CartScreen/ChooseCard';
+import EditAddress from './src/CartScreen/EditAddress';
+import AddNewAddress from './src/CartScreen/AddNewAddress';
 import Success from './src/CartScreen/Success';
 import OrderDetail from './src/OrderScreen/OrderDetail';
 import ForgotPassword from './src/LoginScreen/ForgotPassword';
@@ -101,24 +103,22 @@ export default function App() {
           name="Ship To"
           component={ShipTo}
           options={{
-            title: 'Ship To',
-            headerRight: () => (
-              <Button buttonStyle={{ backgroundColor: 'white' }}>
-                <Icon name="plus" type="feather" color="#40BFFF" />
-              </Button>
-            ),
+            title: 'Delivery Address List',
           }}
         />
         <Stack.Screen name="Payment" component={Payment} />
         <Stack.Screen
-          name="Choose Card"
-          component={ChooseCard}
+          name="AddNewAddress"
+          component={AddNewAddress}
           options={{
-            headerRight: () => (
-              <Button buttonStyle={{ backgroundColor: 'white' }}>
-                <Icon name="plus" type="feather" color="#40BFFF" />
-              </Button>
-            ),
+            title: 'Add New Delivery Address',
+          }}
+        />
+        <Stack.Screen
+          name="EditAddress"
+          component={EditAddress}
+          options={{
+            title: 'Edit Delivery Address',
           }}
         />
         <Stack.Screen
