@@ -1,5 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
-import { Card, Icon, Image, Text, Button, Divider } from '@rneui/themed';
+import {
+  Card,
+  Icon,
+  Image,
+  Text,
+  Button,
+  Divider,
+  Dialog,
+} from '@rneui/themed';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Alert,
@@ -29,7 +37,7 @@ const Cart = () => {
   );
 };
 
-const StripeTest = () => {
+const StripeTest = ({ route }) => {
   const navigation = useNavigation();
   const [number, setNumber] = useState(1);
   const textInputRef = useRef();
@@ -37,13 +45,15 @@ const StripeTest = () => {
   const toggleDialog = () => {
     setVisible1(!visible1);
   };
-  // const [Id, setId] = useState(user.shippingInfos[0]._id);
-  // const [index, setIndex] = useState(0);
-  // const handleCheckboxChange = (index) => {
-  //   setIndex(index);
-  //   setId(user.shippingInfos[index]._id);
-  // };
-
+  const [user, setUser] = useState();
+  const [Id, setId] = useState(user?.shippingInfos[0]?._id);
+  const [index, setIndex] = useState(0);
+  const handleCheckboxChange = (index) => {
+    setIndex(index);
+    setId(user?.shippingInfos[index]?._id);
+  };
+  // const receivedData = route.params.data || 0;
+  // console.log(receivedData);
   const data = [
     {
       product: '1',
@@ -63,10 +73,19 @@ const StripeTest = () => {
     },
   ];
 
-  const User = {
-    name: 'John1',
-    phoneNo: 932951234124,
-    address: '1/4d Xuan Thoi Thuong',
+  const login = async () => {
+    try {
+      const response = await axios.post(
+        'http://10.86.4.101:4000/api/v1/login',
+        {
+          email: 'vonglaucac123@gmail.com',
+          password: 'vonglaucac123',
+        }
+      );
+      setUser(response.data.user);
+    } catch (e) {
+      console.log('error at login:' + e);
+    }
   };
 
   const increase = () => {
@@ -105,7 +124,7 @@ const StripeTest = () => {
   const fetchData = async () => {
     try {
       const { data } = await axios.post(
-        'http://192.168.0.102:4000/api/v1/payment/process',
+        'http://10.86.4.101:4000/api/v1/payment/process',
         paymentData
       );
 
@@ -155,6 +174,7 @@ const StripeTest = () => {
 
   useEffect(() => {
     fetchData();
+    login();
   }, []);
 
   useEffect(() => {
@@ -204,12 +224,17 @@ const StripeTest = () => {
                 Delivery Address
               </Text>
               <Text style={styles.container_name}>
-                {User.name} |{' '}
+                {user?.name} |{' '}
                 <Text style={styles.container_subtitles}>
-                  ( +{User.phoneNo})
+                  ( +{user?.shippingInfos[index]?.phoneNo})
                 </Text>
               </Text>
-              <Text style={styles.container_subtitles}>{User.address}</Text>
+              <Text style={styles.container_subtitles}>
+                {user?.shippingInfos[index]?.address},{' '}
+                {user?.shippingInfos[index]?.city},{' '}
+                {user?.shippingInfos[index]?.state},{' '}
+                {user?.shippingInfos[index]?.country}
+              </Text>
             </View>
           </Card>
         </TouchableOpacity>

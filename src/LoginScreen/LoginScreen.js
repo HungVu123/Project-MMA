@@ -42,7 +42,7 @@ const LoginScreen = () => {
       const response = await login(email, password);
       console.log('response', response.success);
       if (response.success === true) {
-        navigation.navigate('Home');
+        navigation.navigate('Cart&History');
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {

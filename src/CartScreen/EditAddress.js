@@ -1,28 +1,55 @@
 import { View, Text, StyleSheet, TextInput, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card } from '@rneui/base';
 import { Country, State } from 'country-state-city';
 import { Picker } from '@react-native-picker/picker';
-
-export default function EditAddress() {
-  const User = {
-    name: 'John1',
-    phoneNo: 932951234124,
-    address: '1/4d Xuan Thoi Thuong',
-    city: 'hcm',
-    state: 'VietNam',
-    country: 'Argentina',
-    pinCode: 8593,
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+export default function EditAddress({ route }) {
+  const receivedData = route.params?.data;
+  const [user, setUser] = useState();
+  const isFocused = useIsFocused();
+  const login = async () => {
+    if (isFocused) {
+      try {
+        const response = await axios.post(
+          'http://10.86.4.101:4000/api/v1/login',
+          {
+            email: 'vonglaucac123@gmail.com',
+            password: 'vonglaucac123',
+          }
+        );
+        setUser(response.data.user);
+        console.log(user?.shippingInfos[receivedData].phoneNo);
+        console.log(receivedData);
+      } catch (e) {
+        console.log('error at login:' + e);
+      }
+    }
   };
 
-  const [address, setAddress] = useState(
-    User.address + ', ' + User.city + ', ' + User.state + ', ' + User.country
-  );
-  const [city, setCity] = useState(User.city);
-  const [state, setState] = useState(User.state);
-  const [country, setCountry] = useState(User.country);
-  const [pinCode, setPinCode] = useState(User.pinCode);
-  const [phoneNo, setPhoneNo] = useState(User.phoneNo);
+  useEffect(() => {
+    login();
+  }, [isFocused]);
+  const navigation = useNavigation();
+
+  const [address, setAddress] = useState();
+  const [city, setCity] = useState();
+  const [state, setState] = useState();
+  const [country, setCountry] = useState();
+  const [pinCode, setPinCode] = useState();
+  const [phoneNo, setPhoneNo] = useState();
+
+  const deleteAddress = async () => {
+    try {
+      const response = await axios.put(
+        `http://10.86.4.101:4000/api/v1//shippinginfo/${user?.shippingInfos[receivedData]._id}`
+      );
+      await navigation.navigate('Ship To');
+    } catch (e) {
+      console.log('error' + e);
+    }
+  };
 
   const handleInputPhoneNo = (text) => {
     setPhoneNo(text);
@@ -72,12 +99,12 @@ export default function EditAddress() {
       <View>
         <Text style={styles.text}>User Info</Text>
         <Card>
-          <Text>{User.name}</Text>
+          <Text>{user?.name}</Text>
         </Card>
         <Card>
           <TextInput
             placeholder="Enter phone number here"
-            value={phoneNo.toString()}
+            value={user?.shippingInfos[receivedData].phoneNo.toString()}
             onChangeText={handleInputPhoneNo}
           />
         </Card>
@@ -86,13 +113,24 @@ export default function EditAddress() {
           <Text>Address:</Text>
           <TextInput
             placeholder="Enter address here"
-            value={address}
+            value={
+              user?.shippingInfos[receivedData].address +
+              ', ' +
+              user?.shippingInfos[receivedData].city +
+              ', ' +
+              user?.shippingInfos[receivedData].state +
+              ', ' +
+              user?.shippingInfos[receivedData].country
+            }
             onChangeText={handleInputAddress}
           />
         </Card>
         <Card>
           <Text>Country:</Text>
-          <Picker selectedValue={country} onValueChange={handleCountry}>
+          <Picker
+            selectedValue={user?.shippingInfos[receivedData].country}
+            onValueChange={handleCountry}
+          >
             {Country &&
               Country.getAllCountries().map((item) => (
                 <Picker.Item
@@ -103,26 +141,29 @@ export default function EditAddress() {
               ))}
           </Picker>
         </Card>
-        {country && (
-          <Card>
-            <Text>State:</Text>
-            <Picker selectedValue={state} onValueChange={handleState}>
-              {State &&
-                State.getStatesOfCountry(country).map((item) => (
-                  <Picker.Item
-                    key={item.isoCode}
-                    label={item.name}
-                    value={item.isoCode}
-                  />
-                ))}
-            </Picker>
-          </Card>
-        )}
+        <Card>
+          <Text>State:</Text>
+          <Picker
+            selectedValue={user?.shippingInfos[receivedData].state}
+            onValueChange={handleState}
+          >
+            {State &&
+              State.getStatesOfCountry(
+                user?.shippingInfos[receivedData].country
+              ).map((item) => (
+                <Picker.Item
+                  key={item.isoCode}
+                  label={item.name}
+                  value={item.isoCode}
+                />
+              ))}
+          </Picker>
+        </Card>
         <Card>
           <Text>City:</Text>
           <TextInput
             placeholder="Enter city here"
-            value={city}
+            value={user?.shippingInfos[receivedData].city}
             onChangeText={handleInputCity}
           />
         </Card>
@@ -130,7 +171,7 @@ export default function EditAddress() {
           <Text>Pincode:</Text>
           <TextInput
             placeholder="Enter pincode here"
-            value={pinCode.toString()}
+            value={user?.shippingInfos[receivedData].pinCode.toString()}
             onChangeText={handleInputPincode}
           />
         </Card>
@@ -139,6 +180,7 @@ export default function EditAddress() {
           color="error"
           buttonStyle={styles.delete_button}
           titleStyle={{ fontWeight: 'bold' }}
+          onPress={() => deleteAddress()}
         />
         <Button
           title="Save Changes"
