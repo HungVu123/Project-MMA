@@ -4,7 +4,7 @@ import styles from './style';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { login } from './api';
 import { useNavigation } from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
@@ -40,8 +40,18 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     try {
       const response = await login(email, password);
-      console.log('response', response.success);
+      console.log('response', response);
       if (response.success === true) {
+        try {
+          // Convert the object to a JSON string
+          const userInformationString = JSON.stringify(response);
+
+          // Save the JSON string in AsyncStorage
+          await AsyncStorage.setItem('userInformation', userInformationString);
+          console.log('Data saved successfully!', response);
+        } catch (error) {
+          console.log('Error saving data:', error);
+        }
         navigation.navigate('Home');
       }
     } catch (error) {
