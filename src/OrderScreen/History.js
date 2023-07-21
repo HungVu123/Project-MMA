@@ -25,7 +25,7 @@ const History = () => {
   const getOrderHistory = async () => {
     try {
       const response = await axios.get(
-        'http://192.168.1.68:4000/api/v1/orders/me'
+        'http://192.168.1.15:4000/api/v1/orders/me'
       );
       setOrderList(response.data.orders);
       setLoading(false);
@@ -39,6 +39,7 @@ const History = () => {
   const [orderList, setOrderList] = useState([{}]);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState();
+  const [user, setUser] = useState();
 
   useEffect(() => {
     getOrderHistory();
@@ -198,7 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     active: {
       borderRadius: 5,
-      borderColor: '#40BFFF',
+      borderColor: '#52D4D0',
     },
   },
   container: { margin: 24 },
@@ -214,7 +215,32 @@ const styles = StyleSheet.create({
   },
   container_price: {
     fontWeight: 'bold',
-    color: '#40BFFF',
+    color: '#52D4D0',
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  content_nouser: {
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  title_nouser: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 10,
+  },
+  subTitle_nouser: {
+    color: '#9098B1',
+  },
+  button_nouser: {
+    margin: 20,
+    width: 343,
+    height: 57,
+    borderRadius: 5,
+    backgroundColor: '#52D4D0',
   },
   container: {
     flex: 1,

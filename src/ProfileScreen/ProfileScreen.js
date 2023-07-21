@@ -119,28 +119,6 @@ export default function ProfileScreen() {
               <View style={styles.containItem}>
                 <View style={styles.containIcon}>
                   <Image
-                    source={require('../../assets/GenderIcon.png')}
-                    resizeMode="stretch"
-                    style={styles.iconItemHeight}
-                  />
-                </View>
-                <View style={styles.containHeaderItem}>
-                  <Text style={styles.headerItem}>Gender</Text>
-                </View>
-                <View style={styles.containContentItem}>
-                  <Text style={styles.contentItem}>Male</Text>
-                </View>
-                <TouchableOpacity style={styles.containIcon}>
-                  <Image
-                    source={require('../../assets/UpdateIcon.png')}
-                    resizeMode="stretch"
-                    style={styles.iconUpdate}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.containItem}>
-                <View style={styles.containIcon}>
-                  <Image
                     source={require('../../assets/BirthdayIcon.png')}
                     resizeMode="stretch"
                     style={styles.iconItemWidth}
@@ -196,7 +174,9 @@ export default function ProfileScreen() {
                   <Text style={styles.headerItem}>Phone Number</Text>
                 </View>
                 <View style={styles.containContentItem}>
-                  <Text style={styles.contentItem}>(307) 555-0133</Text>
+                  <Text style={styles.contentItem}>
+                    {userInformation.user.shippingInfos.phoneNo}
+                  </Text>
                 </View>
                 <TouchableOpacity style={styles.containIcon}>
                   <Image

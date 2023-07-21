@@ -5,9 +5,8 @@ const { height, width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 24,
-    padding: 12,
-    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingTop: 30,
   },
   searchBoxContainer: {
     flexDirection: 'row',
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   iconHeart: {
-    flex: 1,
     color: '#bdc3c7',
   },
   iconNoti: {
