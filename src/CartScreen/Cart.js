@@ -238,7 +238,7 @@ const StripeTest = () => {
       getData();
     }, [])
   );
-  
+
   const handleConfirmation = async () => {
     if (key) {
       const { paymentIntent, error } = await confirmPayment(key, {
@@ -456,7 +456,6 @@ const styles = StyleSheet.create({
     height: 57,
     borderRadius: 5,
     backgroundColor: '#52D4D0',
-
   },
 
   container_title: {
@@ -526,6 +525,27 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     fontWeight: 'bold',
+  },
+  content_nouser: {
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  title_nouser: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 10,
+  },
+  subTitle_nouser: {
+    color: '#9098B1',
+  },
+  button_nouser: {
+    margin: 20,
+    width: 343,
+    height: 57,
+    borderRadius: 5,
+    backgroundColor: '#40BFFF',
+    margin: 20,
   },
 });
 
