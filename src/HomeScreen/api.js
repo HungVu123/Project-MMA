@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 const api = axios.create({
+<<<<<<< HEAD
   baseURL: 'http://192.168.137.1:4000/api/v1', // Thay đổi URL và cổng tương ứng với API của bạn
+=======
+  baseURL: 'http://192.168.1.5:4000/api/v1', // Thay đổi URL và cổng tương ứng với API của bạn
+>>>>>>> 217db56c8a8eeba6ca59ac6a03682434af78c3d9
 });
 
 export const fetchProductBirds = async () => {

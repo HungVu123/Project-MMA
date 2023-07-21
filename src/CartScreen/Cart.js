@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
   Card,
   Icon,
@@ -52,8 +52,8 @@ const StripeTest = ({ route }) => {
     setIndex(index);
     setId(user?.shippingInfos[index]?._id);
   };
-  // const receivedData = route.params.data || 0;
-  // console.log(receivedData);
+  // const receivedData = route.params?.data || 'No data received';
+  // console.log(route.params.data);
   const data = [
     {
       product: '1',
@@ -76,7 +76,7 @@ const StripeTest = ({ route }) => {
   const login = async () => {
     try {
       const response = await axios.post(
-        'http://10.86.4.101:4000/api/v1/login',
+        'http://192.168.0.102:4000/api/v1/login',
         {
           email: 'vonglaucac123@gmail.com',
           password: 'vonglaucac123',
@@ -113,6 +113,36 @@ const StripeTest = ({ route }) => {
     navigation.navigate('Ship To');
   };
 
+  const handleBackToLogin = () => {
+    navigation.navigate('Login');
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const getData = async () => {
+        try {
+          const userInformationString = await AsyncStorage.getItem(
+            'userInformation'
+          );
+          if (userInformationString) {
+            // Parse the JSON string back to an object
+            setUserInformation(JSON.parse(userInformationString));
+            console.log(
+              'User information history retrieved successfully:',
+              userInformation.token
+            );
+          } else {
+            setUserInformation([]);
+            console.log('User information history not found.', userInformation);
+          }
+        } catch (error) {
+          console.log('Error retrieving data:', error);
+        }
+      };
+      getData();
+    }, [])
+  );
+
   const totalPrice =
     data.reduce((acc, item) => acc + item.quantity * item.price, 0) + 20 + 25;
   const paymentData = {
@@ -124,7 +154,7 @@ const StripeTest = ({ route }) => {
   const fetchData = async () => {
     try {
       const { data } = await axios.post(
-        'http://10.86.4.101:4000/api/v1/payment/process',
+        'http://192.168.0.102:4000/api/v1/payment/process',
         paymentData
       );
 
@@ -210,142 +240,155 @@ const StripeTest = ({ route }) => {
 
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <TouchableOpacity onPress={proceedToShipping}>
-          <Card>
-            <View>
-              <Text style={styles.container_title}>
-                <Entypo
-                  name="location"
-                  style={{
-                    fontSize: 15,
-                  }}
-                />{' '}
-                Delivery Address
-              </Text>
-              <Text style={styles.container_name}>
-                {user?.name} |{' '}
-                <Text style={styles.container_subtitles}>
-                  ( +{user?.shippingInfos[index]?.phoneNo})
+      {userInformation.token ? (
+        <View style={styles.container}>
+          <TouchableOpacity onPress={proceedToShipping}>
+            <Card>
+              <View>
+                <Text style={styles.container_title}>
+                  <Entypo
+                    name="location"
+                    style={{
+                      fontSize: 15,
+                    }}
+                  />{' '}
+                  Delivery Address
                 </Text>
+                <Text style={styles.container_name}>
+                  {user?.name} |{' '}
+                  <Text style={styles.container_subtitles}>
+                    ( +{user?.shippingInfos[index]?.phoneNo})
+                  </Text>
+                </Text>
+                <Text style={styles.container_subtitles}>
+                  {user?.shippingInfos[index]?.address},{' '}
+                  {user?.shippingInfos[index]?.city},{' '}
+                  {user?.shippingInfos[index]?.state},{' '}
+                  {user?.shippingInfos[index]?.country}
+                </Text>
+              </View>
+            </Card>
+          </TouchableOpacity>
+
+          {data &&
+            data.map((item, index) => (
+              <Card containerStyle={styles.card_container} key={index}>
+                <CartItemCard
+                  item={item}
+                  deleteCartItems={deleteCartItems}
+                  increaseQuantity={increase}
+                  decreaseQuantity={decrease}
+                />
+              </Card>
+            ))}
+          <Card containerStyle={styles.card_container}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                padding: 16,
+              }}
+            >
+              <Text style={{ color: '#9098B1' }}>
+                Total ({data.length} {data.length <= 1 ? 'Item' : 'Items'})
               </Text>
-              <Text style={styles.container_subtitles}>
-                {user?.shippingInfos[index]?.address},{' '}
-                {user?.shippingInfos[index]?.city},{' '}
-                {user?.shippingInfos[index]?.state},{' '}
-                {user?.shippingInfos[index]?.country}
+              <Text style={{}}>{`$${data.reduce(
+                (acc, item) => acc + item.quantity * item.price,
+                0
+              )}`}</Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                padding: 16,
+              }}
+            >
+              <Text style={{ color: '#9098B1' }}>Shipping</Text>
+              <Text style={{}}>$20</Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                padding: 16,
+              }}
+            >
+              <Text style={{ color: '#9098B1' }}>Tax</Text>
+              <Text style={{}}>$25</Text>
+            </View>
+            <Divider />
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                padding: 16,
+              }}
+            >
+              <Text style={{ fontWeight: 'bold' }}>Total Price</Text>
+              <Text style={styles.product_price}>
+                {`$${
+                  data.reduce(
+                    (acc, item) => acc + item.quantity * item.price,
+                    0
+                  ) +
+                  20 +
+                  25
+                }`}
               </Text>
             </View>
           </Card>
-        </TouchableOpacity>
-
-        {data &&
-          data.map((item, index) => (
-            <Card containerStyle={styles.card_container} key={index}>
-              <CartItemCard
-                item={item}
-                deleteCartItems={deleteCartItems}
-                increaseQuantity={increase}
-                decreaseQuantity={decrease}
+          <Button
+            title="Check Out"
+            onPress={toggleDialog}
+            buttonStyle={styles.checkout_button}
+          />
+          <Dialog isVisible={visible1} onBackdropPress={toggleDialog}>
+            <Dialog.Title title="Enter Your Card" />
+            <Card containerStyle={styles.container1}>
+              <CardField
+                postalCodeEnabled={false}
+                placeholder={{
+                  number: '4242 4242 4242 4242',
+                }}
+                cardStyle={{
+                  backgroundColor: '#52D4D0',
+                  textColor: '#FFFFFF',
+                }}
+                style={{
+                  width: '100%',
+                  height: 20,
+                  marginVertical: 10,
+                }}
+                onCardChange={(cardDetails) => {
+                  console.log('cardDetails', cardDetails);
+                }}
+                onFocus={(focusedField) => {
+                  console.log('focusField', focusedField);
+                }}
               />
+              <Text style={styles.cardHolder}>BUI DUC UY DUNG</Text>
             </Card>
-          ))}
-        <Card containerStyle={styles.card_container}>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              padding: 16,
+            <Dialog.Actions>
+              <Dialog.Button
+                title="Confirm Payment"
+                onPress={handleConfirmation}
+              />
+            </Dialog.Actions>
+          </Dialog>
+        </View>
+      ) : (
+        <View style={styles.content_nouser}>
+          <Text style={styles.title_nouser}>Please login to continue</Text>
+          <Button
+            buttonStyle={styles.button_nouser}
+            title="Login"
+            onPress={() => {
+              navigation.navigate('Login');
             }}
-          >
-            <Text style={{ color: '#9098B1' }}>
-              Total ({data.length} {data.length <= 1 ? 'Item' : 'Items'})
-            </Text>
-            <Text style={{}}>{`$${data.reduce(
-              (acc, item) => acc + item.quantity * item.price,
-              0
-            )}`}</Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              padding: 16,
-            }}
-          >
-            <Text style={{ color: '#9098B1' }}>Shipping</Text>
-            <Text style={{}}>$20</Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              padding: 16,
-            }}
-          >
-            <Text style={{ color: '#9098B1' }}>Tax</Text>
-            <Text style={{}}>$25</Text>
-          </View>
-          <Divider />
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              padding: 16,
-            }}
-          >
-            <Text style={{ fontWeight: 'bold' }}>Total Price</Text>
-            <Text style={styles.product_price}>
-              {`$${
-                data.reduce(
-                  (acc, item) => acc + item.quantity * item.price,
-                  0
-                ) +
-                20 +
-                25
-              }`}
-            </Text>
-          </View>
-        </Card>
-        <Button
-          title="Check Out"
-          onPress={toggleDialog}
-          buttonStyle={styles.checkout_button}
-        />
-        <Dialog isVisible={visible1} onBackdropPress={toggleDialog}>
-          <Dialog.Title title="Enter Your Card" />
-          <Card containerStyle={styles.container1}>
-            <CardField
-              postalCodeEnabled={false}
-              placeholder={{
-                number: '4242 4242 4242 4242',
-              }}
-              cardStyle={{
-                backgroundColor: '#52D4D0',
-                textColor: '#FFFFFF',
-              }}
-              style={{
-                width: '100%',
-                height: 20,
-                marginVertical: 10,
-              }}
-              onCardChange={(cardDetails) => {
-                console.log('cardDetails', cardDetails);
-              }}
-              onFocus={(focusedField) => {
-                console.log('focusField', focusedField);
-              }}
-            />
-            <Text style={styles.cardHolder}>BUI DUC UY DUNG</Text>
-          </Card>
-          <Dialog.Actions>
-            <Dialog.Button
-              title="Confirm Payment"
-              onPress={handleConfirmation}
-            />
-          </Dialog.Actions>
-        </Dialog>
-      </View>
+          />
+        </View>
+      )}
     </ScrollView>
   );
 };
