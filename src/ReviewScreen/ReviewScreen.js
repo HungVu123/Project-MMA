@@ -12,6 +12,7 @@ import moment from "moment";
 import styles from "./style";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
+import { useNavigation } from "@react-navigation/native";
 export default function ReviewScreen(prop) {
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState(0);
@@ -27,6 +28,7 @@ export default function ReviewScreen(prop) {
     }
     fetchData();
   }, []);
+  const navigator = useNavigation();
   const handleReviews = (review) => {
     return (
       <View style={styles.containDetailRating}>
@@ -79,10 +81,9 @@ export default function ReviewScreen(prop) {
   return (
     <View style={styles.container}>
       {data.length > 0 ? (
-        <SafeAreaView>
-          <StatusBar />
+        <SafeAreaView>          
           <View style={styles.navbar}>
-            <TouchableOpacity style={{flexDirection: "row", alignItems: "center"}}>
+            <TouchableOpacity style={{flexDirection: "row", alignItems: "center"}} onPress={() => navigator.goBack() }>
               <Image
                 style={styles.goBackIcon}
                 source={require("../../assets/goBack.png")}
