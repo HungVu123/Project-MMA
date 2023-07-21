@@ -10,33 +10,59 @@ import {
 import { loadStorage, removeFromStorage } from '../../utils/AsyncStorageUtils';
 import { Button, Card, Icon, Image, Skeleton, Text } from '@rneui/themed';
 import axios from 'axios';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const FavoriteScreen = () => {
-  const login = async () => {
-    try {
-      const response = await axios.post(
-        'http://192.168.0.102:4000/api/v1/login',
-        {
-          email: 'vonglaucac123@gmail.com',
-          password: 'vonglaucac123',
+const FavoriteScreen = ({ navigation }) => {
+  // const login = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'http://192.168.1.15:4000/api/v1/login',
+  //       {
+  //         email: 'vonglaucac123@gmail.com',
+  //         password: 'vonglaucac123',
+  //       }
+  //     );
+  //     setUserName(response.data.user.name);
+  //   } catch (e) {
+  //     console.log('error at login:' + e);
+  //   }
+  // };
+
+  const [userInformation, setUserInformation] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const getData = async () => {
+        try {
+          const userInformationString = await AsyncStorage.getItem(
+            'userInformation'
+          );
+          if (userInformationString) {
+            // Parse the JSON string back to an object
+            setUserInformation(JSON.parse(userInformationString));
+
+            console.log(
+              'User information history retrieved successfully:',
+              userInformation?.token
+            );
+            const data = JSON.parse(userInformationString);
+            loadFavorites(data.user.name);
+          } else {
+            setUserInformation([]);
+            console.log('User information history not found.', userInformation);
+          }
+        } catch (error) {
+          console.log('Error retrieving data:', error);
         }
-      );
-      setUserName(response.data.user.name);
-    } catch (e) {
-      console.log('error at login:' + e);
-    }
-  };
+      };
+      getData();
+    }, [])
+  );
 
   const loadFavorites = async (name) => {
-    try {
-      const storedFavorites = await loadStorage('favorites', name);
-      setFavList(storedFavorites);
-      setLoading(false);
-    } catch (e) {
-      console.log('error at load favorites:' + e);
-      setLoading(true);
-    }
+    const storedFavorites = await loadStorage('favorites', name);
+    setFavList(storedFavorites);
   };
 
   const handleRemove = (name, item) => {
@@ -50,7 +76,7 @@ const FavoriteScreen = () => {
         text: 'OK',
         onPress: async () => {
           await removeFromStorage('favorites', name, item);
-          loadFavorites(userName);
+          loadFavorites(name);
         },
       },
     ]);
@@ -62,20 +88,29 @@ const FavoriteScreen = () => {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    login();
-  }, []);
-
-  useEffect(() => {
-    loadFavorites(userName);
-  }, [userName]);
+    loadFavorites(userInformation?.user?.name);
+  }, [userInformation?.user?.name]);
 
   useFocusEffect(
     React.useCallback(() => {
-      loadFavorites(userName);
+      loadFavorites(userInformation?.user?.name);
     }, [])
   );
 
-  if (!user) {
+  const handleNavigateDetail = async (name) => {
+    try {
+      const response = await axios.get(
+        'http://192.168.1.15:4000/api/v1/products'
+      );
+      product = response.data.products.find((data) => data.name === name);
+      console.log(product);
+      navigation.navigate('DetailScreen', product);
+    } catch (error) {
+      console.log('error at navigate:' + error);
+    }
+  };
+
+  if (!userInformation) {
     return (
       <View style={styles.container_nouser}>
         <View style={styles.content_nouser}>
@@ -94,44 +129,43 @@ const FavoriteScreen = () => {
 
   return (
     <ScrollView>
-      {loading ? (
-        <Text>loading</Text>
-      ) : favList ? (
-        favList.map((item, i) => (
-          <Card containerStyle={styles.card_container} key={i}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image
-                source={require('../CartScreen/image/air-force-1.jpg')}
-                style={styles.img}
-              />
-              <View style={{ flex: 1 }}>
-                <View
-                  style={{
-                    justifyContent: 'space-between',
-                    flex: 1,
-                    flexDirection: 'row',
-                  }}
-                >
-                  <Text style={styles.product_title}>{item.name}</Text>
-                  <TouchableOpacity
-                    onPress={() => handleRemove(userName, item)}
+      {favList &&
+        favList?.map((item, i) => (
+          <TouchableOpacity
+            key={i}
+            onPress={() => handleNavigateDetail(item.name)}
+          >
+            <Card containerStyle={styles.card_container} key={i}>
+              <View style={{ flexDirection: 'row' }}>
+                <Image source={{ uri: item.image }} style={styles.img} />
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      justifyContent: 'space-between',
+                      flex: 1,
+                      flexDirection: 'row',
+                    }}
                   >
-                    <Icon
-                      style={styles.icon}
-                      name="favorite"
-                      type="material"
-                      color="#52D4D0"
-                    />
-                  </TouchableOpacity>
+                    <Text style={styles.product_title}>{item.name}</Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        handleRemove(userInformation?.user?.name, item)
+                      }
+                    >
+                      <Icon
+                        style={styles.icon}
+                        name="favorite"
+                        type="material"
+                        color="#52D4D0"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={styles.product_price}>${item.price}</Text>
                 </View>
-                <Text style={styles.product_price}>${item.price}</Text>
               </View>
-            </View>
-          </Card>
-        ))
-      ) : (
-        <Text>error</Text>
-      )}
+            </Card>
+          </TouchableOpacity>
+        ))}
     </ScrollView>
   );
 };

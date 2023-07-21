@@ -13,28 +13,13 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const History = () => {
   const navigation = useNavigation();
-  const login = async () => {
-    try {
-      const response = await axios.post(
-        'http://192.168.1.5:4000/api/v1/login',
-        {
-          email: 'vonglaucac123@gmail.com',
-          password: 'vonglaucac123',
-        }
-      );
-      setUserName(response.data.user.name);
-    } catch (e) {
-      console.log('error at login:' + e);
-    }
-  };
 
   const getOrderHistory = async () => {
     try {
       const response = await axios.get(
-        'http://192.168.1.5:4000/api/v1/orders/me'
+        'http://192.168.1.15:4000/api/v1/orders/me'
       );
       setOrderList(response.data.orders);
-      console.log('order data: ', response.data.orders);
       setLoading(false);
     } catch (error) {
       console.log('failed the get order list');
@@ -104,7 +89,7 @@ const History = () => {
               onPress={() => {
                 navigation.navigate('Order Detail', {
                   order: order,
-                  username: userName,
+                  username: userInformation?.user?.name,
                 });
               }}
               key={i}

@@ -23,7 +23,7 @@ import {
 } from '../../utils/AsyncStorageUtils';
 import { G } from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Button } from '@rneui/themed';
+import { Button, Icon } from '@rneui/themed';
 export default function DetailScreen(prop) {
   const [data, setData] = useState(null);
   const [review, setReview] = useState([]);
@@ -31,6 +31,7 @@ export default function DetailScreen(prop) {
   const [user, setUser] = useState();
   const [userName, setUserName] = useState();
   const [cartList, setCartList] = useState();
+  const [favList, setFavList] = useState();
   useEffect(() => {
     async function fetchData() {
       try {
@@ -61,8 +62,13 @@ export default function DetailScreen(prop) {
   // };
   const loadCart = async (name) => {
     const storedCart = await loadStorage('cart', name);
-    console.log(name);
     setCartList(storedCart);
+  };
+
+  const loadFavorites = async (name) => {
+    const storedFavorites = await loadStorage('favorites', name);
+    console.log(storedFavorites);
+    setFavList(storedFavorites);
   };
 
   //xử lí bỏ hàng vào cart
@@ -101,13 +107,60 @@ export default function DetailScreen(prop) {
       },
     ]);
   };
+
+  const handleRemoveFromFav = (name, item) => {
+    Alert.alert('Confirmation', 'Do you want to remove this?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: async () => {
+          const stored = await AsyncStorage.getItem('favorites');
+          let storedData = [];
+          if (stored !== null) {
+            storedData = JSON.parse(stored);
+          }
+          const updatedStorage = storedData[name].filter(
+            (data) => data.name !== item.name
+          );
+
+          storedData[name] = updatedStorage;
+          await AsyncStorage.setItem('favorites', JSON.stringify(storedData));
+          loadFavorites(name);
+        },
+      },
+    ]);
+  };
+
+  const handleAddToFav = (name, item) => {
+    Alert.alert('Confirmation', 'Do you want to add this?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: async () => {
+          await saveToStorage('favorites', name, item);
+          loadFavorites(name);
+        },
+      },
+    ]);
+  };
+
   useEffect(() => {
     loadCart(userInformation?.user?.name);
+    loadFavorites(userInformation?.user?.name);
   }, [userInformation?.user?.name]);
 
   useFocusEffect(
     React.useCallback(() => {
       loadCart(userInformation?.user?.name);
+      loadFavorites(userInformation?.user?.name);
     }, [])
   );
 
@@ -130,6 +183,7 @@ export default function DetailScreen(prop) {
             );
             const data = JSON.parse(userInformationString);
             loadCart(data.user.name);
+            loadFavorites(data.user.name);
           } else {
             setUserInformation([]);
             console.log('User information history not found.', userInformation);
@@ -158,7 +212,7 @@ export default function DetailScreen(prop) {
             <Text style={{ fontSize: 18, fontWeight: '700' }}>Back</Text>
           </TouchableOpacity>
         </View>
-        {data ? (
+        {data && favList ? (
           <ScrollView style={styles.scrollview}>
             <View style={styles.containImage}>
               <Image
@@ -171,12 +225,35 @@ export default function DetailScreen(prop) {
               <View style={styles.containHeader}>
                 <Text style={styles.header}>{data.name}</Text>
               </View>
-              <TouchableOpacity style={styles.containButtonLike}>
-                <Image
-                  style={styles.buttonLike}
-                  source={require('../../assets/liked.png')}
-                />
-              </TouchableOpacity>
+              {favList.some(
+                (fav) => fav.product === data._id || fav._id === data._id
+              ) ? (
+                <TouchableOpacity
+                  onPress={() =>
+                    handleRemoveFromFav(userInformation?.user?.name, data)
+                  }
+                >
+                  <Icon
+                    style={styles.icon}
+                    name="favorite"
+                    type="material"
+                    color="red"
+                  />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() =>
+                    handleAddToFav(userInformation?.user?.name, data)
+                  }
+                >
+                  <Icon
+                    style={styles.icon}
+                    name="favorite-border"
+                    type="material"
+                    color="#9098B1"
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             <View style={styles.containRating}>
               {[...Array(Math.round(data.ratings))].map((_, index) => (
@@ -316,12 +393,13 @@ export default function DetailScreen(prop) {
                   : 'Add To Cart'}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            {/* nút reset async storage */}
+            {/* <TouchableOpacity>
               <Button
                 title="Remove all cart"
                 onPress={() => removeAllStorage()}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </ScrollView>
         ) : (
           <Text>Loading</Text>

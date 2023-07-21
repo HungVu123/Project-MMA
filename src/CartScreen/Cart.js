@@ -214,7 +214,7 @@ const StripeTest = () => {
   useFocusEffect(
     React.useCallback(() => {
       loadCart(userInformation?.user?.name);
-    }, [userInformation?.user?.name])
+    }, [])
   );
 
   const handleConfirmation = async () => {
@@ -249,9 +249,11 @@ const StripeTest = () => {
             setUserInformation(JSON.parse(userInformationString));
             console.log(
               'User information history retrieved successfully:',
-              userInformation.token
+              userInformation?.token
             );
-            loadCart(userInformation.user.name);
+            const data = JSON.parse(userInformationString);
+            console.log(data);
+            loadCart(data.user.name);
           } else {
             setUserInformation([]);
             console.log('User information history not found.', userInformation);
