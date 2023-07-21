@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   containHeaderLike: {
     width: "100%",
-    height: windowHeight * 0.05,
+    height: windowHeight * 0.06,
     paddingTop: windowHeight * 0.01,
     flexDirection: "row",
     justifyContent: "space-around",
