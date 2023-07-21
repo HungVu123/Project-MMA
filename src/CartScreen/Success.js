@@ -2,9 +2,14 @@ import { useNavigation } from '@react-navigation/native';
 import { Button, Card, Icon, Text } from '@rneui/themed';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { removeAllStorage } from '../../utils/AsyncStorageUtils';
 
 const Success = () => {
   const navigation = useNavigation();
+  const backToHome = async () => {
+    await removeAllStorage();
+    await navigation.navigate('Home');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -13,10 +18,8 @@ const Success = () => {
         <Text style={styles.subTitle}>Thank you for shopping</Text>
         <Button
           buttonStyle={styles.button}
-          title="Back To Order"
-          onPress={() => {
-            navigation.navigate('History');
-          }}
+          title="Back To Home"
+          onPress={backToHome}
         />
       </View>
     </View>

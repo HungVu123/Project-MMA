@@ -17,7 +17,7 @@ const CartItemCard = ({
   };
   return (
     <View style={{ flexDirection: 'row' }}>
-      <Image source={item.image} style={styles.img} />
+      <Image source={{ uri: item.images[0].url }} style={styles.img} />
       <View style={{ flex: 1 }}>
         <View
           style={{
@@ -28,14 +28,14 @@ const CartItemCard = ({
         >
           <Text style={styles.product_title}>{item.name}</Text>
           <View style={{ flexDirection: 'row' }}>
-            <TouchableHighlight onPress={changeIconColor}>
+            {/* <TouchableHighlight onPress={changeIconColor}>
               <Icon
                 style={styles.icon}
                 name="favorite"
                 type="material"
                 color={iconColor}
               />
-            </TouchableHighlight>
+            </TouchableHighlight> */}
             <TouchableHighlight onPress={deleteCartItems}>
               <Icon
                 style={styles.icon}
@@ -65,7 +65,6 @@ const CartItemCard = ({
             </Button>
             <TextInput
               style={styles.input}
-              keyboardType="numeric"
               value={item.quantity.toString()}
               ref={textInputRef}
             />
@@ -118,7 +117,7 @@ const styles = StyleSheet.create({
     color: '#223263',
   },
   button: {
-    width: 40,
+    width: 50,
     height: 24,
     padding: 0,
     margin: 0,

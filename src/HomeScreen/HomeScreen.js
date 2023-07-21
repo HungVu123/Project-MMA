@@ -113,90 +113,102 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <StatusBar barStyle="dark-content" />
-        {/* -------------- search box --------------*/}
-        <View style={styles.searchBoxContainer}>
-          <Ionicons name="search-outline" size={25} style={styles.iconSearch} />
-          <TextInput
-            style={styles.searchBox}
-            placeholder="Search Product"
-            onChangeText={onChangeSearch}
-            value={search}
-            onFocus={handleFocusSearch}
-            onBlur={handleBlurSearch}
-          />
-          <View style={styles.iconContainer}>
-            <Ionicons name="heart-outline" size={35} style={styles.iconHeart} />
-            {/* <Ionicons
+    <ScrollView>
+      <View style={styles.container}>
+        <SafeAreaView>
+          <StatusBar barStyle="dark-content" />
+          {/* -------------- search box --------------*/}
+          <View style={styles.searchBoxContainer}>
+            <Ionicons
+              name="search-outline"
+              size={25}
+              style={styles.iconSearch}
+            />
+            <TextInput
+              style={styles.searchBox}
+              placeholder="Search Product"
+              onChangeText={onChangeSearch}
+              value={search}
+              onFocus={handleFocusSearch}
+              onBlur={handleBlurSearch}
+            />
+            <View style={styles.iconContainer}>
+              <Ionicons
+                name="heart-outline"
+                size={35}
+                style={styles.iconHeart}
+              />
+              {/* <Ionicons
             name="notifications-outline"
             size={35}
             style={styles.iconNoti}
           /> */}
+            </View>
           </View>
-        </View>
-        {isSearching ? (
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.searchResulContainer}>
-              {listSearch.map((item) => (
-                <TouchableOpacity
-                  underlayColor="transparent"
-                  activeOpacity={0.4}
-                >
-                  <View style={styles.cardSearchResultContainer} key={item._id}>
-                    <View style={styles.itemImageContainer}>
-                      {item.images.map((img) => (
-                        <Image
-                          source={{ uri: img.url }}
-                          style={styles.itemImage}
-                        />
-                      ))}
+          {isSearching ? (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.searchResulContainer}>
+                {listSearch.map((item) => (
+                  <TouchableOpacity
+                    underlayColor="transparent"
+                    activeOpacity={0.4}
+                  >
+                    <View
+                      style={styles.cardSearchResultContainer}
+                      key={item._id}
+                    >
+                      <View style={styles.itemImageContainer}>
+                        {item.images.map((img) => (
+                          <Image
+                            source={{ uri: img.url }}
+                            style={styles.itemImage}
+                          />
+                        ))}
+                      </View>
+                      <Text numberOfLines={2} style={styles.itemName}>
+                        {item.name}
+                      </Text>
+                      <Text style={styles.itemPrice}>${item.price}</Text>
                     </View>
-                    <Text numberOfLines={2} style={styles.itemName}>
-                      {item.name}
-                    </Text>
-                    <Text style={styles.itemPrice}>${item.price}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </ScrollView>
-        ) : (
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {/* -------------- carousel -------------- */}
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+          ) : (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {/* -------------- carousel -------------- */}
 
-            <View style={styles.carouselContainer}>
-              <Carousel
-                data={carouselImage}
-                renderItem={CarouselCardItem}
-                sliderWidth={SLIDER_WIDTH}
-                itemWidth={SLIDER_WIDTH}
-                autoplay={true}
-                autoplayInterval={3000}
-                ref={isCarousel}
-                onSnapToItem={(index) => setIndex(index)}
-                loop
-              />
-              <Pagination
-                dotsLength={carouselImage.length}
-                activeDotIndex={index}
-                carouselRef={isCarousel}
-                dotStyle={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: 5,
-                  marginHorizontal: 0,
-                  backgroundColor: '#40BFFF',
-                }}
-                inactiveDotOpacity={0.4}
-                inactiveDotScale={0.6}
-                tappableDots={true}
-              />
-            </View>
+              <View style={styles.carouselContainer}>
+                <Carousel
+                  data={carouselImage}
+                  renderItem={CarouselCardItem}
+                  sliderWidth={SLIDER_WIDTH}
+                  itemWidth={SLIDER_WIDTH}
+                  autoplay={true}
+                  autoplayInterval={3000}
+                  ref={isCarousel}
+                  onSnapToItem={(index) => setIndex(index)}
+                  loop
+                />
+                <Pagination
+                  dotsLength={carouselImage.length}
+                  activeDotIndex={index}
+                  carouselRef={isCarousel}
+                  dotStyle={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 5,
+                    marginHorizontal: 0,
+                    backgroundColor: '#40BFFF',
+                  }}
+                  inactiveDotOpacity={0.4}
+                  inactiveDotScale={0.6}
+                  tappableDots={true}
+                />
+              </View>
 
-            {/* -------------- category -------------- */}
-            {/* <View style={styles.categoryTextContainer}>
+              {/* -------------- category -------------- */}
+              {/* <View style={styles.categoryTextContainer}>
           <Text style={styles.textLeft}>Category</Text>
           <Text style={styles.textRight}>More Category</Text>
         </View>
@@ -213,106 +225,111 @@ const HomeScreen = ({ navigation }) => {
           </ScrollView>
         </View> */}
 
-            {/* -------------- item card birds -------------- */}
-            <View style={styles.saleTextContainer}>
-              <Text style={styles.textLeft}>Birds</Text>
-              <Text style={styles.textRight}>See More</Text>
-            </View>
-            <View style={styles.allItemsContainer}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {products.slice(0, 5).map((product) => (
-                  <TouchableOpacity
-                    underlayColor="transparent"
-                    activeOpacity={0.4}
-                    onPress={() => navigation.navigate('DetailScreen', product)}
-                  >
-                    <View style={styles.cardContainer} key={product._id}>
-                      <View style={styles.itemImageContainer}>
-                        {product.images.map((img) => (
-                          <Image
-                            source={{ uri: img.url }}
-                            style={styles.itemImage}
-                          />
-                        ))}
+              {/* -------------- item card birds -------------- */}
+              <View style={styles.saleTextContainer}>
+                <Text style={styles.textLeft}>Birds</Text>
+                <Text style={styles.textRight}>See More</Text>
+              </View>
+              <View style={styles.allItemsContainer}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  {products.slice(0, 5).map((product) => (
+                    <TouchableOpacity
+                      underlayColor="transparent"
+                      activeOpacity={0.4}
+                      onPress={() =>
+                        navigation.navigate('DetailScreen', product)
+                      }
+                    >
+                      <View style={styles.cardContainer} key={product._id}>
+                        <View style={styles.itemImageContainer}>
+                          {product.images.map((img) => (
+                            <Image
+                              source={{ uri: img.url }}
+                              style={styles.itemImage}
+                            />
+                          ))}
+                        </View>
+                        <Text numberOfLines={2} style={styles.itemName}>
+                          {product.name}
+                        </Text>
+                        <Text style={styles.itemPrice}>${product.price}</Text>
+                        {/* <Text style={styles.initPrice}>Chim cảnh</Text> */}
                       </View>
-                      <Text numberOfLines={2} style={styles.itemName}>
-                        {product.name}
-                      </Text>
-                      <Text style={styles.itemPrice}>${product.price}</Text>
-                      {/* <Text style={styles.initPrice}>Chim cảnh</Text> */}
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
 
-            {/* -------------- item card cages -------------- */}
+              {/* -------------- item card cages -------------- */}
 
-            <View style={styles.saleTextContainer}>
-              <Text style={styles.textLeft}>Cages</Text>
-              <Text style={styles.textRight}>See More</Text>
-            </View>
-            <View style={styles.allItemsContainer}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {listCages.slice(0, 5).map((cage) => (
-                  <TouchableOpacity
-                    underlayColor="transparent"
-                    activeOpacity={0.4}
-                  >
-                    <View style={styles.cardContainer} key={cage._id}>
-                      <View style={styles.itemImageContainer}>
-                        {cage.images.map((img) => (
-                          <Image
-                            source={{ uri: img.url }}
-                            style={styles.itemImage}
-                          />
-                        ))}
+              <View style={styles.saleTextContainer}>
+                <Text style={styles.textLeft}>Cages</Text>
+                <Text style={styles.textRight}>See More</Text>
+              </View>
+              <View style={styles.allItemsContainer}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  {listCages.slice(0, 5).map((cage) => (
+                    <TouchableOpacity
+                      underlayColor="transparent"
+                      activeOpacity={0.4}
+                      onPress={() => navigation.navigate('DetailScreen', cage)}
+                    >
+                      <View style={styles.cardContainer} key={cage._id}>
+                        <View style={styles.itemImageContainer}>
+                          {cage.images.map((img) => (
+                            <Image
+                              source={{ uri: img.url }}
+                              style={styles.itemImage}
+                            />
+                          ))}
+                        </View>
+                        <Text numberOfLines={2} style={styles.itemName}>
+                          {cage.name}
+                        </Text>
+                        <Text style={styles.itemPrice}>${cage.price}</Text>
                       </View>
-                      <Text numberOfLines={2} style={styles.itemName}>
-                        {cage.name}
-                      </Text>
-                      <Text style={styles.itemPrice}>${cage.price}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
 
-            {/* -------------- item card Supplements -------------- */}
+              {/* -------------- item card Supplements -------------- */}
 
-            <View style={styles.saleTextContainer}>
-              <Text style={styles.textLeft}>Cages</Text>
-              <Text style={styles.textRight}>See More</Text>
-            </View>
-            <View style={styles.allItemsContainer}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {listSuplements.slice(0, 5).map((sup) => (
-                  <TouchableOpacity
-                    underlayColor="transparent"
-                    activeOpacity={0.4}
-                  >
-                    <View style={styles.cardContainer} key={sup._id}>
-                      <View style={styles.itemImageContainer}>
-                        {sup.images.map((img) => (
-                          <Image
-                            source={{ uri: img.url }}
-                            style={styles.itemImage}
-                          />
-                        ))}
+              <View style={styles.saleTextContainer}>
+                <Text style={styles.textLeft}>Cages</Text>
+                <Text style={styles.textRight}>See More</Text>
+              </View>
+              <View style={styles.allItemsContainer}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  {listSuplements.slice(0, 5).map((sup) => (
+                    <TouchableOpacity
+                      underlayColor="transparent"
+                      activeOpacity={0.4}
+                      onPress={() => navigation.navigate('DetailScreen', sup)}
+                    >
+                      <View style={styles.cardContainer} key={sup._id}>
+                        <View style={styles.itemImageContainer}>
+                          {sup.images.map((img) => (
+                            <Image
+                              source={{ uri: img.url }}
+                              style={styles.itemImage}
+                            />
+                          ))}
+                        </View>
+                        <Text numberOfLines={2} style={styles.itemName}>
+                          {sup.name}
+                        </Text>
+                        <Text style={styles.itemPrice}>${sup.price}</Text>
                       </View>
-                      <Text numberOfLines={2} style={styles.itemName}>
-                        {sup.name}
-                      </Text>
-                      <Text style={styles.itemPrice}>${sup.price}</Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            </View>
-          </ScrollView>
-        )}
-      </SafeAreaView>
-    </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </ScrollView>
+          )}
+        </SafeAreaView>
+      </View>
+    </ScrollView>
   );
 };
 
