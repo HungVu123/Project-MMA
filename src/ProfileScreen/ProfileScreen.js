@@ -21,6 +21,7 @@ export default function ProfileScreen() {
   const [data, setData] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
 
+
   // useEffect(() => {
   //   async function fetchData() {
   //     console.log('=========================');
@@ -56,10 +57,6 @@ export default function ProfileScreen() {
           console.log('Error removing data:', error);
         }
         navigation.navigate('Home');
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   // load user information từ asycn storage
@@ -103,16 +100,20 @@ export default function ProfileScreen() {
             <View style={styles.header}>
               <View style={styles.containImageAva}>
                 <Image
+
                   source={{ uri: userInformation.user.avatar.url }}
+
                   resizeMode="stretch"
                   style={styles.imageAva}
                 />
               </View>
               <View style={styles.containName}>
+
                 <Text style={styles.name}>{userInformation.user.name}</Text>
                 <Text style={styles.nameMail}>
                   {userInformation.user.email}
                 </Text>
+
               </View>
             </View>
             <View style={styles.containProfile}>
@@ -174,9 +175,11 @@ export default function ProfileScreen() {
                   <Text style={styles.headerItem}>Phone Number</Text>
                 </View>
                 <View style={styles.containContentItem}>
+
                   <Text style={styles.contentItem}>
                     {userInformation.user.shippingInfos.phoneNo}
                   </Text>
+
                 </View>
                 <TouchableOpacity style={styles.containIcon}>
                   <Image

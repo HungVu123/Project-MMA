@@ -166,18 +166,45 @@ const StripeTest = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const keyboardDidHideListener = Keyboard.addListener(
-  //     'keyboardDidHide',
-  //     () => {
-  //       textInputRef.current.blur();
-  //     }
-  //   );})
+  // const shippingInfo = {
+  //   address: user.shippingInfos[index].address,
+  //   city: user.shippingInfos[index].city,
+  //   state: user.shippingInfos[index].state,
+  //   pinCode: user.shippingInfos[index].pinCode,
+  //   country: user.shippingInfos[index].country,
+  //   phoneNo: user.shippingInfos[index].phoneNo,
+  // };
 
-  //   return () => {
-  //     keyboardDidHideListener.remove();
-  //   };
-  // }, []);
+  // const order = {
+  //   shippingInfo,
+  //   orderItems: cartItems,
+  //   itemsPrice: subtotal,
+  //   taxPrice: tax,
+  //   shippingPrice: shippingCharges,
+  //   totalPrice: totalPrice,
+  // };
+
+  // const createOrder = async () => {
+  //   try {
+  //     const { data } = await axios.post(
+  //       'http://192.168.0.102:4000/api/v1/order/new',
+  //       order
+  //     );
+  //   } catch (error) {
+  //     Alert.alert('Error', error.response.data.message, [
+  //       {
+  //         text: 'Cancel',
+  //         onPress: () => console.log('Cancel Pressed'),
+  //         style: 'cancel',
+  //       },
+  //       { text: 'OK', onPress: () => console.log('OK Pressed') },
+  //     ]);
+  //   }
+  // }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // load user information từ asycn storage
   const [userInformation, setUserInformation] = useState([]);
@@ -211,7 +238,7 @@ const StripeTest = () => {
       getData();
     }, [])
   );
-
+  
   const handleConfirmation = async () => {
     if (key) {
       const { paymentIntent, error } = await confirmPayment(key, {
@@ -429,6 +456,7 @@ const styles = StyleSheet.create({
     height: 57,
     borderRadius: 5,
     backgroundColor: '#52D4D0',
+
   },
 
   container_title: {
@@ -480,9 +508,24 @@ const styles = StyleSheet.create({
   button_nouser: {
     margin: 20,
     width: 343,
+
     height: 57,
+    width: 77,
     borderRadius: 5,
-    backgroundColor: '#40BFFF',
+    backgroundColor: '#52D4D0',
+  },
+  remove_button: { backgroundColor: 'white', marginLeft: 15 },
+  container1: {
+    borderRadius: 10,
+    backgroundColor: '#52D4D0',
+    color: 'white',
+    width: '100%',
+    marginLeft: 0,
+  },
+  cardHolder: {
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 
