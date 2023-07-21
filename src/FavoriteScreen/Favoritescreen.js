@@ -129,7 +129,8 @@ const FavoriteScreen = ({ navigation }) => {
 
   return (
     <ScrollView>
-      {favList &&
+      {userInformation && userInformation.token ? (
+        favList &&
         favList?.map((item, i) => (
           <TouchableOpacity
             key={i}
@@ -165,7 +166,19 @@ const FavoriteScreen = ({ navigation }) => {
               </View>
             </Card>
           </TouchableOpacity>
-        ))}
+        ))
+      ) : (
+        <View style={styles.content_nouser}>
+          <Text style={styles.title_nouser}>Please login to continue</Text>
+          <Button
+            buttonStyle={styles.button_nouser}
+            title="Login"
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
+          />
+        </View>
+      )}
     </ScrollView>
   );
 };
