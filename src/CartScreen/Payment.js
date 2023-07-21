@@ -13,7 +13,7 @@ const Payment = () => {
         }}
       >
         <ListItem>
-          <Icon name="credit-card" type="feather" color="#52D4D0" />
+          <Icon name="credit-card" type="feather" color="#40BFFF" />
           <ListItem.Content>
             <ListItem.Title style={styles.listitem_title}>
               Credit Card Or Debit
@@ -22,13 +22,13 @@ const Payment = () => {
         </ListItem>
       </Pressable>
       <ListItem>
-        <Icon name="paypal" type="font-awesome" color="#52D4D0" />
+        <Icon name="paypal" type="font-awesome" color="#40BFFF" />
         <ListItem.Content>
           <ListItem.Title style={styles.listitem_title}>Paypal</ListItem.Title>
         </ListItem.Content>
       </ListItem>
       <ListItem>
-        <Icon name="account-balance" type="material" color="#52D4D0" />
+        <Icon name="account-balance" type="material" color="#40BFFF" />
         <ListItem.Content>
           <ListItem.Title style={styles.listitem_title}>
             Bank Transfer

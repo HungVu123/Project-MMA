@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { Card, Text, Button, Divider, Dialog } from '@rneui/themed';
+import { Card, Icon, Image, Text, Button, Divider } from '@rneui/themed';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Alert,
@@ -19,6 +19,7 @@ import {
   confirmPayment,
   initPaymentSheet,
 } from '@stripe/stripe-react-native';
+import { loadStorage } from '../../utils/AsyncStorageUtils';
 
 const Cart = () => {
   return (
@@ -82,6 +83,11 @@ const StripeTest = () => {
 
   const deleteCartItems = () => {
     console.log('deleteCartItem');
+  };
+
+  const loadCart = async (name) => {
+    const storedCart = await loadStorage('cart', name);
+    console.log(storedCart);
   };
 
   const proceedToShipping = () => {

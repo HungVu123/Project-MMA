@@ -18,16 +18,33 @@ import EditAddress from './src/CartScreen/EditAddress';
 import AddNewAddress from './src/CartScreen/AddNewAddress';
 import Success from './src/CartScreen/Success';
 import OrderDetail from './src/OrderScreen/OrderDetail';
+import ForgotPassword from './src/LoginScreen/ForgotPassword';
+import Register from './src/LoginScreen/Register';
+import ReviewScreen from './src/ReviewScreen/ReviewScreen';
+import FavoriteScreen from './src/FavoriteScreen/Favoritescreen';
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
   return (
-    <Tab.Navigator initialRouteName="Cart" screenOptions={{}}>
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={{ headerShown: false }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <Icon type="feather" name="home" color={color} size={size} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Cart"
         component={Cart}
         options={{
-          title: 'Your Cart',
+          title: 'Cart',
           tabBarIcon: ({ color, size }) => (
             <Icon
               type="feather"
@@ -53,8 +70,23 @@ const CartAndHistory = () => {
           ),
         }}
       />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Icon type="feather" name="user" color={color} size={size} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
+};
+
+const HomeStack = () => {
+  const Stack = createNativeStackNavigator();
+  return <Stack.Navigator initialRouteName={LoginScreen}></Stack.Navigator>;
 };
 
 export default function App() {
@@ -94,7 +126,46 @@ export default function App() {
           component={Success}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="DetailScreen"
+          component={DetailScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ReviewScreen"
+          component={ReviewScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="Order Detail" component={OrderDetail} />
+        <Stack.Screen
+          name="Favorite"
+          component={FavoriteScreen}
+          options={{ headerTitleAlign: 'center', title: 'Wishlist' }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            headerTitleAlign: 'center',
+            headerBackVisible: false,
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={{ headerTitleAlign: 'center' }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{ headerTitleAlign: 'center' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
