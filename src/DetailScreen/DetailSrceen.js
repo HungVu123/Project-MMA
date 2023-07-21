@@ -42,22 +42,22 @@ export default function DetailScreen(prop) {
     fetchData();
   }, []);
 
-  const login = async () => {
-    try {
-      const response = await axios.post(
-        'http://192.168.1.5:4000/api/v1/login',
-        {
-          email: 'vonglaucac123@gmail.com',
-          password: 'vonglaucac123',
-        }
-      );
-      setUserName(response.data.user.name);
-      await saveUserInfo(response.data.user);
-      await loadUserInfo();
-    } catch (e) {
-      console.log('error at login:' + e);
-    }
-  };
+  // const login = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'http://192.168.1.15:4000/api/v1/login',
+  //       {
+  //         email: 'vonglaucac123@gmail.com',
+  //         password: 'vonglaucac123',
+  //       }
+  //     );
+  //     setUserName(response.data.user.name);
+  //     await saveUserInfo(response.data.user);
+  //     await loadUserInfo();
+  //   } catch (e) {
+  //     console.log('error at login:' + e);
+  //   }
+  // };
   const loadCart = async (name) => {
     const storedCart = await loadStorage('cart', name);
     setCartList(storedCart);
@@ -98,17 +98,13 @@ export default function DetailScreen(prop) {
     ]);
   };
   useEffect(() => {
-    login();
-  }, []);
-
-  useEffect(() => {
     loadCart(userName);
   }, [userName]);
 
   useFocusEffect(
     React.useCallback(() => {
       loadCart(userName);
-    }, [])
+    }, [userName])
   );
 
   // load user information từ asycn storage

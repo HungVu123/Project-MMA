@@ -65,7 +65,7 @@ const CartItemCard = ({
             </Button>
             <TextInput
               style={styles.input}
-              value={item.quantity.toString()}
+              value={item?.quantity?.toString()}
               ref={textInputRef}
             />
             <Button

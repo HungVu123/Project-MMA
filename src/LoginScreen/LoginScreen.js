@@ -40,7 +40,6 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     try {
       const response = await login(email, password);
-      console.log('response', response);
       if (response.success === true) {
         try {
           // Convert the object to a JSON string

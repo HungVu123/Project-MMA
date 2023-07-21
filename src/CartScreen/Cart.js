@@ -27,7 +27,11 @@ import {
   confirmPayment,
   initPaymentSheet,
 } from '@stripe/stripe-react-native';
-import { loadStorage } from '../../utils/AsyncStorageUtils';
+import {
+  loadStorage,
+  removeFromStorage,
+  saveToStorage,
+} from '../../utils/AsyncStorageUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Cart = () => {
@@ -46,31 +50,45 @@ const StripeTest = () => {
   const toggleDialog = () => {
     setVisible1(!visible1);
   };
-  // const [Id, setId] = useState(user.shippingInfos[0]._id);
-  // const [index, setIndex] = useState(0);
-  // const handleCheckboxChange = (index) => {
-  //   setIndex(index);
-  //   setId(user.shippingInfos[index]._id);
-  // };
+  const [user, setUser] = useState();
+  const [Id, setId] = useState(user?.shippingInfos[0]._id);
+  const [index, setIndex] = useState(0);
+  const handleCheckboxChange = (index) => {
+    setIndex(index);
+    setId(user.shippingInfos[index]._id);
+  };
+  const [cart, setCart] = useState([]);
 
-  const data = [
-    {
-      product: '1',
-      name: 'name1',
-      price: 1,
-      image: require('./image/air-force-1.jpg'),
-      stock: 1,
-      quantity: number,
-    },
-    {
-      product: '2',
-      name: 'name2',
-      price: 2,
-      image: require('./image/air-force-1.jpg'),
-      stock: 1,
-      quantity: number,
-    },
-  ];
+  // const subtotal = cart.reduce(
+  //   (acc, item) => acc + item.quantity * item.price,
+  //   0
+  // );
+  const subtotal = cart
+    .map(function (a) {
+      return a.price * a.quantity;
+    })
+    .reduce((partialSum, a) => partialSum + a, 0);
+  const tax = subtotal * 0.2;
+  const shippingCharges = subtotal > 1000 ? 0 : 50;
+
+  // const data = [
+  //   {
+  //     product: '1',
+  //     name: 'name1',
+  //     price: 1,
+  //     image: require('./image/air-force-1.jpg'),
+  //     stock: 1,
+  //     quantity: number,
+  //   },
+  //   {
+  //     product: '2',
+  //     name: 'name2',
+  //     price: 2,
+  //     image: require('./image/air-force-1.jpg'),
+  //     stock: 1,
+  //     quantity: number,
+  //   },
+  // ];
 
   const User = {
     name: 'John1',
@@ -78,33 +96,66 @@ const StripeTest = () => {
     address: '1/4d Xuan Thoi Thuong',
   };
 
-  const increase = () => {
-    setNumber(number + 1);
+  const increase = async (name, item) => {
+    await setNumber(number + 1);
+    await removeFromStorage('cart', name, item);
+    item.quantity = number;
+    await saveToStorage('cart', name, item);
+    loadCart(userInformation?.user?.name);
   };
 
-  const decrease = () => {
+  const decrease = async (name, item) => {
     if (number > 0) {
-      setNumber(number - 1);
+      await setNumber(number - 1);
+      await removeFromStorage('cart', name, item);
+      item.quantity = number;
+      await saveToStorage('cart', name, item);
+      loadCart(userInformation?.user?.name);
     } else {
-      setNumber(0);
+      Alert.alert('Confirmation', 'Do you want to remove this?', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: async () => {
+            await removeFromStorage('cart', name, item);
+            loadCart(userInformation?.user?.name);
+          },
+        },
+      ]);
     }
   };
 
-  const deleteCartItems = () => {
-    console.log('deleteCartItem');
+  const deleteCartItems = (name, item) => {
+    Alert.alert('Confirmation', 'Do you want to remove this?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: async () => {
+          await removeFromStorage('cart', name, item);
+          loadCart(userInformation?.user?.name);
+        },
+      },
+    ]);
   };
 
   const loadCart = async (name) => {
     const storedCart = await loadStorage('cart', name);
-    console.log(storedCart);
+    setCart(storedCart);
   };
 
   const proceedToShipping = () => {
     navigation.navigate('Ship To');
   };
 
-  const totalPrice =
-    data.reduce((acc, item) => acc + item.quantity * item.price, 0) + 20 + 25;
+  const totalPrice = subtotal + tax + shippingCharges;
   const paymentData = {
     amount: Math.round(totalPrice * 100),
   };
@@ -114,7 +165,7 @@ const StripeTest = () => {
   const fetchData = async () => {
     try {
       const { data } = await axios.post(
-        'http://192.168.1.5:4000/api/v1/payment/process',
+        'http://192.168.1.15:4000/api/v1/payment/process',
         paymentData
       );
 
@@ -126,22 +177,22 @@ const StripeTest = () => {
     }
   };
 
-  // const shippingInfo = {
-  //   address: user?.shippingInfos[index].address,
-  //   city: user?.shippingInfos[index].city,
-  //   state: user?.shippingInfos[index].state,
-  //   pinCode: user?.shippingInfos[index].pinCode,
-  //   country: user?.shippingInfos[index].country,
-  //   phoneNo: user?.shippingInfos[index].phoneNo,
-  // };
+  const shippingInfo = {
+    address: userInformation?.user?.shippingInfos[index].address,
+    city: userInformation?.user?.shippingInfos[index].city,
+    state: userInformation?.user?.shippingInfos[index].state,
+    pinCode: userInformation?.user?.shippingInfos[index].pinCode,
+    country: userInformation?.user?.shippingInfos[index].country,
+    phoneNo: userInformation?.user?.shippingInfos[index].phoneNo,
+  };
 
-  // const orderItems = cart.map((item) => ({
-  //   product: item._id,
-  //   name: `${item.name}`,
-  //   price: item.price,
-  //   image: `${item.images[0].url}`,
-  //   quantity: item.quantity,
-  // }));
+  const orderItems = cart.map((item) => ({
+    product: item._id,
+    name: `${item.name}`,
+    price: item.price,
+    image: `${item.images[0].url}`,
+    quantity: item.quantity,
+  }));
 
   const order = {
     shippingInfo,
@@ -156,9 +207,15 @@ const StripeTest = () => {
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   loadCart(user?.name);
-  // }, [user?.name]);
+  useEffect(() => {
+    loadCart(userInformation?.user?.name);
+  }, [userInformation?.user?.name]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      loadCart(userInformation?.user?.name);
+    }, [userInformation?.user?.name])
+  );
 
   const handleConfirmation = async () => {
     if (key) {
@@ -178,9 +235,38 @@ const StripeTest = () => {
     }
   };
 
+  const [userInformation, setUserInformation] = useState();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const getData = async () => {
+        try {
+          const userInformationString = await AsyncStorage.getItem(
+            'userInformation'
+          );
+          if (userInformationString) {
+            // Parse the JSON string back to an object
+            setUserInformation(JSON.parse(userInformationString));
+            console.log(
+              'User information history retrieved successfully:',
+              userInformation.token
+            );
+            loadCart(userInformation.user.name);
+          } else {
+            setUserInformation([]);
+            console.log('User information history not found.', userInformation);
+          }
+        } catch (error) {
+          console.log('Error retrieving data:', error);
+        }
+      };
+      getData();
+    }, [])
+  );
+
   return (
     <ScrollView>
-      {userInformation.token ? (
+      {userInformation && userInformation?.token ? (
         <View style={styles.container}>
           <TouchableOpacity onPress={proceedToShipping}>
             <Card>
@@ -195,24 +281,35 @@ const StripeTest = () => {
                   Delivery Address
                 </Text>
                 <Text style={styles.container_name}>
-                  {User.name} |{' '}
+                  {userInformation?.user?.name} |{' '}
                   <Text style={styles.container_subtitles}>
-                    ( +{User.phoneNo})
+                    ( +{userInformation?.user?.shippingInfos[index]?.phoneNo})
                   </Text>
                 </Text>
-                <Text style={styles.container_subtitles}>{User.address}</Text>
+                <Text style={styles.container_subtitles}>
+                  {userInformation?.user?.shippingInfos[index]?.address},{' '}
+                  {userInformation?.user?.shippingInfos[index]?.city},{' '}
+                  {userInformation?.user?.shippingInfos[index]?.state},{' '}
+                  {userInformation?.user?.shippingInfos[index]?.country}
+                </Text>
               </View>
             </Card>
           </TouchableOpacity>
 
-          {data &&
-            data.map((item, index) => (
+          {cart &&
+            cart?.map((item, index) => (
               <Card containerStyle={styles.card_container} key={index}>
                 <CartItemCard
                   item={item}
-                  deleteCartItems={deleteCartItems}
-                  increaseQuantity={increase}
-                  decreaseQuantity={decrease}
+                  deleteCartItems={() =>
+                    deleteCartItems(userInformation?.user?.name, item)
+                  }
+                  increaseQuantity={() =>
+                    increase(userInformation?.user?.name, item)
+                  }
+                  decreaseQuantity={() =>
+                    decrease(userInformation?.user?.name, item)
+                  }
                 />
               </Card>
             ))}
@@ -225,12 +322,9 @@ const StripeTest = () => {
               }}
             >
               <Text style={{ color: '#9098B1' }}>
-                Total ({data.length} {data.length <= 1 ? 'Item' : 'Items'})
+                Total ({cart?.length} {cart?.length <= 1 ? 'Item' : 'Items'})
               </Text>
-              <Text style={{}}>{`$${data.reduce(
-                (acc, item) => acc + item.quantity * item.price,
-                0
-              )}`}</Text>
+              <Text style={{}}>${subtotal}</Text>
             </View>
             <View
               style={{
@@ -240,7 +334,7 @@ const StripeTest = () => {
               }}
             >
               <Text style={{ color: '#9098B1' }}>Shipping</Text>
-              <Text style={{}}>$20</Text>
+              <Text style={{}}>${shippingCharges}</Text>
             </View>
             <View
               style={{
@@ -250,7 +344,7 @@ const StripeTest = () => {
               }}
             >
               <Text style={{ color: '#9098B1' }}>Tax</Text>
-              <Text style={{}}>$25</Text>
+              <Text style={{}}>${tax}</Text>
             </View>
             <Divider />
             <View
@@ -261,16 +355,7 @@ const StripeTest = () => {
               }}
             >
               <Text style={{ fontWeight: 'bold' }}>Total Price</Text>
-              <Text style={styles.product_price}>
-                {`$${
-                  data.reduce(
-                    (acc, item) => acc + item.quantity * item.price,
-                    0
-                  ) +
-                  20 +
-                  25
-                }`}
-              </Text>
+              <Text style={styles.product_price}>{`$${totalPrice}`}</Text>
             </View>
           </Card>
           <Button
