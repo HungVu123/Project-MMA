@@ -27,7 +27,11 @@ import {
   confirmPayment,
   initPaymentSheet,
 } from '@stripe/stripe-react-native';
-import { loadStorage } from '../../utils/AsyncStorageUtils';
+import {
+  loadStorage,
+  removeFromStorage,
+  saveToStorage,
+} from '../../utils/AsyncStorageUtils';
 
 const Cart = () => {
   return (
@@ -40,7 +44,6 @@ const Cart = () => {
 const StripeTest = ({ route }) => {
   const navigation = useNavigation();
   const [number, setNumber] = useState(1);
-  const textInputRef = useRef();
   const [visible1, setVisible1] = useState(false);
   const toggleDialog = () => {
     setVisible1(!visible1);
@@ -52,26 +55,12 @@ const StripeTest = ({ route }) => {
     setIndex(index);
     setId(user?.shippingInfos[index]?._id);
   };
-  // const receivedData = route.params?.data || 'No data received';
-  // console.log(route.params.data);
-  const data = [
-    {
-      product: '1',
-      name: 'name1',
-      price: 1,
-      image: require('./image/air-force-1.jpg'),
-      stock: 1,
-      quantity: number,
-    },
-    {
-      product: '2',
-      name: 'name2',
-      price: 2,
-      image: require('./image/air-force-1.jpg'),
-      stock: 1,
-      quantity: number,
-    },
-  ];
+
+  const receivedData = route?.params.data1 || 0;
+  console.log(receivedData);
+
+  const [cart, setCart] = useState([]);
+  console.log(cart);
 
   const login = async () => {
     try {
@@ -88,27 +77,68 @@ const StripeTest = ({ route }) => {
     }
   };
 
-  const increase = () => {
-    setNumber(number + 1);
+  const increase = async (name, item) => {
+    await setNumber(number + 1);
+    await removeFromStorage('cart', name, item);
+    item.quantity = number;
+    await saveToStorage('cart', name, item);
+    loadCart(user?.name);
   };
 
-  const decrease = () => {
+  const decrease = async (name, item) => {
     if (number > 0) {
-      setNumber(number - 1);
+      await setNumber(number - 1);
+      await removeFromStorage('cart', name, item);
+      item.quantity = number;
+      await saveToStorage('cart', name, item);
+      loadCart(user?.name);
     } else {
-      setNumber(0);
+      Alert.alert('Confirmation', 'Do you want to remove this?', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: async () => {
+            await removeFromStorage('cart', name, item);
+            loadCart(user?.name);
+          },
+        },
+      ]);
     }
   };
 
-  const deleteCartItems = () => {
-    console.log('deleteCartItem');
+  const deleteCartItems = (name, item) => {
+    Alert.alert('Confirmation', 'Do you want to remove this?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: async () => {
+          await removeFromStorage('cart', name, item);
+          loadCart(user?.name);
+        },
+      },
+    ]);
   };
 
   const loadCart = async (name) => {
     const storedCart = await loadStorage('cart', name);
-    console.log(storedCart);
+    await setCart(storedCart);
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      loadCart(user?.name);
+    }, [])
+  );
+
+  console.log(cart);
   const proceedToShipping = () => {
     navigation.navigate('Ship To');
   };
@@ -117,40 +147,17 @@ const StripeTest = ({ route }) => {
     navigation.navigate('Login');
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const getData = async () => {
-        try {
-          const userInformationString = await AsyncStorage.getItem(
-            'userInformation'
-          );
-          if (userInformationString) {
-            // Parse the JSON string back to an object
-            setUserInformation(JSON.parse(userInformationString));
-            console.log(
-              'User information history retrieved successfully:',
-              userInformation.token
-            );
-          } else {
-            setUserInformation([]);
-            console.log('User information history not found.', userInformation);
-          }
-        } catch (error) {
-          console.log('Error retrieving data:', error);
-        }
-      };
-      getData();
-    }, [])
+  const subtotal = cart.reduce(
+    (acc, item) => acc + item.quantity * item.price,
+    0
   );
-
-  const totalPrice =
-    data.reduce((acc, item) => acc + item.quantity * item.price, 0) + 20 + 25;
+  const shippingCharges = subtotal > 1000 ? 0 : 50;
+  const tax = subtotal * 0.2;
+  const totalPrice = subtotal + tax + shippingCharges;
   const paymentData = {
     amount: Math.round(totalPrice * 100),
   };
-
   const [key, setKey] = useState('');
-
   const fetchData = async () => {
     try {
       const { data } = await axios.post(
@@ -166,41 +173,31 @@ const StripeTest = ({ route }) => {
     }
   };
 
-  // const shippingInfo = {
-  //   address: user.shippingInfos[index].address,
-  //   city: user.shippingInfos[index].city,
-  //   state: user.shippingInfos[index].state,
-  //   pinCode: user.shippingInfos[index].pinCode,
-  //   country: user.shippingInfos[index].country,
-  //   phoneNo: user.shippingInfos[index].phoneNo,
-  // };
+  const shippingInfo = {
+    address: user?.shippingInfos[index].address,
+    city: user?.shippingInfos[index].city,
+    state: user?.shippingInfos[index].state,
+    pinCode: user?.shippingInfos[index].pinCode,
+    country: user?.shippingInfos[index].country,
+    phoneNo: user?.shippingInfos[index].phoneNo,
+  };
 
-  // const order = {
-  //   shippingInfo,
-  //   orderItems: cartItems,
-  //   itemsPrice: subtotal,
-  //   taxPrice: tax,
-  //   shippingPrice: shippingCharges,
-  //   totalPrice: totalPrice,
-  // };
+  const orderItems = cart.map((item) => ({
+    product: item._id,
+    name: `${item.name}`,
+    price: item.price,
+    image: `${item.images[0].url}`,
+    quantity: item.quantity,
+  }));
 
-  // const createOrder = async () => {
-  //   try {
-  //     const { data } = await axios.post(
-  //       'http://192.168.0.102:4000/api/v1/order/new',
-  //       order
-  //     );
-  //   } catch (error) {
-  //     Alert.alert('Error', error.response.data.message, [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => console.log('Cancel Pressed'),
-  //         style: 'cancel',
-  //       },
-  //       { text: 'OK', onPress: () => console.log('OK Pressed') },
-  //     ]);
-  //   }
-  // }
+  const order = {
+    shippingInfo,
+    orderItems: orderItems,
+    itemsPrice: subtotal,
+    taxPrice: tax,
+    shippingPrice: shippingCharges,
+    totalPrice: totalPrice,
+  };
 
   useEffect(() => {
     fetchData();
@@ -208,17 +205,8 @@ const StripeTest = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        textInputRef.current.blur();
-      }
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-    };
-  }, []);
+    loadCart(user?.name);
+  }, [user?.name]);
 
   const handleConfirmation = async () => {
     if (key) {
@@ -228,19 +216,44 @@ const StripeTest = ({ route }) => {
           email: 'John@email.com',
         },
       });
-
       if (!error) {
-        Alert.alert('Received payment', `Billed for ${paymentIntent?.amount}`);
+        await Alert.alert(
+          'Received payment',
+          `Billed for ${paymentIntent?.amount}`
+        );
+        order.paymentInfo = {
+          id: paymentIntent.id,
+          status: paymentIntent.status,
+        };
+        try {
+          const { data } = await axios.post(
+            'http://192.168.0.102:4000/api/v1/order/new',
+            order
+          );
+        } catch (error) {
+          Alert.alert('Error', error.response.data.message, [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ]);
+        }
       } else {
         Alert.alert('Error', error.message);
       }
-      await navigation.navigate('Success Payment');
     }
+    await navigation.navigate('Success Payment');
   };
 
   return (
     <ScrollView>
-      {userInformation.token ? (
+      {cart.length === 0 ? (
+        <Card style={styles.container_cart}>
+          <TextInput style={styles.container_title}>Nothing in Cart</TextInput>
+        </Card>
+      ) : (
         <View style={styles.container}>
           <TouchableOpacity onPress={proceedToShipping}>
             <Card>
@@ -270,17 +283,16 @@ const StripeTest = ({ route }) => {
             </Card>
           </TouchableOpacity>
 
-          {data &&
-            data.map((item, index) => (
-              <Card containerStyle={styles.card_container} key={index}>
-                <CartItemCard
-                  item={item}
-                  deleteCartItems={deleteCartItems}
-                  increaseQuantity={increase}
-                  decreaseQuantity={decrease}
-                />
-              </Card>
-            ))}
+          {cart?.map((item, index) => (
+            <Card containerStyle={styles.card_container} key={index}>
+              <CartItemCard
+                item={item}
+                deleteCartItems={() => deleteCartItems(user?.name, item)}
+                increaseQuantity={() => increase(user?.name, item)}
+                decreaseQuantity={() => decrease(user?.name, item)}
+              />
+            </Card>
+          ))}
           <Card containerStyle={styles.card_container}>
             <View
               style={{
@@ -290,9 +302,9 @@ const StripeTest = ({ route }) => {
               }}
             >
               <Text style={{ color: '#9098B1' }}>
-                Total ({data.length} {data.length <= 1 ? 'Item' : 'Items'})
+                Total ({cart?.length} {cart?.length <= 1 ? 'Item' : 'Items'})
               </Text>
-              <Text style={{}}>{`$${data.reduce(
+              <Text style={{}}>{`$${cart?.reduce(
                 (acc, item) => acc + item.quantity * item.price,
                 0
               )}`}</Text>
@@ -305,7 +317,7 @@ const StripeTest = ({ route }) => {
               }}
             >
               <Text style={{ color: '#9098B1' }}>Shipping</Text>
-              <Text style={{}}>$20</Text>
+              <Text style={{}}>${shippingCharges}</Text>
             </View>
             <View
               style={{
@@ -315,7 +327,7 @@ const StripeTest = ({ route }) => {
               }}
             >
               <Text style={{ color: '#9098B1' }}>Tax</Text>
-              <Text style={{}}>$25</Text>
+              <Text style={{}}>${tax}</Text>
             </View>
             <Divider />
             <View
@@ -326,16 +338,7 @@ const StripeTest = ({ route }) => {
               }}
             >
               <Text style={{ fontWeight: 'bold' }}>Total Price</Text>
-              <Text style={styles.product_price}>
-                {`$${
-                  data.reduce(
-                    (acc, item) => acc + item.quantity * item.price,
-                    0
-                  ) +
-                  20 +
-                  25
-                }`}
-              </Text>
+              <Text style={styles.product_price}>{`$${totalPrice}`}</Text>
             </View>
           </Card>
           <Button
@@ -367,7 +370,7 @@ const StripeTest = ({ route }) => {
                   console.log('focusField', focusedField);
                 }}
               />
-              <Text style={styles.cardHolder}>BUI DUC UY DUNG</Text>
+              <Text style={styles.cardHolder}>{user?.name}</Text>
             </Card>
             <Dialog.Actions>
               <Dialog.Button
@@ -377,7 +380,9 @@ const StripeTest = ({ route }) => {
             </Dialog.Actions>
           </Dialog>
         </View>
-      ) : (
+      )}
+
+      {/* : (
         <View style={styles.content_nouser}>
           <Text style={styles.title_nouser}>Please login to continue</Text>
           <Button
@@ -387,13 +392,17 @@ const StripeTest = ({ route }) => {
               navigation.navigate('Login');
             }}
           />
-        </View>
-      )}
+        </View> */}
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container_cart: {
+    flex: 1,
+    justifyContent: 'center', // Aligns items along the primary axis (vertically in this case)
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
   },

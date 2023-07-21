@@ -71,7 +71,7 @@ export default function AddNewAddress() {
   const handleSubmit = async () => {
     try {
       const response = await axios.put(
-        'http://10.86.4.101:4000/api/v1/shippinginfo/new',
+        'http://192.168.0.102:4000/api/v1/shippinginfo/new',
         {
           // Request body data
           address: address,

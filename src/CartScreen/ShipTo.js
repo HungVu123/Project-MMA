@@ -24,7 +24,7 @@ const ShipTo = () => {
     if (isFocused) {
       try {
         const response = await axios.post(
-          'http://10.86.4.101:4000/api/v1/login',
+          'http://192.168.0.102:4000/api/v1/login',
           {
             email: 'vonglaucac123@gmail.com',
             password: 'vonglaucac123',
@@ -47,7 +47,7 @@ const ShipTo = () => {
         user?.shippingInfos.map((data, index) => (
           <Pressable
             onPress={() => {
-              navigation.navigate('Cart');
+              navigation.navigate('Cart', { data: index });
             }}
             key={index}
           >

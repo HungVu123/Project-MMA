@@ -9,24 +9,35 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   scrollview: {
-    height: '100%',
+    height: '90%',
     width: '100%',
+  },
+  navbar: {
+    height: '8%',
+    borderBottomWidth: 0.5,
+    borderColor: '#e7ecfa',
+    justifyContent: 'center',
+  },
+  goBackIcon: {
+    height: 18,
+    width: 10,
+    marginHorizontal: 20,
   },
   containImage: {
     width: windowWidth,
     height: windowHeight * 0.5,
-    alignItems: "center",
+    alignItems: 'center',
   },
   image: {
-    height: "100%",
+    height: '100%',
     width: windowWidth,
   },
   containHeaderLike: {
-    width: "100%",
+    width: '100%',
     height: windowHeight * 0.06,
     paddingTop: windowHeight * 0.01,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   containHeader: {
     width: '70%',
@@ -35,7 +46,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 30,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginLeft: 10,
   },
   containButtonLike: {
@@ -48,7 +59,7 @@ const styles = StyleSheet.create({
     width: 30,
   },
   containRating: {
-    width: "100%",
+    width: '100%',
     height: windowHeight * 0.03,
     paddingLeft: 20,
     flexDirection: 'row',
@@ -61,22 +72,22 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 25,
     marginLeft: 20,
-    color: "#40BFFF",
-    fontWeight: "700",
+    color: '#40BFFF',
+    fontWeight: '700',
   },
   desc: {
     height: windowHeight * 0.03,
     fontSize: 18,
     marginTop: 20,
     marginLeft: 20,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   descDetail: {
     marginHorizontal: 20,
-    color: "#9098B1",
+    color: '#9098B1',
   },
   containButtonCart: {
-    width: "90%",
+    width: '90%',
     height: windowHeight * 0.05,
     marginHorizontal: 20,
     marginVertical: 10,
@@ -91,42 +102,42 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   containHeaderReview: {
-    width: "100%",
+    width: '100%',
     height: windowHeight * 0.03,
     marginTop: windowHeight * 0.02,
     paddingLeft: 18,
-    justifyContent: "space-between",
-   
-    flexDirection: "row",
+    justifyContent: 'space-between',
+
+    flexDirection: 'row',
   },
   headerReview: {
-    width: "40%",
+    width: '40%',
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   clickHeaderMore: {
-    width: "30%",
+    width: '30%',
     paddingLeft: 20,
   },
   headerMore: {
     fontSize: 18,
-    fontWeight: "700",
-    color: "#40BFFF",
+    fontWeight: '700',
+    color: '#40BFFF',
   },
   containDetailRating: {
     borderRadius: 20,
     marginHorizontal: 20,
-    height: windowHeight * 0.20,
-    backgroundColor: "#e7f0f2"
+    height: windowHeight * 0.2,
+    backgroundColor: '#e7f0f2',
   },
   containHeaderDetailRating: {
-    height: "40%",
-    flexDirection: "row",
+    height: '40%',
+    flexDirection: 'row',
   },
   containAvaRating: {
-    width: "25%",
-    justifyContent: "center",
-    alignItems: "center",
+    width: '25%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   avaRating: {
     height: 60,
@@ -134,23 +145,23 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   containNameAndRating: {
-    height: "100%",
-    width: "75%",
+    height: '100%',
+    width: '75%',
   },
   containNameRating: {
     fontSize: 18,
-    fontWeight: "700",
+    fontWeight: '700',
     marginHorizontal: 20,
     marginVertical: 10,
   },
   containDescRating: {
-    width: "100%",
-    height: "60%",
+    width: '100%',
+    height: '60%',
   },
   detailRating: {
     marginHorizontal: 20,
-    color: "#9098B1",
-    marginBottom: 10
+    color: '#9098B1',
+    marginBottom: 10,
   },
 });
 export default styles;

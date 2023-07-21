@@ -44,7 +44,7 @@ export default function DetailScreen(prop) {
   const login = async () => {
     try {
       const response = await axios.post(
-        'http://192.168.1.15:4000/api/v1/login',
+        'http://192.168.0.102:4000/api/v1/login',
         {
           email: 'vonglaucac123@gmail.com',
           password: 'vonglaucac123',
@@ -73,6 +73,7 @@ export default function DetailScreen(prop) {
       {
         text: 'OK',
         onPress: async () => {
+          item.quantity = 1;
           await saveToStorage('cart', name, item);
           loadCart(userName);
         },
@@ -108,10 +109,22 @@ export default function DetailScreen(prop) {
       loadCart(userName);
     }, [])
   );
-
   return (
     <View style={styles.container}>
       <SafeAreaView>
+        <View style={styles.navbar}>
+          <TouchableOpacity
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+            onPress={() => navigation.goBack()}
+          >
+            <Image
+              style={styles.goBackIcon}
+              source={require('../../assets/goBack.png')}
+              resizeMode="stretch"
+            />
+            <Text style={{ fontSize: 18, fontWeight: '700' }}>Back</Text>
+          </TouchableOpacity>
+        </View>
         {data ? (
           <ScrollView style={styles.scrollview}>
             <View style={styles.containImage}>

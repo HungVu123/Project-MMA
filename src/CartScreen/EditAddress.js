@@ -13,7 +13,7 @@ export default function EditAddress({ route }) {
     if (isFocused) {
       try {
         const response = await axios.post(
-          'http://10.86.4.101:4000/api/v1/login',
+          'http://192.168.0.102:4000/api/v1/login',
           {
             email: 'vonglaucac123@gmail.com',
             password: 'vonglaucac123',
@@ -43,7 +43,7 @@ export default function EditAddress({ route }) {
   const deleteAddress = async () => {
     try {
       const response = await axios.put(
-        `http://10.86.4.101:4000/api/v1//shippinginfo/${user?.shippingInfos[receivedData]._id}`
+        `http://192.168.0.102:4000/api/v1//shippinginfo/${user?.shippingInfos[receivedData]._id}`
       );
       await navigation.navigate('Ship To');
     } catch (e) {
