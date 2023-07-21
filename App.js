@@ -20,6 +20,9 @@ import ForgotPassword from './src/LoginScreen/ForgotPassword';
 import Register from './src/LoginScreen/Register';
 import ReviewScreen from './src/ReviewScreen/ReviewScreen';
 import FavoriteScreen from './src/FavoriteScreen/Favoritescreen';
+import ChooseReview from './src/ReviewScreen/ReviewDetail';
+import ReviewDetail from './src/ReviewScreen/ReviewDetail';
+import AddReview from './src/ReviewScreen/AddReview';
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
@@ -134,7 +137,17 @@ export default function App() {
         <Stack.Screen
           name="ReviewScreen"
           component={ReviewScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="ReviewDetail"
+          component={ReviewDetail}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="AddReview"
+          component={AddReview}
+          options={{ headerShown: true }}
         />
         <Stack.Screen name="Order Detail" component={OrderDetail} />
         <Stack.Screen

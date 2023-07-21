@@ -7,42 +7,140 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 const History = () => {
   const navigation = useNavigation();
-  const login = async () => {
-    try {
-      const response = await axios.post(
-        'http://192.168.1.15:4000/api/v1/login',
-        {
-          email: 'vonglaucac123@gmail.com',
-          password: 'vonglaucac123',
-        }
-      );
-      setUserName(response.data.user.name);
-    } catch (e) {
-      console.log('error at login:' + e);
-    }
-  };
+  // const login = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       'http://192.168.1.5:4000/api/v1/login',
+  //       {
+  //         email: 'vonglaucac123@gmail.com',
+  //         password: 'vonglaucac123',
+  //       }
+  //     );
+  //     setUserName(response.data.user.name);
+  //   } catch (e) {
+  //     console.log('error at login:' + e);
+  //   }
+  // };
 
   const getOrderHistory = async () => {
     try {
       const response = await axios.get(
-        'http://192.168.1.15:4000/api/v1/orders/me'
+        'http://192.168.1.5:4000/api/v1/orders/me'
       );
       setOrderList(response.data.orders);
       setLoading(false);
     } catch (error) {
       console.log('failed the get order list');
       console.log('error at get orders:' + error);
-      setLoading(true);
+      setLoading(false);
+
+      //fake data
+      setOrderList([
+        {
+          shippingInfo: {
+            address: "Xuan Thoi Thuong",
+            city: "hcm",
+            state: "10",
+            country: "BB",
+            pinCode: 123,
+            phoneNo: 1234567890
+          },
+          paymentInfo: {
+            id: "pi_3N520tKQsuyUyXdE1FXdAEYg",
+            status: "succeeded"
+          },
+          _id: "6457530d08d0f6229926e6fd",
+          orderItems: [
+            {
+              name: "Peanut Butter 600g",
+              price: 80,
+              quantity: 5,
+              image: "../assets/images/vegetable/product/1.png",
+              product: "643bb2f3f2234bb688a56c9c",
+              _id: "6457530d08d0f6229926e6fe"
+            },
+            {
+              name: "1",
+              price: 180,
+              quantity: 3,
+              image: "../assets/images/vegetable/product/2.png",
+              product: "643fa2f1eb52a0fb65a9d6c0",
+              _id: "6457530d08d0f6229926e6ff"
+            }
+          ],
+          user: "644b7f650b750a332e5ca7e2",
+          paidAt: "2023-05-07T07:28:13.468Z",
+          itemPrice: 0,
+          taxPrice: 124,
+          shippingPrice: 200,
+          totalPrice: 944,
+          orderStatus: "Delivered",
+          createdAt: "2023-05-07T07:28:13.505Z",
+          __v: 0,
+          deliveryAt: "2023-05-13T09:14:19.793Z"
+        },
+        {
+          shippingInfo: {
+            address: "Xuan Thoi Thuong",
+            city: "hcm",
+            state: "10",
+            country: "BB",
+            pinCode: 123,
+            phoneNo: 1234567890
+          },
+          paymentInfo: {
+            id: "pi_3NUu8lKQsuyUyXdE1qgt09JC",
+            status: "succeeded"
+          },
+          _id: "64b56a043d1ae31305f24027",
+          orderItems: [
+            {
+              name: "Toucan",
+              price: 500,
+              quantity: 1,
+              image: "https://res.cloudinary.com/dfusvbvhg/image/upload/v1689074358/products/hwjpahhte8lt9i9zkjwx.jpg",
+              product: "64ad3ab5342961feeccd56c5",
+              _id: "64b56a043d1ae31305f24028"
+            },
+            {
+              name: "Aracari",
+              price: 400,
+              quantity: 3,
+              image: "https://res.cloudinary.com/dfusvbvhg/image/upload/v1689074635/products/aoksbspwapbivtyoohaf.jpg",
+              product: "64ad3bca342961feeccd56db",
+              _id: "64b56a043d1ae31305f24029"
+            },
+            {
+              name: "Humming",
+              price: 123,
+              quantity: 5,
+              image: "https://res.cloudinary.com/dfusvbvhg/image/upload/v1689075026/products/ldvl5hppuangoy8ojnhw.jpg",
+              product: "64ad3d51342961feeccd574a",
+              _id: "64b56a043d1ae31305f2402a"
+            }
+          ],
+          user: "644b7f650b750a332e5ca7e2",
+          paidAt: "2023-07-17T16:19:16.771Z",
+          itemPrice: 0,
+          taxPrice: 463,
+          shippingPrice: 0,
+          totalPrice: 2778,
+          orderStatus: "Processing",
+          createdAt: "2023-07-17T16:19:16.810Z",
+          __v: 0
+        }
+      ]);
+
     }
   };
 
-  const [orderList, setOrderList] = useState([{}]);
+  const [orderList, setOrderList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [userName, setUserName] = useState();
+  const [userName, setUserName] = useState('hung');
   const [user, setUser] = useState();
 
   useEffect(() => {
-    login();
+    // login();
     getOrderHistory();
   }, []);
 
@@ -73,6 +171,9 @@ const History = () => {
           <Card>
             <Skeleton height={200} />
           </Card>
+          <Card>
+            <Skeleton height={200} />
+          </Card>
         </View>
       ) : orderList ? (
         orderList.map((order, i) => (
@@ -88,9 +189,10 @@ const History = () => {
             <Card containerStyle={styles.card_container}>
               <View style={styles.container}>
                 <Text style={styles.container_title}>
-                  {moment(order.createdAt).format('DDMMYY')}
-                  {order.shippingInfo.address.replace(/[^A-Z]/g, '')}
-                  {order.totalPrice}
+                  Address: {order.shippingInfo.address}
+                </Text>
+                <Text style={styles.container_title}>
+                  Total Price: {order.totalPrice}
                 </Text>
                 <View style={{ flexDirection: 'row' }}>
                   <Text style={styles.container_subtitles}>Order at: </Text>
@@ -99,7 +201,6 @@ const History = () => {
                   </Text>
                 </View>
                 <Divider style={{ marginBottom: 16 }} />
-
                 <View
                   style={{
                     flexDirection: 'row',
@@ -148,7 +249,6 @@ const styles = StyleSheet.create({
       borderColor: '#52D4D0',
     },
   },
-  container: { margin: 24 },
   container_title: {
     fontWeight: 'bold',
     fontSize: 14,
@@ -164,9 +264,6 @@ const styles = StyleSheet.create({
     color: '#52D4D0',
   },
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   content_nouser: {
     borderRadius: 10,

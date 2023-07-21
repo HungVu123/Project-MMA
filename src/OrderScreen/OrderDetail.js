@@ -3,6 +3,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  Button,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -14,11 +15,12 @@ import {
   removeFromStorage,
   saveToStorage,
 } from '../../utils/AsyncStorageUtils';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const OrderDetail = ({ route }) => {
   const order = route.params.order;
   const userName = route.params.username;
+  const navigation = useNavigation();
   const [favList, setFavList] = useState();
 
   const itemsPrice = order.orderItems
@@ -29,59 +31,64 @@ const OrderDetail = ({ route }) => {
 
   const totalPrice = itemsPrice + order.taxPrice + order.shippingPrice;
 
-  const handleAdd = (name, item) => {
-    Alert.alert('Confirmation', 'Do you want to add this?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: async () => {
-          await saveToStorage('favorites', name, item);
-          loadFavorites(userName);
-        },
-      },
-    ]);
+  // const handleAdd = (name, item) => {
+  //   Alert.alert('Confirmation', 'Do you want to add this?', [
+  //     {
+  //       text: 'Cancel',
+  //       onPress: () => console.log('Cancel Pressed'),
+  //       style: 'cancel',
+  //     },
+  //     {
+  //       text: 'OK',
+  //       onPress: async () => {
+  //         await saveToStorage('favorites', name, item);
+  //         loadFavorites(userName);
+  //       },
+  //     },
+  //   ]);
+  // };
+
+  // const handleRemove = (name, item) => {
+  //   Alert.alert('Confirmation', 'Do you want to remove this?', [
+  //     {
+  //       text: 'Cancel',
+  //       onPress: () => console.log('Cancel Pressed'),
+  //       style: 'cancel',
+  //     },
+  //     {
+  //       text: 'OK',
+  //       onPress: async () => {
+  //         await removeFromStorage('favorites', name, item);
+  //         loadFavorites(userName);
+  //       },
+  //     },
+  //   ]);
+  // };
+
+  // const handleRemoveAllFromFavorites = async () => {
+  //   await removeAllStorage();
+  //   setFavList();
+  // };
+
+  // const loadFavorites = async (name) => {
+  //   const storedFavorites = await loadStorage('favorites', name);
+  //   setFavList(storedFavorites);
+  // };
+
+  // useEffect(() => {
+  //   loadFavorites(userName);
+  // }, [userName]);
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     loadFavorites(userName);
+  //   }, [])
+  // );
+
+  const proceedToReview = () => {
+    navigation.navigate('ReviewScreen', { data: order.orderItems });
   };
 
-  const handleRemove = (name, item) => {
-    Alert.alert('Confirmation', 'Do you want to remove this?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: async () => {
-          await removeFromStorage('favorites', name, item);
-          loadFavorites(userName);
-        },
-      },
-    ]);
-  };
-
-  const handleRemoveAllFromFavorites = async () => {
-    await removeAllStorage();
-    setFavList();
-  };
-
-  const loadFavorites = async (name) => {
-    const storedFavorites = await loadStorage('favorites', name);
-    setFavList(storedFavorites);
-  };
-
-  useEffect(() => {
-    loadFavorites(userName);
-  }, [userName]);
-
-  useFocusEffect(
-    React.useCallback(() => {
-      loadFavorites(userName);
-    }, [])
-  );
 
   return (
     <ScrollView>
@@ -103,7 +110,7 @@ const OrderDetail = ({ route }) => {
                   }}
                 >
                   <Text style={styles.product_title}>{item.name}</Text>
-                  {favList && favList.some((fav) => fav._id === item._id) ? (
+                  {/* {favList && favList.some((fav) => fav._id === item._id) ? (
                     <TouchableOpacity
                       onPress={() => handleRemove(userName, item)}
                     >
@@ -123,7 +130,7 @@ const OrderDetail = ({ route }) => {
                         color="#9098B1"
                       />
                     </TouchableOpacity>
-                  )}
+                  )} */}
                 </View>
                 <Text style={styles.product_quantity}>x{item.quantity}</Text>
                 <Text style={styles.product_price}>
@@ -227,8 +234,19 @@ const OrderDetail = ({ route }) => {
             <Text style={{ fontWeight: 'bold' }}>Total Price</Text>
             <Text style={styles.product_price}>${totalPrice}</Text>
           </View>
+
+
         </Card>
+
       </View>
+      <View style={styles.checkout_button}>
+        <Button
+          title="Đã Nhận Hàng"
+          titleStyle={{ fontWeight: 'bold' }}
+          onPress={proceedToReview}
+        />
+      </View>
+
     </ScrollView>
   );
 };
@@ -271,10 +289,10 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   checkout_button: {
-    margin: 16,
-    height: 57,
-    borderRadius: 5,
-    backgroundColor: '#40BFFF',
+    marginBottom: 10,
+    marginTop: 10,
+    marginRight: 13,
+    marginLeft: 13,
   },
 });
 

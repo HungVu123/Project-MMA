@@ -8,11 +8,14 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
-  navbar:{
+  navbar: {
+    flexDirection: 'row',
+    alignItems: 'center',
     height: "8%",
     borderBottomWidth: 0.5,
     borderColor: "#e7ecfa",
-    justifyContent: "center"
+    justifyContent: "center",
+
   },
   goBackIcon: {
     height: 18,
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
   containRatingFilter: {
     flexDirection: "row",
     height: "72%",
-    width: windowWidth*0.18,
+    width: windowWidth * 0.18,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 8,
@@ -46,6 +49,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     height: windowHeight * 0.2,
     backgroundColor: "#e7f0f2",
+    borderWidth: 1,
   },
 
   containHeaderDetailRating: {
@@ -91,6 +95,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     color: "#9098B1",
     marginBottom: 10,
+  },
+  focusedContainer: {
+    borderColor: '#40BFFF',
   },
 });
 export default styles;
