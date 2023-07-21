@@ -1,6 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { Button, Card, Icon, Text } from '@rneui/themed';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Pressable,
@@ -17,37 +17,37 @@ const ShipTo = () => {
   const addNewAddress = () => {
     navigation.navigate('AddNewAddress');
   };
-  // useEffect(() => {
-  //   try {
-  //     const response = axios.get(`http://192.168.1.9:4000/api/v1/me`);
 
-  //     console.log('Response:', response.data);
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // }, []);
-
-  const User = {
-    name: 'John1',
-    shippingInfos: [
-      {
-        address: '1/4d Xuan Thoi Thuong',
-        phoneNo: 932951234124,
-      },
-      {
-        address: '1/4d Xuan Thoi Thuong',
-        phoneNo: 932951234124,
-      },
-    ],
+  const [user, setUser] = useState();
+  const isFocused = useIsFocused();
+  const login = async () => {
+    if (isFocused) {
+      try {
+        const response = await axios.post(
+          'http://192.168.0.102:4000/api/v1/login',
+          {
+            email: 'vonglaucac123@gmail.com',
+            password: 'vonglaucac123',
+          }
+        );
+        setUser(response.data.user);
+      } catch (e) {
+        console.log('error at login:' + e);
+      }
+    }
   };
+
+  useEffect(() => {
+    login();
+  }, [isFocused]);
 
   return (
     <View>
-      {User.shippingInfos &&
-        User.shippingInfos.map((data, index) => (
+      {user?.shippingInfos &&
+        user?.shippingInfos.map((data, index) => (
           <Pressable
             onPress={() => {
-              navigation.navigate('Cart');
+              navigation.navigate('Cart', { data: index });
             }}
             key={index}
           >
@@ -61,21 +61,23 @@ const ShipTo = () => {
               <View style={styles.container}>
                 <View style={styles.container1}>
                   <Text style={styles.container_title}>
-                    {User.name} |{' '}
+                    {user?.name} |{' '}
                     <Text style={styles.container_subtitles}>
                       ( +{data.phoneNo})
                     </Text>
                   </Text>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate('EditAddress');
+                      navigation.navigate('EditAddress', { data: index });
                     }}
                   >
                     <Text style={styles.edit_button}>Edit</Text>
                   </TouchableOpacity>
                 </View>
 
-                <Text style={styles.container_subtitles}>{data.address}</Text>
+                <Text style={styles.container_subtitles}>
+                  {data.address}, {data.city}, {data.state}, {data.country}
+                </Text>
               </View>
             </Card>
           </Pressable>

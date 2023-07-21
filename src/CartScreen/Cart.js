@@ -126,118 +126,39 @@ const StripeTest = () => {
     }
   };
 
-  // const shippingInfo = {
-  //   address: user.shippingInfos[index].address,
-  //   city: user.shippingInfos[index].city,
-  //   state: user.shippingInfos[index].state,
-  //   pinCode: user.shippingInfos[index].pinCode,
-  //   country: user.shippingInfos[index].country,
-  //   phoneNo: user.shippingInfos[index].phoneNo,
-  // };
-
-  // const order = {
-  //   shippingInfo,
-  //   orderItems: cartItems,
-  //   itemsPrice: subtotal,
-  //   taxPrice: tax,
-  //   shippingPrice: shippingCharges,
-  //   totalPrice: totalPrice,
-  // };
-
-  // const createOrder = async () => {
-  //   try {
-  //     const { data } = await axios.post(
-  //       'http://192.168.0.102:4000/api/v1/order/new',
-  //       order
-  //     );
-  //   } catch (error) {
-  //     Alert.alert('Error', error.response.data.message, [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => console.log('Cancel Pressed'),
-  //         style: 'cancel',
-  //       },
-  //       { text: 'OK', onPress: () => console.log('OK Pressed') },
-  //     ]);
-  //   }
-  // }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  // const shippingInfo = {
-  //   address: user.shippingInfos[index].address,
-  //   city: user.shippingInfos[index].city,
-  //   state: user.shippingInfos[index].state,
-  //   pinCode: user.shippingInfos[index].pinCode,
-  //   country: user.shippingInfos[index].country,
-  //   phoneNo: user.shippingInfos[index].phoneNo,
-  // };
-
-  // const order = {
-  //   shippingInfo,
-  //   orderItems: cartItems,
-  //   itemsPrice: subtotal,
-  //   taxPrice: tax,
-  //   shippingPrice: shippingCharges,
-  //   totalPrice: totalPrice,
-  // };
-
-  // const createOrder = async () => {
-  //   try {
-  //     const { data } = await axios.post(
-  //       'http://192.168.0.102:4000/api/v1/order/new',
-  //       order
-  //     );
-  //   } catch (error) {
-  //     Alert.alert('Error', error.response.data.message, [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => console.log('Cancel Pressed'),
-  //         style: 'cancel',
-  //       },
-  //       { text: 'OK', onPress: () => console.log('OK Pressed') },
-  //     ]);
-  //   }
-  // }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  // load user information từ asycn storage
-  const [userInformation, setUserInformation] = useState([]);
-
-  const handleBackToLogin = () => {
-    navigation.navigate('Login');
+  const shippingInfo = {
+    address: user?.shippingInfos[index].address,
+    city: user?.shippingInfos[index].city,
+    state: user?.shippingInfos[index].state,
+    pinCode: user?.shippingInfos[index].pinCode,
+    country: user?.shippingInfos[index].country,
+    phoneNo: user?.shippingInfos[index].phoneNo,
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const getData = async () => {
-        try {
-          const userInformationString = await AsyncStorage.getItem(
-            'userInformation'
-          );
-          if (userInformationString) {
-            // Parse the JSON string back to an object
-            setUserInformation(JSON.parse(userInformationString));
-            console.log(
-              'User information history retrieved successfully:',
-              userInformation.token
-            );
-          } else {
-            setUserInformation([]);
-            console.log('User information history not found.', userInformation);
-          }
-        } catch (error) {
-          console.log('Error retrieving data:', error);
-        }
-      };
-      getData();
-    }, [])
-  );
+  const orderItems = cart.map((item) => ({
+    product: item._id,
+    name: `${item.name}`,
+    price: item.price,
+    image: `${item.images[0].url}`,
+    quantity: item.quantity,
+  }));
+
+  const order = {
+    shippingInfo,
+    orderItems: orderItems,
+    itemsPrice: subtotal,
+    taxPrice: tax,
+    shippingPrice: shippingCharges,
+    totalPrice: totalPrice,
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    loadCart(user?.name);
+  }, [user?.name]);
 
   const handleConfirmation = async () => {
     if (key) {

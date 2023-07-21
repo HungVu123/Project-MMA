@@ -131,11 +131,11 @@ export default function ProfileScreen() {
                   <Text style={styles.contentItem}>12-12-2000</Text>
                 </View>
                 <TouchableOpacity style={styles.containIcon}>
-                  <Image
+                  {/* <Image
                     source={require('../../assets/UpdateIcon.png')}
                     resizeMode="stretch"
                     style={styles.iconUpdate}
-                  />
+                  /> */}
                 </TouchableOpacity>
               </View>
               <View style={styles.containItem}>
@@ -155,11 +155,11 @@ export default function ProfileScreen() {
                   </Text>
                 </View>
                 <TouchableOpacity style={styles.containIcon}>
-                  <Image
+                  {/* <Image
                     source={require('../../assets/UpdateIcon.png')}
                     resizeMode="stretch"
                     style={styles.iconUpdate}
-                  />
+                  /> */}
                 </TouchableOpacity>
               </View>
               <View style={styles.containItem}>
@@ -179,11 +179,11 @@ export default function ProfileScreen() {
                   </Text>
                 </View>
                 <TouchableOpacity style={styles.containIcon}>
-                  <Image
+                  {/* <Image
                     source={require('../../assets/UpdateIcon.png')}
                     resizeMode="stretch"
                     style={styles.iconUpdate}
-                  />
+                  /> */}
                 </TouchableOpacity>
               </View>
               <View style={styles.containItem}>
@@ -201,11 +201,11 @@ export default function ProfileScreen() {
                   <Text style={styles.contentItem}>***********</Text>
                 </View>
                 <TouchableOpacity style={styles.containIcon}>
-                  <Image
+                  {/* <Image
                     source={require('../../assets/UpdateIcon.png')}
                     resizeMode="stretch"
                     style={styles.iconUpdate}
-                  />
+                  /> */}
                 </TouchableOpacity>
               </View>
               {/* logiut */}

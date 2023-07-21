@@ -11,12 +11,13 @@ import { Button, Card } from '@rneui/base';
 import { Country, State } from 'country-state-city';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AddNewAddress() {
   const User = {
-    name: 'John1',
+    name: 'Hungdeptrai',
   };
-
+  const navigation = useNavigation();
   const [address, setAddress] = useState();
   const [city, setCity] = useState();
   const [state, setState] = useState();
@@ -81,6 +82,7 @@ export default function AddNewAddress() {
           phoneNo: phoneNo,
         }
       );
+      await navigation.navigate('Ship To');
     } catch (error) {
       Alert.alert('Error', error.response.data.message, [
         {
@@ -109,7 +111,6 @@ export default function AddNewAddress() {
         </Card>
         <Text style={styles.text}>Shipping Info</Text>
         <Card>
-          <Text>Address:</Text>
           <TextInput
             placeholder="Enter address here"
             value={address}
@@ -146,7 +147,6 @@ export default function AddNewAddress() {
           </Card>
         )}
         <Card>
-          <Text>City:</Text>
           <TextInput
             placeholder="Enter city here"
             value={city}
@@ -154,7 +154,6 @@ export default function AddNewAddress() {
           />
         </Card>
         <Card>
-          <Text>Pincode:</Text>
           <TextInput
             placeholder="Enter pincode here"
             value={pinCode}
