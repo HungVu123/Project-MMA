@@ -28,7 +28,6 @@ import {
   initPaymentSheet,
 } from '@stripe/stripe-react-native';
 import { loadStorage } from '../../utils/AsyncStorageUtils';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Cart = () => {
   return (
@@ -38,7 +37,7 @@ const Cart = () => {
   );
 };
 
-const StripeTest = () => {
+const StripeTest = ({ route }) => {
   const navigation = useNavigation();
   const [number, setNumber] = useState(1);
   const textInputRef = useRef();
@@ -46,13 +45,15 @@ const StripeTest = () => {
   const toggleDialog = () => {
     setVisible1(!visible1);
   };
-  // const [Id, setId] = useState(user.shippingInfos[0]._id);
-  // const [index, setIndex] = useState(0);
-  // const handleCheckboxChange = (index) => {
-  //   setIndex(index);
-  //   setId(user.shippingInfos[index]._id);
-  // };
-
+  const [user, setUser] = useState();
+  const [Id, setId] = useState(user?.shippingInfos[0]?._id);
+  const [index, setIndex] = useState(0);
+  const handleCheckboxChange = (index) => {
+    setIndex(index);
+    setId(user?.shippingInfos[index]?._id);
+  };
+  // const receivedData = route.params?.data || 'No data received';
+  // console.log(route.params.data);
   const data = [
     {
       product: '1',
@@ -72,10 +73,19 @@ const StripeTest = () => {
     },
   ];
 
-  const User = {
-    name: 'John1',
-    phoneNo: 932951234124,
-    address: '1/4d Xuan Thoi Thuong',
+  const login = async () => {
+    try {
+      const response = await axios.post(
+        'http://192.168.0.102:4000/api/v1/login',
+        {
+          email: 'vonglaucac123@gmail.com',
+          password: 'vonglaucac123',
+        }
+      );
+      setUser(response.data.user);
+    } catch (e) {
+      console.log('error at login:' + e);
+    }
   };
 
   const increase = () => {
@@ -103,6 +113,36 @@ const StripeTest = () => {
     navigation.navigate('Ship To');
   };
 
+  const handleBackToLogin = () => {
+    navigation.navigate('Login');
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const getData = async () => {
+        try {
+          const userInformationString = await AsyncStorage.getItem(
+            'userInformation'
+          );
+          if (userInformationString) {
+            // Parse the JSON string back to an object
+            setUserInformation(JSON.parse(userInformationString));
+            console.log(
+              'User information history retrieved successfully:',
+              userInformation.token
+            );
+          } else {
+            setUserInformation([]);
+            console.log('User information history not found.', userInformation);
+          }
+        } catch (error) {
+          console.log('Error retrieving data:', error);
+        }
+      };
+      getData();
+    }, [])
+  );
+
   const totalPrice =
     data.reduce((acc, item) => acc + item.quantity * item.price, 0) + 20 + 25;
   const paymentData = {
@@ -114,7 +154,7 @@ const StripeTest = () => {
   const fetchData = async () => {
     try {
       const { data } = await axios.post(
-        'http://192.168.1.5:4000/api/v1/payment/process',
+        'http://192.168.0.102:4000/api/v1/payment/process',
         paymentData
       );
 
@@ -164,81 +204,22 @@ const StripeTest = () => {
 
   useEffect(() => {
     fetchData();
+    login();
   }, []);
-
-  // const shippingInfo = {
-  //   address: user.shippingInfos[index].address,
-  //   city: user.shippingInfos[index].city,
-  //   state: user.shippingInfos[index].state,
-  //   pinCode: user.shippingInfos[index].pinCode,
-  //   country: user.shippingInfos[index].country,
-  //   phoneNo: user.shippingInfos[index].phoneNo,
-  // };
-
-  // const order = {
-  //   shippingInfo,
-  //   orderItems: cartItems,
-  //   itemsPrice: subtotal,
-  //   taxPrice: tax,
-  //   shippingPrice: shippingCharges,
-  //   totalPrice: totalPrice,
-  // };
-
-  // const createOrder = async () => {
-  //   try {
-  //     const { data } = await axios.post(
-  //       'http://192.168.0.102:4000/api/v1/order/new',
-  //       order
-  //     );
-  //   } catch (error) {
-  //     Alert.alert('Error', error.response.data.message, [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => console.log('Cancel Pressed'),
-  //         style: 'cancel',
-  //       },
-  //       { text: 'OK', onPress: () => console.log('OK Pressed') },
-  //     ]);
-  //   }
-  // }
 
   useEffect(() => {
-    fetchData();
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        textInputRef.current.blur();
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+    };
   }, []);
 
-  // load user information từ asycn storage
-  const [userInformation, setUserInformation] = useState([]);
-
-  const handleBackToLogin = () => {
-    navigation.navigate('Login');
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const getData = async () => {
-        try {
-          const userInformationString = await AsyncStorage.getItem(
-            'userInformation'
-          );
-          if (userInformationString) {
-            // Parse the JSON string back to an object
-            setUserInformation(JSON.parse(userInformationString));
-            console.log(
-              'User information history retrieved successfully:',
-              userInformation.token
-            );
-          } else {
-            setUserInformation([]);
-            console.log('User information history not found.', userInformation);
-          }
-        } catch (error) {
-          console.log('Error retrieving data:', error);
-        }
-      };
-      getData();
-    }, [])
-  );
-  
   const handleConfirmation = async () => {
     if (key) {
       const { paymentIntent, error } = await confirmPayment(key, {
@@ -274,12 +255,17 @@ const StripeTest = () => {
                   Delivery Address
                 </Text>
                 <Text style={styles.container_name}>
-                  {User.name} |{' '}
+                  {user?.name} |{' '}
                   <Text style={styles.container_subtitles}>
-                    ( +{User.phoneNo})
+                    ( +{user?.shippingInfos[index]?.phoneNo})
                   </Text>
                 </Text>
-                <Text style={styles.container_subtitles}>{User.address}</Text>
+                <Text style={styles.container_subtitles}>
+                  {user?.shippingInfos[index]?.address},{' '}
+                  {user?.shippingInfos[index]?.city},{' '}
+                  {user?.shippingInfos[index]?.state},{' '}
+                  {user?.shippingInfos[index]?.country}
+                </Text>
               </View>
             </Card>
           </TouchableOpacity>
@@ -456,7 +442,6 @@ const styles = StyleSheet.create({
     height: 57,
     borderRadius: 5,
     backgroundColor: '#52D4D0',
-
   },
 
   container_title: {
@@ -474,41 +459,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   edit_button: {
-    height: 57,
-    width: 77,
-    borderRadius: 5,
-    backgroundColor: '#52D4D0',
-  },
-  remove_button: { backgroundColor: 'white', marginLeft: 15 },
-  container1: {
-    borderRadius: 10,
-    backgroundColor: '#52D4D0',
-    color: 'white',
-    width: '100%',
-    marginLeft: 0,
-  },
-  cardHolder: {
-    fontSize: 20,
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  content_nouser: {
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-  },
-  title_nouser: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    margin: 10,
-  },
-  subTitle_nouser: {
-    color: '#9098B1',
-  },
-  button_nouser: {
-    margin: 20,
-    width: 343,
-
     height: 57,
     width: 77,
     borderRadius: 5,

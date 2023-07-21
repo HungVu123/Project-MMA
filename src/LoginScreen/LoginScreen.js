@@ -52,7 +52,7 @@ const LoginScreen = () => {
         } catch (error) {
           console.log('Error saving data:', error);
         }
-        navigation.navigate('Home');
+        navigation.navigate('Cart&History');
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
