@@ -1,7 +1,11 @@
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from './style';
-import { fetchProductBirds, fetchProductCages } from './api';
+import {
+  fetchProductBirds,
+  fetchProductCages,
+  fetchProductSuplements,
+} from './api';
 import { useNavigation } from '@react-navigation/native';
 
 const SeeMore = ({ route }) => {
@@ -24,6 +28,17 @@ const SeeMore = ({ route }) => {
       const fetchData = async () => {
         try {
           const data = await fetchProductCages();
+          setProducts(data.products);
+          console.log('data: ', data.products);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
+    } else if (cate === 'Supplements') {
+      const fetchData = async () => {
+        try {
+          const data = await fetchProductSuplements();
           setProducts(data.products);
           console.log('data: ', data.products);
         } catch (error) {

@@ -203,6 +203,8 @@ const StripeTest = () => {
     totalPrice: totalPrice,
   };
 
+  console.log(shippingInfo);
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -218,6 +220,31 @@ const StripeTest = () => {
   );
 
   const handleConfirmation = async () => {
+    const shippingInfo = {
+      address: userInformation?.user?.shippingInfos[index].address,
+      city: userInformation?.user?.shippingInfos[index].city,
+      state: userInformation?.user?.shippingInfos[index].state,
+      pinCode: userInformation?.user?.shippingInfos[index].pinCode,
+      country: userInformation?.user?.shippingInfos[index].country,
+      phoneNo: userInformation?.user?.shippingInfos[index].phoneNo,
+    };
+
+    const orderItems = cart.map((item) => ({
+      product: item._id,
+      name: `${item.name}`,
+      price: item.price,
+      image: `${item.images[0].url}`,
+      quantity: item.quantity,
+    }));
+
+    const order = {
+      shippingInfo,
+      orderItems: orderItems,
+      itemsPrice: subtotal,
+      taxPrice: tax,
+      shippingPrice: shippingCharges,
+      totalPrice: totalPrice,
+    };
     if (key) {
       const { paymentIntent, error } = await confirmPayment(key, {
         paymentMethodType: 'Card',
