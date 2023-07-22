@@ -14,7 +14,8 @@ import {
   removeFromStorage,
   saveToStorage,
 } from '../../utils/AsyncStorageUtils';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const OrderDetail = ({ route }) => {
   const order = route.params.order;
@@ -68,6 +69,21 @@ const OrderDetail = ({ route }) => {
     setFavList();
   };
 
+  const navigation = useNavigation();
+
+  const handleNavigateDetail = async (name) => {
+    try {
+      const response = await axios.get(
+        'http://192.168.1.15:4000/api/v1/products'
+      );
+      product = response.data.products.find((data) => data.name === name);
+      console.log(product);
+      navigation.navigate('DetailScreen', product);
+    } catch (error) {
+      console.log('error at navigate:' + error);
+    }
+  };
+
   const loadFavorites = async (name) => {
     const storedFavorites = await loadStorage('favorites', name);
     setFavList(storedFavorites);
@@ -88,47 +104,28 @@ const OrderDetail = ({ route }) => {
       <View style={styles.container}>
         <Text style={styles.title}>Product</Text>
         {order.orderItems.map((item, i) => (
-          <Card containerStyle={styles.card_container} key={i}>
-            <View style={{ flexDirection: 'row' }}>
-              <Image source={{ uri: item.image }} style={styles.img} />
-              <View style={{ flex: 1 }}>
-                <View
-                  style={{
-                    justifyContent: 'space-between',
-                    flex: 1,
-                    flexDirection: 'row',
-                  }}
-                >
-                  <Text style={styles.product_title}>{item.name}</Text>
-                  {favList && favList.some((fav) => fav._id === item._id) ? (
-                    <TouchableOpacity
-                      onPress={() => handleRemove(userName, item)}
-                    >
-                      <Icon
-                        style={styles.icon}
-                        name="favorite"
-                        type="material"
-                        color="#40BFFF"
-                      />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity onPress={() => handleAdd(userName, item)}>
-                      <Icon
-                        style={styles.icon}
-                        name="favorite-border"
-                        type="material"
-                        color="#9098B1"
-                      />
-                    </TouchableOpacity>
-                  )}
+          <TouchableOpacity onPress={() => handleNavigateDetail(item.name)}>
+            <Card containerStyle={styles.card_container} key={i}>
+              <View style={{ flexDirection: 'row' }}>
+                <Image source={{ uri: item.image }} style={styles.img} />
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      justifyContent: 'space-between',
+                      flex: 1,
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <Text style={styles.product_title}>{item.name}</Text>
+                  </View>
+                  <Text style={styles.product_quantity}>x{item.quantity}</Text>
+                  <Text style={styles.product_price}>
+                    ${item.quantity * item.price}
+                  </Text>
                 </View>
-                <Text style={styles.product_quantity}>x{item.quantity}</Text>
-                <Text style={styles.product_price}>
-                  ${item.quantity * item.price}
-                </Text>
               </View>
-            </View>
-          </Card>
+            </Card>
+          </TouchableOpacity>
         ))}
         <Text style={styles.title}>Shipping Details</Text>
         <Card containerStyle={styles.card_container}>

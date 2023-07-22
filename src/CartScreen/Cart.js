@@ -96,19 +96,19 @@ const StripeTest = () => {
     address: '1/4d Xuan Thoi Thuong',
   };
 
-  const increase = async (name, item) => {
-    await setNumber(number + 1);
+  const increase = async (name, item, quantity) => {
+    const newQty = quantity + 1;
     await removeFromStorage('cart', name, item);
-    item.quantity = number;
+    item.quantity = newQty;
     await saveToStorage('cart', name, item);
     loadCart(userInformation?.user?.name);
   };
 
-  const decrease = async (name, item) => {
-    if (number > 0) {
-      await setNumber(number - 1);
+  const decrease = async (name, item, quantity) => {
+    if (quantity > 0) {
+      const newQty = quantity - 1;
       await removeFromStorage('cart', name, item);
-      item.quantity = number;
+      item.quantity = newQty;
       await saveToStorage('cart', name, item);
       loadCart(userInformation?.user?.name);
     } else {
@@ -225,13 +225,44 @@ const StripeTest = () => {
           email: 'John@email.com',
         },
       });
-
       if (!error) {
-        Alert.alert('Received payment', `Billed for ${paymentIntent?.amount}`);
+        await Alert.alert(
+          'Received payment',
+          `Billed for ${paymentIntent?.amount}`,
+          [
+            {
+              text: 'OK',
+              onPress: () =>
+                navigation.navigate(
+                  'Success Payment',
+                  userInformation.user.name
+                ),
+            },
+          ]
+        );
+        order.paymentInfo = {
+          id: paymentIntent.id,
+          status: paymentIntent.status,
+        };
+        try {
+          console.log('order:' + order);
+          const { data } = await axios.post(
+            'http://192.168.0.102:4000/api/v1/order/new',
+            order
+          );
+        } catch (error) {
+          Alert.alert('Error', error.response.data.message, [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('Cancel Pressed'),
+              style: 'cancel',
+            },
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ]);
+        }
       } else {
         Alert.alert('Error', error.message);
       }
-      await navigation.navigate('Success Payment');
     }
   };
 
@@ -307,10 +338,10 @@ const StripeTest = () => {
                     deleteCartItems(userInformation?.user?.name, item)
                   }
                   increaseQuantity={() =>
-                    increase(userInformation?.user?.name, item)
+                    increase(userInformation?.user?.name, item, item.quantity)
                   }
                   decreaseQuantity={() =>
-                    decrease(userInformation?.user?.name, item)
+                    decrease(userInformation?.user?.name, item, item.quantity)
                   }
                 />
               </Card>

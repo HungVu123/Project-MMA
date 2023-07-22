@@ -33,6 +33,10 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('Favorite');
   };
 
+  const handleSeeMore = (cate) => {
+    console.log('cate: ', cate);
+    navigation.navigate('SeeMore', { cate: cate });
+  };
   // fetchProductBirds
 
   const [products, setProducts] = useState([]);
@@ -224,7 +228,9 @@ const HomeScreen = ({ navigation }) => {
               {/* -------------- item card birds -------------- */}
               <View style={styles.saleTextContainer}>
                 <Text style={styles.textLeft}>Birds</Text>
-                <Text style={styles.textRight}>See More</Text>
+                <TouchableOpacity onPress={() => handleSeeMore('Birds')}>
+                  <Text style={styles.textRight}>See More</Text>
+                </TouchableOpacity>
               </View>
               <View style={styles.allItemsContainer}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -260,7 +266,9 @@ const HomeScreen = ({ navigation }) => {
 
               <View style={styles.saleTextContainer}>
                 <Text style={styles.textLeft}>Cages</Text>
-                <Text style={styles.textRight}>See More</Text>
+                <TouchableOpacity onPress={() => handleSeeMore('Cages')}>
+                  <Text style={styles.textRight}>See More</Text>
+                </TouchableOpacity>
               </View>
               <View style={styles.allItemsContainer}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -292,8 +300,10 @@ const HomeScreen = ({ navigation }) => {
               {/* -------------- item card Supplements -------------- */}
 
               <View style={styles.saleTextContainer}>
-                <Text style={styles.textLeft}>Cages</Text>
-                <Text style={styles.textRight}>See More</Text>
+                <Text style={styles.textLeft}>Supplements</Text>
+                <TouchableOpacity onPress={() => handleSeeMore('Supplements')}>
+                  <Text style={styles.textRight}>See More</Text>
+                </TouchableOpacity>
               </View>
               <View style={styles.allItemsContainer}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>

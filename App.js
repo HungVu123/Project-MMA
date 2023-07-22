@@ -22,6 +22,7 @@ import ForgotPassword from './src/LoginScreen/ForgotPassword';
 import Register from './src/LoginScreen/Register';
 import ReviewScreen from './src/ReviewScreen/ReviewScreen';
 import FavoriteScreen from './src/FavoriteScreen/Favoritescreen';
+import SeeMore from './src/HomeScreen/SeeMore';
 
 const CartAndHistory = () => {
   const Tab = createBottomTabNavigator();
@@ -164,6 +165,11 @@ export default function App() {
         <Stack.Screen
           name="Register"
           component={Register}
+          options={{ headerTitleAlign: 'center' }}
+        />
+        <Stack.Screen
+          name="SeeMore"
+          component={SeeMore}
           options={{ headerTitleAlign: 'center' }}
         />
       </Stack.Navigator>

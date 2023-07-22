@@ -138,7 +138,10 @@ const FavoriteScreen = ({ navigation }) => {
           >
             <Card containerStyle={styles.card_container} key={i}>
               <View style={{ flexDirection: 'row' }}>
-                <Image source={{ uri: item.image }} style={styles.img} />
+                <Image
+                  source={{ uri: item.images[0].url }}
+                  style={styles.img}
+                />
                 <View style={{ flex: 1 }}>
                   <View
                     style={{

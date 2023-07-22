@@ -3,12 +3,19 @@ import { Button, Card, Icon, Text } from '@rneui/themed';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { removeAllStorage } from '../../utils/AsyncStorageUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Success = () => {
+const Success = (props) => {
   const navigation = useNavigation();
+  const userName = props.route.params;
+  console.log(userName);
   const backToHome = async () => {
-    await removeAllStorage();
-    await navigation.navigate('Home');
+    // await removeAllStorage();
+    const storedString = await AsyncStorage.getItem('cart');
+    const stored = JSON.parse(storedString);
+    stored[userName] = [];
+    await AsyncStorage.setItem('cart', JSON.stringify(stored));
+    await navigation.navigate('Cart&History');
   };
   return (
     <View style={styles.container}>
